@@ -1,4 +1,6 @@
 export class Grapple {
+	// TODO: Add a Phaser.Rope and make it conform to the points in the composite.
+
 	// #region Universal Constants:
 	
 	// Rope physics:
@@ -6,7 +8,7 @@ export class Grapple {
 	segmentSize = 10;
 
 	// Firing:
-	startingVelocity = 0.05;
+	startingVelocity = 0.03;
 	stopFiringAtVelocity = 1;
 	maxLength = 20;
 	attachedOffset = 45;
@@ -44,6 +46,23 @@ export class Grapple {
 
 	// #endregion
 
+	retract() {
+		this.clearFix(this.end);
+
+		if (this.startConstraint !== null && this.startConstraint !== undefined) {
+			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.startConstraint);
+		}
+
+		for (var body in this.comp.bodies) {
+			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.comp.bodies[body]);
+		}
+		for (var constraint in this.comp.constraints) {
+			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.comp.constraints[constraint]);
+		}
+		this.scene.matter.composite.clear(this.comp, false, true);
+		this.grapplingMode = "NONE";
+	}
+
 	// #region Grapple Hook NONE state
 
 	#target;
@@ -63,12 +82,26 @@ export class Grapple {
 			});
 			
 			this.end = this.generateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
+			this.end.isChainEnd = true;
+
+			this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", this.firingCollisionCheck, this);
 		}
 	}
 	
 	// #endregion
 
 	// #region Grapple Hook FIRING state
+
+	#fireCollisionCheck = false;
+	firingCollisionCheck(event, bodyA, bodyB) {
+		// TODO: Avoid checking collisions with other grapple circles for stopping firing.
+		if (bodyA.isChainEnd || bodyB.isChainEnd) {
+			if (this.grapplingMode === "FIRING") {
+				this.startHook();
+				this.stopFire();
+			}
+		}
+	}
 
 	firingUpdate(){
 		let sensorPos = this.scene.matter.vector.add(this.scene.matter.vector.mult(this.#target, this.attachedOffset), this.attachBody.position);
@@ -85,13 +118,15 @@ export class Grapple {
 	}
 
 	stopFire() {
-		console.log("----");
+		this.scene.matter.world.off(this.fireCollisionCheck);
+		this.fireCollisionCheck = null;
+
 		this.backFillLink();
 
 		let bodyDist = this.scene.matter.vector.sub(this.start.position, this.attachBody.position);
 		this.startConstraint = this.scene.matter.add.constraint(this.start, this.attachBody, this.scene.matter.vector.magnitude(bodyDist), this.stiffness);
 
-		this.scene.matter.world.remove(this.scene.matter.world, this.#fireSensor);
+		this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.#fireSensor);
 		this.#fireSensor = null;
 	}
 
@@ -137,6 +172,16 @@ export class Grapple {
 
 	// #endregion
 
+	// #region Grapple Hook HOOKED state
+	startHook() {
+		if (this.grapplingMode === "FIRING") {
+			this.grapplingMode = "HOOKED";
+			this.fixToPoint(this.end);
+		}
+	}
+
+	// #endregion
+
 	// #region Utility Functions
 
 	fixToPoint(body, position) {
@@ -152,7 +197,9 @@ export class Grapple {
 	}
 
 	clearFix(body) {
-		this.scene.matter.world.removeConstraint(body.fixed);
+		if (body.fixed !== null && body.fixed !== undefined) {
+			this.scene.matter.world.removeConstraint(body.fixed);
+		}
 	}
 
 	// #endregion

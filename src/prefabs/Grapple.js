@@ -47,6 +47,8 @@ export class Grapple {
 	// #endregion
 
 	retract() {
+		this.scene.matter.world.off(this.fireCollisionCheck);
+		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
 
 		if (this.startConstraint !== null && this.startConstraint !== undefined) {
@@ -92,13 +94,14 @@ export class Grapple {
 
 	// #region Grapple Hook FIRING state
 
-	#fireCollisionCheck = false;
 	firingCollisionCheck(event, bodyA, bodyB) {
 		// TODO: Avoid checking collisions with other grapple circles for stopping firing.
 		if (bodyA.isChainEnd || bodyB.isChainEnd) {
-			if (this.grapplingMode === "FIRING") {
+			if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
+				if (this.grapplingMode === "FIRING") {
+					this.stopFire();
+				}
 				this.startHook();
-				this.stopFire();
 			}
 		}
 	}
@@ -118,9 +121,6 @@ export class Grapple {
 	}
 
 	stopFire() {
-		this.scene.matter.world.off(this.fireCollisionCheck);
-		this.fireCollisionCheck = null;
-
 		this.backFillLink();
 
 		let bodyDist = this.scene.matter.vector.sub(this.start.position, this.attachBody.position);
@@ -197,7 +197,7 @@ export class Grapple {
 	}
 
 	clearFix(body) {
-		if (body.fixed !== null && body.fixed !== undefined) {
+		if (body !== null && body !== undefined && body.fixed !== null && body.fixed !== undefined) {
 			this.scene.matter.world.removeConstraint(body.fixed);
 		}
 	}

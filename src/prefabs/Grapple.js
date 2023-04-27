@@ -160,11 +160,11 @@ class GrappleRetracting extends State {
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
-			for (var i = this.parent.comp.bodies.length - 1; i >= 0; i--) {
+			/*for (var i = this.parent.comp.bodies.length - 1; i >= 0; i--) {
 				let store = this.parent.comp.bodies[i].position;
 				this.parent.comp.bodies[i].position = oldPos;
 				oldPos = store;
-			}
+			}*/
 		}
 	}
 
@@ -192,7 +192,7 @@ export class Grapple {
 	attachedOffset = 45;
 
 	// Retracting:
-	reelInSpeed = 1000;
+	reelInSpeed = 20;
 
 	// #endregion
 

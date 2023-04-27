@@ -136,14 +136,16 @@ class GrappleRetracting extends State {
 		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > this.parent.reelInSpeed) {
 			this.#retractTimer = this.time.now;
 			this.retractOne();
+		} else if (this.parent.comp.bodies.length === 1 && !this.parent.isHooked()) {
+			this.parent.cancel();
 		}
 	}
 
 	retractOne() {
-		let oldPos = this.parent.start.position;
-
 		let compositeConstraint = this.parent.comp.constraints[this.parent.comp.constraints.length - 1];
 		let compositeBody = this.parent.start;
+
+		let oldPos = this.parent.start.position;
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
 		this.matter.composite.remove(this.matter.world.engine.world, compositeConstraint);
@@ -155,10 +157,19 @@ class GrappleRetracting extends State {
 		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
 
 		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.attachedOffset, this.parent.stiffness);
+
+		// TODO: This is finnicky. Might just replace it with a quick retract.
+		if (!this.parent.isHooked()) {
+			for (var i = this.parent.comp.bodies.length - 1; i >= 0; i--) {
+				let store = this.parent.comp.bodies[i].position;
+				this.parent.comp.bodies[i].position = oldPos;
+				oldPos = store;
+			}
+		}
 	}
 
 	transitionLogic(newState) {
-		if (newState === GrappleNone || newState === GrappleHooked) {
+		if (newState === GrappleNone || (newState === GrappleHooked && this.parent.isHooked())) {
 			return newState;
 		}
 		return null;
@@ -181,7 +192,7 @@ export class Grapple {
 	attachedOffset = 45;
 
 	// Retracting:
-	reelInSpeed = 100;
+	reelInSpeed = 1000;
 
 	// #endregion
 
@@ -228,6 +239,10 @@ export class Grapple {
 			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.comp.constraints[constraint]);
 		}
 		this.scene.matter.composite.clear(this.comp, false, true);
+
+		this.end = null;
+		this.start = null;
+
 		this.grapplingFSM.transition(GrappleNone);
 	}
 
@@ -236,7 +251,7 @@ export class Grapple {
 	}
 
 	isHooked() {
-		return this.end !== null;
+		return this.end !== undefined && this.end !== null && this.end.fixed !== undefined && this.end.fixed !== null;
 	}
 
 	startRetracting() {
@@ -276,7 +291,7 @@ export class Grapple {
 
 		if (currentEnd !== null) {
 			let bodyInArr = this.comp.bodies.filter(body => body.id === other.id).length > 0;
-			if (!(bodyInArr)) {
+			if (!(bodyInArr) && other.id !== this.attachBody.id) {
 				this.grapplingFSM.transition(GrappleHooked);
 			}
 		}
@@ -285,12 +300,18 @@ export class Grapple {
 	// #region Utility Functions
 
 	fixToPoint(body, position) {
+		if (body.fixed !== null) {
+			this.clearFix(body);
+		}
 		body.fixed = this.scene.matter.add.worldConstraint(body, 0, 1, {
 			pointA: new Phaser.Math.Vector2(position.x, position.y),
 		});
 	}
 
 	fixToPoint(body) {
+		if (body.fixed !== null) {
+			this.clearFix(body);
+		}
 		body.fixed = this.scene.matter.add.worldConstraint(body, 0, 1, {
 				pointA: new Phaser.Math.Vector2(body.position.x, body.position.y),
 		});
@@ -299,6 +320,7 @@ export class Grapple {
 	clearFix(body) {
 		if (body !== null && body !== undefined && body.fixed !== null && body.fixed !== undefined) {
 			this.scene.matter.world.removeConstraint(body.fixed);
+			body.fixed = null;
 		}
 	}
 

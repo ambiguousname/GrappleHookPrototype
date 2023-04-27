@@ -20,13 +20,17 @@ export class Player {
 				} else {
 					this.grapple.fire(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y);
 				}
-			} else if (this.scene.input.mousePointer.buttons === 2) {
-
 			}
 		}, this);
 	}
 
 	update() {
 		this.grapple.update();
+
+		if (this.scene.input.mousePointer.buttons === 2) {
+			this.grapple.startRetracting();
+		} else {
+			this.grapple.stopRetracting();
+		}
 	}
 }

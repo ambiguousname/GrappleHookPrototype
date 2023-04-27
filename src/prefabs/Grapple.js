@@ -57,8 +57,7 @@ class GrappleFiring extends State {
 	exitState() {
 		this.backFillLink();
 
-		let bodyDist = this.vector.sub(this.parent.start.position, this.parent.attachBody.position);
-		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.vector.magnitude(bodyDist), this.parent.stiffness);
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.attachedOffset, this.parent.stiffness);
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);
 		this.#fireSensor = null;
@@ -116,7 +115,50 @@ class GrappleHooked extends State {
 	}
 
 	transitionLogic(newState) {
-		if (newState === GrappleNone) {
+		if (newState === GrappleNone || newState === GrappleRetracting) {
+			return newState;
+		}
+		return null;
+	}
+}
+
+class GrappleRetracting extends State {
+	#retractTimer;
+	constructor(_parent = null) {
+		super(_parent);
+		this.matter = this.parent.scene.matter;
+		this.time = this.parent.scene.time;
+
+		this.#retractTimer = 0;
+	}
+
+	update() {
+		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > this.parent.reelInSpeed) {
+			this.#retractTimer = this.time.now;
+			this.retractOne();
+		}
+	}
+
+	retractOne() {
+		let oldPos = this.parent.start.position;
+
+		let compositeConstraint = this.parent.comp.constraints[this.parent.comp.constraints.length - 1];
+		let compositeBody = this.parent.start;
+
+		this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
+		this.matter.composite.remove(this.matter.world.engine.world, compositeConstraint);
+		this.matter.composite.remove(this.matter.world.engine.world, compositeBody);
+
+		this.matter.composite.remove(this.parent.comp, compositeBody);
+		this.matter.composite.remove(this.parent.comp, compositeConstraint);
+
+		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
+
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.attachedOffset, this.parent.stiffness);
+	}
+
+	transitionLogic(newState) {
+		if (newState === GrappleNone || newState === GrappleHooked) {
 			return newState;
 		}
 		return null;
@@ -137,6 +179,9 @@ export class Grapple {
 	stopFiringAtVelocity = 1;
 	maxLength = 20;
 	attachedOffset = 45;
+
+	// Retracting:
+	reelInSpeed = 100;
 
 	// #endregion
 
@@ -166,6 +211,7 @@ export class Grapple {
 
 	// #endregion
 
+	// #region Public Methods
 	cancel() {
 		this.scene.matter.world.off(this.fireCollisionCheck);
 		this.fireCollisionCheck = null;
@@ -188,6 +234,22 @@ export class Grapple {
 	hasFired() {
 		return this.grapplingFSM.activeState instanceof GrappleFiring || this.grapplingFSM.activeState instanceof GrappleUnhooked || this.grapplingFSM.activeState instanceof GrappleHooked;
 	}
+
+	isHooked() {
+		return this.end !== null;
+	}
+
+	startRetracting() {
+		this.grapplingFSM.transition(GrappleRetracting);
+	}
+
+	stopRetracting() {
+		if (this.isHooked() && this.grapplingFSM.activeState instanceof GrappleRetracting) {
+			this.grapplingFSM.transition(GrappleHooked);
+		}
+	}
+
+	// #endregion
 
 	// #region Grapple Hook NONE state
 

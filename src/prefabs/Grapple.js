@@ -42,22 +42,26 @@ class GrappleFiring extends State {
 	}
 
 	update() {
-		let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.attachedOffset), this.parent.attachBody.position);
-		this.#fireSensor.position = sensorPos;
+		if (this.parent.comp.bodies.length > 0){
+			let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.attachedOffset), this.parent.attachBody.position);
+			this.#fireSensor.position = sensorPos;
 
-		if (this.parent.comp.bodies.length < this.parent.maxLength && this.vector.magnitude(this.parent.end.velocity) > this.parent.stopFiringAtVelocity) {
-			if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
-				this.backFillLink();
+			if (this.parent.comp.bodies.length < this.parent.maxLength && this.vector.magnitude(this.parent.end.velocity) > this.parent.stopFiringAtVelocity) {
+				if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
+					this.backFillLink();
+				}
+			} else {
+				this.parent.grapplingFSM.transition(GrappleUnhooked);
 			}
-		} else {
-			this.parent.grapplingFSM.transition(GrappleUnhooked);
 		}
 	}
 
 	exitState() {
-		this.backFillLink();
+		if (this.parent.comp.bodies.length > 0){
+			this.backFillLink();
 
-		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.attachedOffset, this.parent.stiffness);
+			this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.attachedOffset, this.parent.stiffness);
+		}
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);
 		this.#fireSensor = null;

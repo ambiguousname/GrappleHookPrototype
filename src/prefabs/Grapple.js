@@ -11,6 +11,12 @@ class GrappleNone extends State {
 }
 
 class GrappleUnhooked extends State {
+	transitionLogic(newState) {
+		if (newState === GrappleNone) {
+			return newState;
+		}
+		return null;
+	}
 }
 
 class GrappleFiring extends State {

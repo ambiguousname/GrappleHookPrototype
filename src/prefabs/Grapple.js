@@ -96,12 +96,25 @@ export class Grapple {
 
 	firingCollisionCheck(event, bodyA, bodyB) {
 		// TODO: Avoid checking collisions with other grapple circles for stopping firing.
-		if (bodyA.isChainEnd || bodyB.isChainEnd) {
-			if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
-				if (this.grapplingMode === "FIRING") {
-					this.stopFire();
+		var currentEnd = null;
+		var other = null;
+		if (bodyA.isChainEnd) {
+			currentEnd = bodyA;
+			other = bodyB;
+		} else if (bodyB.isChainEnd) {
+			currentEnd = bodyB;
+			other = bodyA;
+		}
+
+		if (currentEnd !== null) {
+			let bodyInArr = this.comp.bodies.filter(body => body.id === other.id).length > 0;
+			if (!(bodyInArr)) {
+				if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
+					if (this.grapplingMode === "FIRING") {
+						this.stopFire();
+					}
+					this.startHook();
 				}
-				this.startHook();
 			}
 		}
 	}
@@ -174,7 +187,7 @@ export class Grapple {
 
 	// #region Grapple Hook HOOKED state
 	startHook() {
-		if (this.grapplingMode === "FIRING") {
+		if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
 			this.grapplingMode = "HOOKED";
 			this.fixToPoint(this.end);
 		}

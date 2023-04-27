@@ -12,7 +12,7 @@ class GrappleNone extends State {
 
 class GrappleUnhooked extends State {
 	transitionLogic(newState) {
-		if (newState === GrappleNone) {
+		if (newState === GrappleNone || newState === GrappleHooked) {
 			return newState;
 		}
 		return null;

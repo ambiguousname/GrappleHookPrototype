@@ -1,3 +1,122 @@
+import {FSM, State} from "../util/FSM.js";
+
+class GrappleNone extends State {
+	transitionLogic(newState) {
+		if (newState === GrappleFiring) {
+			return newState;
+		} else {
+			return null;
+		}
+	}
+}
+
+class GrappleUnhooked extends State {
+}
+
+class GrappleFiring extends State {
+	#target;
+	#fireSensor;
+
+	constructor(_parent = null, ...args) {
+		super(_parent);
+		this.matter = this.parent.scene.matter;
+		this.vector = this.matter.vector;
+
+		this.#target = this.vector.create(args[0], args[1]);
+		this.#target = this.vector.sub(this.#target, this.parent.attachBody.position);
+		this.#target = this.vector.normalise(this.#target);
+
+		let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.attachedOffset), this.parent.attachBody.position);
+		this.#fireSensor = this.matter.add.circle(sensorPos.x, sensorPos.y, this.parent.segmentSize * 1.5, {
+			isSensor: true,
+		});
+		
+		this.parent.end = this.generateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
+		this.parent.end.isChainEnd = true;
+	}
+
+	update() {
+		let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.attachedOffset), this.parent.attachBody.position);
+		this.#fireSensor.position = sensorPos;
+
+		if (this.parent.comp.bodies.length < this.parent.maxLength && this.vector.magnitude(this.parent.end.velocity) > this.parent.stopFiringAtVelocity) {
+			if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
+				this.backFillLink();
+			}
+		} else {
+			this.parent.grapplingFSM.transition(GrappleUnhooked);
+		}
+	}
+
+	exitState() {
+		this.backFillLink();
+
+		let bodyDist = this.vector.sub(this.parent.start.position, this.parent.attachBody.position);
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.vector.magnitude(bodyDist), this.parent.stiffness);
+
+		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);
+		this.#fireSensor = null;
+	}
+
+	// #region Helpers
+
+	
+	generateLink(x, y) {
+		let circle = this.matter.add.circle(x, y, this.parent.segmentSize, {
+			isSensor: false,
+		});
+		this.matter.composite.add(this.parent.comp, circle);
+
+		let fireForce = this.matter.vector.mult(this.#target, this.parent.startingVelocity);
+
+		this.matter.body.applyForce(circle, circle.position, fireForce);
+
+		if (this.parent.comp.bodies.length > 1) {
+			let dist = this.vector.magnitude(this.vector.sub(circle, this.#fireSensor.position));
+			let constraint = this.matter.add.constraint(this.parent.comp.bodies[this.parent.comp.bodies.length - 2], circle, dist, this.parent.stiffness);
+			this.matter.composite.add(this.parent.comp, constraint);
+		}
+
+		this.parent.start = circle;
+
+		return circle;
+	}
+
+	backFillLink(){
+		let previousLinkPos = this.parent.start.position;
+
+		let dist = this.vector.sub(this.#fireSensor.position, previousLinkPos);
+		let dir = this.vector.normalise(dist);
+
+		var endDist = this.vector.sub(previousLinkPos, this.#fireSensor.position);
+		var i = 1;
+		while (this.vector.magnitude(endDist) > this.parent.segmentSize) {
+			let totalDist = this.vector.mult(dir, i * 2 * this.parent.segmentSize);
+			let newPos = this.vector.add(previousLinkPos, totalDist);
+			this.generateLink(newPos.x, newPos.y);
+
+			endDist = this.vector.sub(newPos, this.#fireSensor.position);
+			i++;
+		}
+		return this.parent.start;
+	}
+	// #endregion
+}
+
+class GrappleHooked extends State {
+	constructor(_parent = null) {
+		super(_parent);
+		this.parent.fixToPoint(this.parent.end);
+	}
+
+	transitionLogic(newState) {
+		if (newState === GrappleNone) {
+			return newState;
+		}
+		return null;
+	}
+}
+
 export class Grapple {
 	// TODO: Add a Phaser.Rope and make it conform to the points in the composite.
 
@@ -31,22 +150,17 @@ export class Grapple {
 		HOOKED - Grappling hook is hooked into something.
 		RETRACTING - Grappling hooks is retracting.
 		*/
-		this.grapplingMode = "NONE";
+		this.grapplingFSM = new FSM(GrappleNone, this);
+		this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", this.firingCollisionCheck, this);
 	}
 
 	update() {
-		switch (this.grapplingMode) {
-			case "FIRING":
-				this.firingUpdate();
-				break;
-			default:
-				break;
-		}
+		this.grapplingFSM.update();
 	}
 
 	// #endregion
 
-	retract() {
+	cancel() {
 		this.scene.matter.world.off(this.fireCollisionCheck);
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
@@ -62,7 +176,11 @@ export class Grapple {
 			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.comp.constraints[constraint]);
 		}
 		this.scene.matter.composite.clear(this.comp, false, true);
-		this.grapplingMode = "NONE";
+		this.grapplingFSM.transition(GrappleNone);
+	}
+
+	hasFired() {
+		return this.grapplingFSM.activeState instanceof GrappleFiring || this.grapplingFSM.activeState instanceof GrappleUnhooked || this.grapplingFSM.activeState instanceof GrappleHooked;
 	}
 
 	// #region Grapple Hook NONE state
@@ -71,28 +189,10 @@ export class Grapple {
 	#fireSensor;
 
 	fire(x, y) {
-		if (this.grapplingMode === "NONE") {
-			this.grapplingMode = "FIRING";
-
-			this.#target = this.scene.matter.vector.create(x, y);
-			this.#target = this.scene.matter.vector.sub(this.#target, this.attachBody.position);
-			this.#target = this.scene.matter.vector.normalise(this.#target);
-
-			let sensorPos = this.scene.matter.vector.add(this.scene.matter.vector.mult(this.#target, this.attachedOffset), this.attachBody.position);
-			this.#fireSensor = this.scene.matter.add.circle(sensorPos.x, sensorPos.y, this.segmentSize * 1.5, {
-				isSensor: true,
-			});
-			
-			this.end = this.generateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
-			this.end.isChainEnd = true;
-
-			this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", this.firingCollisionCheck, this);
-		}
+		this.grapplingFSM.transition(GrappleFiring, x, y);
 	}
 	
 	// #endregion
-
-	// #region Grapple Hook FIRING state
 
 	firingCollisionCheck(event, bodyA, bodyB) {
 		// TODO: Avoid checking collisions with other grapple circles for stopping firing.
@@ -109,91 +209,10 @@ export class Grapple {
 		if (currentEnd !== null) {
 			let bodyInArr = this.comp.bodies.filter(body => body.id === other.id).length > 0;
 			if (!(bodyInArr)) {
-				if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
-					if (this.grapplingMode === "FIRING") {
-						this.stopFire();
-					}
-					this.startHook();
-				}
+				this.grapplingFSM.transition(GrappleHooked);
 			}
 		}
 	}
-
-	firingUpdate(){
-		let sensorPos = this.scene.matter.vector.add(this.scene.matter.vector.mult(this.#target, this.attachedOffset), this.attachBody.position);
-		this.#fireSensor.position = sensorPos;
-
-		if (this.comp.bodies.length < this.maxLength && this.scene.matter.vector.magnitude(this.end.velocity) > this.stopFiringAtVelocity) {
-			if (this.comp.bodies.length > 0 && this.scene.matter.collision.collides(this.comp.bodies[this.comp.bodies.length - 1], this.#fireSensor) === null) {
-				this.backFillLink();
-			}
-		} else {
-			this.grapplingMode = "UNHOOKED";
-			this.stopFire();
-		}
-	}
-
-	stopFire() {
-		this.backFillLink();
-
-		let bodyDist = this.scene.matter.vector.sub(this.start.position, this.attachBody.position);
-		this.startConstraint = this.scene.matter.add.constraint(this.start, this.attachBody, this.scene.matter.vector.magnitude(bodyDist), this.stiffness);
-
-		this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.#fireSensor);
-		this.#fireSensor = null;
-	}
-
-	generateLink(x, y) {
-		let circle = this.scene.matter.add.circle(x, y, this.segmentSize, {
-			isSensor: false,
-		});
-		this.scene.matter.composite.add(this.comp, circle);
-
-		let fireForce = this.scene.matter.vector.mult(this.#target, this.startingVelocity);
-
-		this.scene.matter.body.applyForce(circle, circle.position, fireForce);
-
-		if (this.comp.bodies.length > 1) {
-			let dist = this.scene.matter.vector.magnitude(this.scene.matter.vector.sub(circle, this.#fireSensor.position));
-			let constraint = this.scene.matter.add.constraint(this.comp.bodies[this.comp.bodies.length - 2], circle, dist, this.stiffness);
-			this.scene.matter.composite.add(this.comp, constraint);
-		}
-
-		this.start = circle;
-
-		return circle;
-	}
-
-	backFillLink(){
-		let previousLinkPos = this.start.position;
-
-		let dist = this.scene.matter.vector.sub(this.#fireSensor.position, previousLinkPos);
-		let dir = this.scene.matter.vector.normalise(dist);
-
-		var endDist = this.scene.matter.vector.sub(previousLinkPos, this.#fireSensor.position);
-		var i = 1;
-		while (this.scene.matter.vector.magnitude(endDist) > this.segmentSize) {
-			let totalDist = this.scene.matter.vector.mult(dir, i * 2 * this.segmentSize);
-			let newPos = this.scene.matter.vector.add(previousLinkPos, totalDist);
-			this.generateLink(newPos.x, newPos.y);
-
-			endDist = this.scene.matter.vector.sub(newPos, this.#fireSensor.position);
-			i++;
-		}
-		return this.start;
-	}
-
-	// #endregion
-
-	// #region Grapple Hook HOOKED state
-	startHook() {
-		if (this.grapplingMode === "FIRING" || this.grapplingMode === "UNHOOKED") {
-			this.grapplingMode = "HOOKED";
-			this.fixToPoint(this.end);
-		}
-	}
-
-	// #endregion
 
 	// #region Utility Functions
 

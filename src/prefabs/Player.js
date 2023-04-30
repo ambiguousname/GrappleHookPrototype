@@ -1,7 +1,7 @@
 import { Grapple } from "./Grapple.js";
 
 export class Player {
-	gameplaySettings = {
+	static gameplaySettings = {
 		density: 0.001,
 
 		acceleration: 1.1,
@@ -12,10 +12,10 @@ export class Player {
 
 	constructor(scene, x, y) {
 		this.body = scene.matter.add.rectangle(x, y, 40, 40, {
-			density: this.gameplaySettings.density,
-			friction: this.gameplaySettings.groundFriction,
-			frictionStatic: this.gameplaySettings.staticFriction,
-			frictionAir: this.gameplaySettings.airFriction,
+			density: Player.gameplaySettings.density,
+			friction: Player.gameplaySettings.groundFriction,
+			frictionStatic: Player.gameplaySettings.staticFriction,
+			frictionAir: Player.gameplaySettings.airFriction,
 		});
 
 		// Freeze rotation (looks less weird, and makes friction more useful):
@@ -69,7 +69,7 @@ export class Player {
 			}
 		}
 
-		let newVelocity = this.vector.add(this.body.velocity, this.vector.mult(intendedMove, this.gameplaySettings.acceleration));
+		let newVelocity = this.vector.add(this.body.velocity, this.vector.mult(intendedMove, Player.gameplaySettings.acceleration));
 
 		this.scene.matter.body.setVelocity(this.body, newVelocity);
 		// #endregion

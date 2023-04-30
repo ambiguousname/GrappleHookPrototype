@@ -32,8 +32,8 @@ class GrappleFiring extends State {
 		this.#target = this.vector.sub(this.#target, this.parent.attachBody.position);
 		this.#target = this.vector.normalise(this.#target);
 
-		let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
-		this.#fireSensor = this.matter.add.circle(sensorPos.x, sensorPos.y, this.parent.gameplaySettings.rope.segmentSize * 1.5, {
+		let sensorPos = this.vector.add(this.vector.mult(this.#target, Grapple.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
+		this.#fireSensor = this.matter.add.circle(sensorPos.x, sensorPos.y, Grapple.gameplaySettings.rope.segmentSize * 1.5, {
 			isSensor: true,
 		});
 		
@@ -43,10 +43,10 @@ class GrappleFiring extends State {
 
 	update() {
 		if (this.parent.comp.bodies.length > 0){
-			let sensorPos = this.vector.add(this.vector.mult(this.#target, this.parent.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
+			let sensorPos = this.vector.add(this.vector.mult(this.#target, Grapple.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
 			this.#fireSensor.position = sensorPos;
 
-			if (this.parent.comp.bodies.length < this.parent.gameplaySettings.firing.maxLength && this.vector.magnitude(this.parent.end.velocity) > this.parent.gameplaySettings.firing.stopFiringAtVelocity) {
+			if (this.parent.comp.bodies.length < Grapple.gameplaySettings.firing.maxLength && this.vector.magnitude(this.parent.end.velocity) > Grapple.gameplaySettings.firing.stopFiringAtVelocity) {
 				if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
 					this.backFillLink();
 				}
@@ -60,7 +60,7 @@ class GrappleFiring extends State {
 		if (this.parent.comp.bodies.length > 0){
 			this.backFillLink();
 
-			this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.gameplaySettings.firing.attachedOffset, this.parent.gameplaySettings.rope.startConstraintStiffness);
+			this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
 		}
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);
@@ -71,18 +71,18 @@ class GrappleFiring extends State {
 
 	
 	generateLink(x, y) {
-		let circle = this.matter.add.circle(x, y, this.parent.gameplaySettings.rope.segmentSize, {
+		let circle = this.matter.add.circle(x, y, Grapple.gameplaySettings.rope.segmentSize, {
 			isSensor: false,
 		});
 		this.matter.composite.add(this.parent.comp, circle);
 
-		let fireForce = this.matter.vector.mult(this.#target, this.parent.gameplaySettings.firing.startingVelocity);
+		let fireForce = this.matter.vector.mult(this.#target, Grapple.gameplaySettings.firing.startingVelocity);
 
 		this.matter.body.applyForce(circle, circle.position, fireForce);
 
 		if (this.parent.comp.bodies.length > 1) {
 			let dist = this.vector.magnitude(this.vector.sub(circle, this.#fireSensor.position));
-			let constraint = this.matter.add.constraint(this.parent.comp.bodies[this.parent.comp.bodies.length - 2], circle, dist, this.parent.gameplaySettings.rope.stiffness);
+			let constraint = this.matter.add.constraint(this.parent.comp.bodies[this.parent.comp.bodies.length - 2], circle, dist, Grapple.gameplaySettings.rope.stiffness);
 			this.matter.composite.add(this.parent.comp, constraint);
 		}
 
@@ -99,8 +99,8 @@ class GrappleFiring extends State {
 
 		var endDist = this.vector.sub(previousLinkPos, this.#fireSensor.position);
 		var i = 1;
-		while (this.vector.magnitude(endDist) > this.parent.gameplaySettings.rope.segmentSize) {
-			let totalDist = this.vector.mult(dir, i * 2 * this.parent.gameplaySettings.rope.segmentSize);
+		while (this.vector.magnitude(endDist) > Grapple.gameplaySettings.rope.segmentSize) {
+			let totalDist = this.vector.mult(dir, i * 2 * Grapple.gameplaySettings.rope.segmentSize);
 			let newPos = this.vector.add(previousLinkPos, totalDist);
 			this.generateLink(newPos.x, newPos.y);
 
@@ -139,7 +139,7 @@ class GrappleRetracting extends State {
 	}
 
 	update() {
-		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > this.parent.gameplaySettings.retracting.retractSpeed) {
+		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > Grapple.gameplaySettings.retracting.retractSpeed) {
 			this.#retractTimer = this.time.now;
 			this.retractOne();
 		} else if (this.parent.comp.bodies.length === 1 && !this.parent.isHooked()) {
@@ -160,7 +160,7 @@ class GrappleRetracting extends State {
 
 		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
 
-		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, this.parent.gameplaySettings.firing.attachedOffset, this.parent.gameplaySettings.rope.startConstraintStiffness);
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
@@ -184,7 +184,7 @@ export class Grapple {
 	// TODO: Add a Phaser.Rope and make it conform to the points in the composite.
 	
 	// Rope physics:
-	gameplaySettings = {
+	static gameplaySettings = {
 		rope: {
 			stiffness: 0.5,
 			startConstraintStiffness: 0.5,

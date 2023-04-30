@@ -1,16 +1,27 @@
 import { Grapple } from "./Grapple.js";
 
 export class Player {
-	// #region Settings
-	
-	timeToFire = 1;
+	gameplaySettings = {
+		density: 0.001,
 
-	// #endregion
+		acceleration: 1.1,
+		groundFriction: 0.05,
+		staticFriction: 0.05,
+		airFriction: 0.01,
+	}
 
-	#fireTimer = 0;
 	constructor(scene, x, y) {
-		this.icon = scene.matter.add.rectangle(x, y, 50, 50);
-		this.grapple = new Grapple(scene, this.icon, new Phaser.Math.Vector2(10, 5));
+		this.body = scene.matter.add.rectangle(x, y, 40, 40, {
+			density: this.gameplaySettings.density,
+			friction: this.gameplaySettings.groundFriction,
+			frictionStatic: this.gameplaySettings.staticFriction,
+			frictionAir: this.gameplaySettings.airFriction,
+		});
+
+		// Freeze rotation (looks less weird, and makes friction more useful):
+		scene.matter.body.setInertia(this.body, Infinity);
+
+		this.grapple = new Grapple(scene, this.body, new Phaser.Math.Vector2(10, 5));
 		this.scene = scene;
 
 		this.scene.input.on("pointerdown", (pointer) => {
@@ -22,15 +33,60 @@ export class Player {
 				}
 			}
 		}, this);
+
+		this.movementKeys = this.scene.input.keyboard.addKeys("W,S,A,D");
+
+		this.vector = this.scene.matter.vector;
+
+		// Map keys to direction:
+		for (let key in this.movementKeys) {
+			switch (key) {
+				case "A":
+					this.movementKeys[key].direction = this.vector.create(-1, 0);
+				break;
+				case "D":
+					this.movementKeys[key].direction = this.vector.create(1, 0);
+					break;
+				case "S":
+					this.movementKeys[key].direction = this.vector.create(0, 1);
+					break;
+				case "W":
+				default:
+					this.movementKeys[key].direction = this.vector.create(0, 0);
+			}
+		}
+
+		this.jump = this.scene.input.keyboard.addKey("SPACE");
 	}
 
-	update() {
-		this.grapple.update();
+	movementUpdate() {
+		// #region Keyboard Events
+		let intendedMove = this.vector.create(0, 0);
+		for (let keyName in this.movementKeys) {
+			let key = this.movementKeys[keyName];
+			if (key.isDown) {
+				intendedMove = this.vector.add(intendedMove, key.direction);
+			}
+		}
 
+		let newVelocity = this.vector.add(this.body.velocity, this.vector.mult(intendedMove, this.gameplaySettings.acceleration));
+
+		this.scene.matter.body.setVelocity(this.body, newVelocity);
+		// #endregion
+
+
+		// #region Mouse Events
 		if (this.scene.input.mousePointer.buttons === 2) {
 			this.grapple.startRetracting();
 		} else {
 			this.grapple.stopRetracting();
 		}
+		// #endregion
+	}
+
+	update() {
+		this.grapple.update();
+
+		this.movementUpdate();
 	}
 }

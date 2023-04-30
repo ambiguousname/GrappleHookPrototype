@@ -1,0 +1,1 @@
+- In air: reduced movement control? (NOT reduced friction)

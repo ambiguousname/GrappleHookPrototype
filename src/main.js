@@ -7,6 +7,7 @@ window.game = new Phaser.Game({
 	scene: [Scenes.GrapplePrototype],
 	physics: {
 		default: 'matter',
+		enableSleeping: true,
         matter: {
             debug: true,
             debugBodyColor: 0xffffff

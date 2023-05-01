@@ -17,4 +17,4 @@ window.game = new Phaser.Game({
 	},
 });
 
-// debug();
+debug();

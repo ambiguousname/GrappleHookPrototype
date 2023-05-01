@@ -4,14 +4,15 @@ export class Player {
 	static gameplaySettings = {
 		body: {
 			density: 0.001,
-			groundFriction: 0.05,
-			staticFriction: 0.05,
+			groundFriction: 0.01,
+			staticFriction: 0.01,
 			airFriction: 0.01,
 		},
 
 		movement: {
-			acceleration: 1.1,
+			acceleration: 1,
 			jumpAcceleration: 10,
+			maxXVelocity: 200,
 		}
 	}
 
@@ -118,6 +119,10 @@ export class Player {
 				this.grapple.cancel();
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
 			}
+		}
+
+		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {
+			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
 		}
 
 		this.scene.matter.body.setVelocity(this.body, newVelocity);

@@ -142,5 +142,26 @@ export class Player {
 		this.grapple.update();
 
 		this.movementUpdate();
+		this.updateProperties();
+	}
+
+	updateProperties() {
+		for (let setting in Player.gameplaySettings.body) {
+			let value = Player.gameplaySettings.body[setting];
+			switch (setting) {
+				case "density":
+					this.scene.matter.body.setDensity(this.body, value);
+					break;
+				case "groundFriction":
+					this.body.friction = value;
+					break;
+				case "staticFriction":
+					this.body.frictionStatic = value;
+					break;
+				case "airFriction":
+					this.body.frictionAir = value;
+					break;
+			}	
+		}
 	}
 }

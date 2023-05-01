@@ -23,23 +23,7 @@ let debugSettings = {
 
 	player: {
 		body: {
-			customSetFunction: function(activeScene, value, settingName) {
-				switch (settingName) {
-					case "density":
-						activeScene.matter.body.setDensity(value);
-						break;
-					case "groundFriction":
-						activeScene.matter.body.friction = value;
-						break;
-					case "staticFriction":
-						activeScene.matter.body.frictionStatic = value;
-						break;
-					case "airFriction":
-						activeScene.matter.body.frictionAir = value;
-						break;
-				}
-			},
-			density: [1, 10000, 0.001],
+			density: [1, 100, 0.001],
 			groundFriction: [0, 1000, 0.001],
 			staticFriction: [0, 1000, 0.001],
 			airFriction: [0, 1000, 0.001],
@@ -95,17 +79,6 @@ function debugGameplaySettings(gameplaySettings, debugSettingName) {
 					}
 				}
 				gameplaySettings[settingCategory][setting] = val;
-
-				if ("customSetFunction" in gameplaySettings[settingCategory]) {
-					let activeScene = null;
-					for (let i = 0; i < game.scene.scenes.length; i++) {
-						if (game.scene.isActive(i)) {
-							activeScene = game.scene.getAt(i);
-						}
-					}
-
-					gameplaySettings[settingCategory].customSetFunction(activeScene, val, setting);
-				}
 				
 				document.getElementById(setting + "Val").innerText = graphicsVal;
 			}

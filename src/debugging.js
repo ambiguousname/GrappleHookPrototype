@@ -11,7 +11,7 @@ let debugSettings = {
 
 		firing: {
 			startingVelocity: [0, 100, 0.01],
-			stopFiringAtVelocity: [1, 1000, 0.1],
+			stopFiringAtVelocity: [0, 1000, 0.1],
 			maxLength: [1, 30, 1],
 			attachedOffset: [1, 100, 1],
 		},

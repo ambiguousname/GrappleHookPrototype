@@ -95,4 +95,5 @@ function debugGameplaySettings(gameplaySettings, debugSettingName) {
 export function debug() {
 	debugGameplaySettings(Grapple.gameplaySettings, "grapple");
 	debugGameplaySettings(Player.gameplaySettings, "player");
+	window.debugging = true;
 }

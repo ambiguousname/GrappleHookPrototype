@@ -142,7 +142,10 @@ export class Player {
 		this.grapple.update();
 
 		this.movementUpdate();
-		this.updateProperties();
+
+		if (window.debugging) {
+			this.updateProperties();
+		}
 	}
 
 	updateProperties() {

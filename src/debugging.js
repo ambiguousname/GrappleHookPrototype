@@ -89,8 +89,9 @@ function debugGameplaySettings(gameplaySettings, debugSettingName) {
 					let scale = debugSettings[debugSettingName][settingCategory][setting][2];
 					val *= scale;
 					graphicsVal = val.toString();
-					if (graphicsVal.length > scale.toString().length && scale < 1) {
-						graphicsVal = graphicsVal.slice(0, scale.toString().length);
+					// Futzy decimal point display:
+					if (graphicsVal.indexOf(".") >= 0 && graphicsVal.length - graphicsVal.indexOf(".") > scale.toString().length + 1) {
+						graphicsVal = graphicsVal.slice(0, scale.toString().length - (scale.toString().indexOf(".") - 2));
 					}
 				}
 				gameplaySettings[settingCategory][setting] = val;

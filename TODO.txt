@@ -1,1 +1,3 @@
 - In air: reduced movement control? (NOT reduced friction)
+- Can't fire while sensor blocked
+- Use https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for better movement (Capsule collider?)

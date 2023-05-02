@@ -298,7 +298,7 @@ export class Grapple {
 
 		if (currentEnd !== null) {
 			let bodyInArr = this.comp.bodies.filter(body => body.id === other.id).length > 0;
-			if (!(bodyInArr) && other.id !== this.attachBody.id) {
+			if (!(bodyInArr) && other.id !== this.attachBody.id && !other.isSensor) {
 				this.grapplingFSM.transition(GrappleHooked);
 			}
 		}

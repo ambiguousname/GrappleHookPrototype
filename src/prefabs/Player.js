@@ -48,7 +48,11 @@ export class Player {
 					continue;
 				}
 				if (bodyA.id === pair.bodyA.id && bodyB.id === pair.bodyB.id) {
-					if (this.vector.dot(pair.collision.normal, this.vector.create(0, 1)) > 0.9) {
+					/*let otherBody = bodyB;
+					if (otherBody.id === this.body.id) {
+						otherBody = bodyA;
+					}*/
+					if (this.vector.dot(pair.collision.normal, this.vector.create(0, -1)) > 0.9) {
 						if (bodyA.id === this.body.id) {
 							this.groundedBody = bodyB.id;
 						} else {
@@ -72,7 +76,7 @@ export class Player {
 				if (this.grapple.hasFired()) {
 					this.grapple.cancel();
 				} else {
-					this.grapple.fire(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y);
+					this.grapple.fire(this.scene.input.mousePointer.x + this.scene.cameras.main.scrollX, this.scene.input.mousePointer.y + this.scene.cameras.main.scrollY);
 				}
 			}
 		}, this);

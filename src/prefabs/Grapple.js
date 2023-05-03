@@ -285,7 +285,6 @@ export class Grapple {
 	// #endregion
 
 	firingCollisionCheck(event, bodyA, bodyB) {
-		// TODO: Avoid checking collisions with other grapple circles for stopping firing.
 		var currentEnd = null;
 		var other = null;
 		if (bodyA.isChainEnd) {

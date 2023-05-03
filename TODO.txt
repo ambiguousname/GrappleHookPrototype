@@ -1,3 +1,4 @@
 - In air: reduced movement control? (NOT reduced friction)
-- Can't fire while sensor blocked
-- Use https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for better movement (Capsule collider?)
+- Modify so sensor can't fire while it's blocked
+- Add player velocity to grapple firing
+- Player chamfer radius still doesn't stop sudden stops. One stopgap: amalgamate tilemap collision layers into one shape?

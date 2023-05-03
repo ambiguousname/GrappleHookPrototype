@@ -7,6 +7,9 @@ export class Player {
 			groundFriction: 0.01,
 			staticFriction: 0.01,
 			airFriction: 0.01,
+			restitution: 0.3,
+			// Pretty good at avoiding stops, but this doesn't happen entirely at fast velocities:
+			chamferRadius: 0.01,
 		},
 
 		movement: {
@@ -25,6 +28,11 @@ export class Player {
 			friction: Player.gameplaySettings.body.groundFriction,
 			frictionStatic: Player.gameplaySettings.body.staticFriction,
 			frictionAir: Player.gameplaySettings.body.airFriction,
+			// Prevent wall stick:
+			restitution: Player.gameplaySettings.body.restitution,
+			chamfer: {
+				radius: Player.gameplaySettings.body.chamferRadius,
+			},
 		});
 
 		this.groundedBody = null;
@@ -167,6 +175,9 @@ export class Player {
 					break;
 				case "airFriction":
 					this.body.frictionAir = value;
+					break;
+				case "restitution":
+					this.body.restitution = value;
 					break;
 			}	
 		}

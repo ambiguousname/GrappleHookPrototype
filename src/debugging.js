@@ -27,6 +27,8 @@ let debugSettings = {
 			groundFriction: [0, 1000, 0.001],
 			staticFriction: [0, 1000, 0.001],
 			airFriction: [0, 1000, 0.001],
+			restitution: [0, 100, 0.01],
+			chamferRadius: null,
 		},
 
 		movement: {
@@ -48,6 +50,9 @@ function debugGameplaySettings(gameplaySettings, debugSettingName) {
 		div.style.display = "inline-grid";
 		div.innerHTML += `<h2>${settingCategory}</h2>`;
 		for (let setting in gameplaySettings[settingCategory]){
+			if (setting in debugSettings[debugSettingName][settingCategory] && debugSettings[debugSettingName][settingCategory][setting] === null) {
+				continue;
+			}
 			let id = document.createElement("div");
 			id.style.display = "inline";
 

@@ -2,6 +2,9 @@ import { Player } from "../prefabs/Player.js";
 import { lerp } from "../util/lerp.js";
 
 export class GrapplePrototype extends Phaser.Scene {
+	constructor() {
+        super("PlayScene");
+    }
 	preload() {
 		this.load.tilemapTiledJSON('map', './assets/map.json');
 		this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});

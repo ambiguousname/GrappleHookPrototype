@@ -2,3 +2,4 @@
 - Modify so sensor can't fire while it's blocked
 - Add player velocity to grapple firing
 - Player chamfer radius still doesn't stop sudden stops. One stopgap: amalgamate tilemap collision layers into one shape?
+- Jump on ground hit (rather than waiting for body to re-appear)

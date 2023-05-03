@@ -4,18 +4,20 @@ export class Player {
 	static gameplaySettings = {
 		body: {
 			density: 0.001,
-			groundFriction: 0.01,
-			staticFriction: 0.01,
+			groundFriction: 0,
+			staticFriction: 0,
 			airFriction: 0.01,
 			restitution: 0.3,
 			// Pretty good at avoiding stops, but this doesn't happen entirely at fast velocities:
-			chamferRadius: 0.01,
+			chamferRadius: 10,
 		},
 
 		movement: {
 			acceleration: 1,
 			jumpAcceleration: 10,
 			maxXVelocity: 200,
+			// Better than friction:
+			groundDamp: 0.95,
 		}
 	}
 
@@ -136,6 +138,8 @@ export class Player {
 		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
 		}
+
+		newVelocity.x *= Player.gameplaySettings.movement.groundDamp;
 
 		this.scene.matter.body.setVelocity(this.body, newVelocity);
 		// #endregion

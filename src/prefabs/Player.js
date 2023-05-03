@@ -7,9 +7,10 @@ export class Player {
 			groundFriction: 0,
 			staticFriction: 0,
 			airFriction: 0.01,
+			// Might want to set this to be part of a different body or something? Leads to weird impacts with ground.
 			restitution: 0.3,
-			// Pretty good at avoiding stops, but this doesn't happen entirely at fast velocities:
-			chamferRadius: 10,
+			// Rounding just in case? Seems to be fixed with no friction though.
+			chamferRadius: 0,
 		},
 
 		movement: {

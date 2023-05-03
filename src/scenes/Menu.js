@@ -13,7 +13,7 @@ export class Menu extends Phaser.Scene {
         let title = this.add.sprite(0,0,'TitleScreen');
         title.setOrigin(0,0);
         
-        this.space = this.scene.input.keyboard.addKey("SPACE");
+        this.space = this.input.keyboard.addKey("SPACE");
     }
 
     update() {

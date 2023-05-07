@@ -5,3 +5,4 @@
 - Jump on ground hit (rather than waiting for body to re-appear)
 - Check https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for movement ideas
 - Cannot jump if colliding with a corner exactly (although it's only if you're moving left into the corner and you're hitting jump.)
+- Fix firing mechanic

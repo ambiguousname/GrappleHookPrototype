@@ -22,6 +22,7 @@ class GrappleUnhooked extends State {
 class GrappleFiring extends State {
 	#target;
 	#fireSensor;
+	#exiting;
 
 	constructor(_parent = null, ...args) {
 		super(_parent);
@@ -39,6 +40,8 @@ class GrappleFiring extends State {
 		
 		this.parent.end = this.generateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
 		this.parent.end.isChainEnd = true;
+
+		this.#exiting = false;
 	}
 
 	update() {
@@ -57,10 +60,11 @@ class GrappleFiring extends State {
 	}
 
 	exitState() {
+		this.#exiting = true;
 		if (this.parent.comp.bodies.length > 0){
 			this.backFillLink();
 
-			this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
+			this.createStartConstraint();
 		}
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);
@@ -78,7 +82,9 @@ class GrappleFiring extends State {
 
 		let fireForce = this.matter.vector.mult(this.#target, Grapple.gameplaySettings.firing.startingVelocity);
 
-		this.matter.body.applyForce(circle, circle.position, fireForce);
+		if (Grapple.gameplaySettings.firing.addVelocityToBody || !this.#exiting){
+			this.matter.body.applyForce(circle, circle.position, fireForce);
+		}
 
 		if (this.parent.comp.bodies.length > 1) {
 			let dist = this.vector.magnitude(this.vector.sub(circle, this.#fireSensor.position));
@@ -91,7 +97,7 @@ class GrappleFiring extends State {
 		return circle;
 	}
 
-	backFillLink(){
+	backFillLink(addVelocity=false) {
 		let previousLinkPos = this.parent.start.position;
 
 		let dist = this.vector.sub(this.#fireSensor.position, previousLinkPos);
@@ -108,6 +114,10 @@ class GrappleFiring extends State {
 			i++;
 		}
 		return this.parent.start;
+	}
+
+	createStartConstraint() {
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
 	}
 	// #endregion
 }
@@ -160,7 +170,7 @@ class GrappleRetracting extends State {
 
 		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
 
-		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
+		this.createStartConstraint()
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
@@ -196,6 +206,7 @@ export class Grapple {
 			stopFiringAtVelocity: 1,
 			maxLength: 20,
 			attachedOffset: 45,
+			addVelocityToBody: true
 		},
 		
 		retracting: {

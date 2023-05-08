@@ -5,4 +5,14 @@
 - Jump on ground hit (rather than waiting for body to re-appear)
 - Check https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for movement ideas
 - Cannot jump if colliding with a corner exactly (although it's only if you're moving left into the corner and you're hitting jump.)
-- Fix firing mechanic
+- Retraction sometimes doesn't work while firing
+
+Potential Fixes for Movement (add to Debug):
+- You can't gain momentum from firing your rope
+ - Probably a bad idea, so instead set it to that you can only get momentum ONCE. Then you have to wait until you're grounded to do it again.
+- Press "W" (Only on rope)
+Jumping
+ - Hold to charge jump only on rope
+ - Disable Jumping
+ - Disable Jumping except for on rope
+Firing Rope

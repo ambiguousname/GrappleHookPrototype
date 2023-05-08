@@ -12,7 +12,7 @@ export class GrapplePrototype extends Phaser.Scene {
 	}
 	
 	create() {
-		this.player = new Player(this, 100, 400);
+		this.player = new Player(this, 100, 3000);
 
 		this.drawMap();
 
@@ -83,6 +83,8 @@ export class GrapplePrototype extends Phaser.Scene {
 		
 		this.cameraFollow.x = this.player.body.position.x - this.cameras.main.centerX;
 		this.cameraFollow.y = (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4;
+		
+		// If this gets revisited, you need to fix because the camera origin is 0.5 by default:
 		/*if (Math.abs(this.player.body.position.x - (this.cameras.main.centerX + this.cameras.main.scrollX)) > this.cameraFollowBounds.x/2) {
 		}
 

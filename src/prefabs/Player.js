@@ -1,3 +1,4 @@
+import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "./Grapple.js";
 
 export class Player {
@@ -87,13 +88,13 @@ export class Player {
 				if (this.grapple.hasFired()) {
 					this.grapple.cancel();
 				} else {
-					this.grapple.fire(this.scene.input.mousePointer.x + this.scene.cameras.main.scrollX, this.scene.input.mousePointer.y + this.scene.cameras.main.scrollY);
+					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
+					this.grapple.fire(worldSpace.x, worldSpace.y);
 				}
 			}
 		}, this);
 
 		this.movementKeys = this.scene.input.keyboard.addKeys("W,S,A,D");
-
 
 		// Map keys to direction:
 		for (let key in this.movementKeys) {

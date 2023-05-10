@@ -89,7 +89,7 @@ export class Player {
 					this.grapple.cancel();
 				} else {
 					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
-					this.grapple.fire(worldSpace.x, worldSpace.y);
+					this.grapple.fire(worldSpace.x, worldSpace.y, this.groundedBody !== null);
 				}
 			}
 		}, this);

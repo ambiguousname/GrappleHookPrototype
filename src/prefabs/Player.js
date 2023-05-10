@@ -58,6 +58,7 @@ export class Player {
 		this.constructInput();
 
 		this.scene.matter.world.on("collisionactive", this.updatePlayerGrounded, this);
+		this.scene.matter.world.on("collisionstart", this.updatePlayerGrounded, this);
 		this.scene.matter.world.on("collisionend", this.endPlayerGrounded, this);
 	}
 
@@ -154,6 +155,8 @@ export class Player {
 			// Are we on the ground or attached to a web?
 			if (this.grapple.isHooked() || this.isGrounded) {
 				this.grapple.cancel();
+				this.isGrounded = false;
+				this.#groundedBody = null;
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
 			}
 		}

@@ -79,7 +79,7 @@ class GrappleFiring extends State {
 		if (!this.#addVelocityToBody) {
 			for (let b in this.parent.comp.bodies) {
 				let body = this.parent.comp.bodies[b];
-				this.matter.body.setVelocity(body, this.vector.create(0, 0));
+				this.matter.body.setVelocity(body, this.parent.attachBody.velocity);
 			}
 		}
 

@@ -14,3 +14,4 @@ Jumping
  - Disable Jumping
  - Disable Jumping except for on rope
 Firing Rope
+- Use W and S to extend and retract

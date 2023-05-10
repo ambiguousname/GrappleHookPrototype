@@ -23,8 +23,16 @@ export class Player {
 			maxXVelocity: 200,
 			// Better than friction:
 			groundDamp: 0.95,
+		},
+
+		gravity: {
+			// How long do we count as "grounded" for after we've left a platform?
+			coyoteTime: 1000,
 		}
 	}
+
+	#groundedBody = null;
+	isGrounded = false;
 
 	constructor(scene, x, y) {
 		this.scene = scene;
@@ -41,8 +49,6 @@ export class Player {
 				radius: Player.gameplaySettings.body.chamferRadius,
 			},
 		});
-
-		this.groundedBody = null;
 
 		// Freeze rotation (looks less weird, and makes friction more useful):
 		this.scene.matter.body.setInertia(this.body, Infinity);
@@ -68,10 +74,11 @@ export class Player {
 						otherBody = bodyA;
 					}*/
 					if (this.vector.dot(pair.collision.normal, this.vector.create(0, -1)) > 0.9) {
+						this.isGrounded = true;
 						if (bodyA.id === this.body.id) {
-							this.groundedBody = bodyB.id;
+							this.#groundedBody = bodyB.id;
 						} else {
-							this.groundedBody = bodyA.id;
+							this.#groundedBody = bodyA.id;
 						}
 					}
 				}
@@ -79,9 +86,12 @@ export class Player {
 		}
 	}
 
+	#coyoteTimer = -1;
+
 	endPlayerGrounded(event, bodyA, bodyB) {
-		if ((bodyA.id === this.body.id || bodyB.id === this.body.id) && (this.groundedBody !== null)) {
-			this.groundedBody = null;
+		if ((bodyA.id === this.body.id || bodyB.id === this.body.id) && (this.#groundedBody !== null)) {
+			this.#groundedBody = null;
+			this.#coyoteTimer = this.scene.time.now;
 		}
 	}
 
@@ -92,7 +102,7 @@ export class Player {
 					this.grapple.cancel();
 				} else {
 					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
-					this.grapple.fire(worldSpace.x, worldSpace.y, this.groundedBody !== null);
+					this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded);
 				}
 			}
 		}, this);
@@ -142,7 +152,7 @@ export class Player {
 
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
-			if (this.grapple.isHooked() || this.groundedBody !== null) {
+			if (this.grapple.isHooked() || this.isGrounded) {
 				this.grapple.cancel();
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
 			}
@@ -171,6 +181,11 @@ export class Player {
 		this.grapple.update();
 
 		this.movementUpdate();
+
+		if (this.isGrounded && this.#groundedBody === null && this.scene.time.now - this.#coyoteTimer >= Player.gameplaySettings.gravity.coyoteTime) {
+			this.isGrounded = false;
+			this.#coyoteTimer = -1;
+		}
 
 		if (window.debugging) {
 			this.updateProperties();

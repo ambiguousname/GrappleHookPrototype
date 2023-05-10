@@ -8,9 +8,7 @@
 - Retraction sometimes doesn't work while firing
 
 Potential Fixes for Movement (add to Debug):
-- You can't gain momentum from firing your rope
- - Probably a bad idea, so instead set it to that you can only get momentum ONCE. Then you have to wait until you're grounded to do it again.
-- Press "W" (Only on rope)
+- Jumping while grappled gives insane height
 Jumping
  - Hold to charge jump only on rope
  - Disable Jumping

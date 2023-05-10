@@ -15,7 +15,10 @@ export class Player {
 		},
 
 		movement: {
+			// How much acceleration you get from the ground (does not include W):
 			acceleration: 1,
+			// How much acceleration being attached to a rope gives (only for W):
+			attachedUpAcceleration: 0.5,
 			jumpAcceleration: 10,
 			maxXVelocity: 200,
 			// Better than friction:
@@ -109,8 +112,11 @@ export class Player {
 					this.movementKeys[key].direction = this.vector.create(0, 1);
 					break;
 				case "W":
+					this.movementKeys[key].direction = this.vector.create(0, -1);
+					break;
 				default:
 					this.movementKeys[key].direction = this.vector.create(0, 0);
+					break;
 			}
 		}
 
@@ -122,12 +128,17 @@ export class Player {
 		let intendedMove = this.vector.create(0, 0);
 		for (let keyName in this.movementKeys) {
 			let key = this.movementKeys[keyName];
-			if (key.isDown) {
-				intendedMove = this.vector.add(intendedMove, key.direction);
+			// Exclude W unless the grapple is hooked.
+			if (key.isDown && !(!this.grapple.isHooked() && keyName === "W")) {
+				let accel = Player.gameplaySettings.movement.acceleration;
+				if (this.grapple.isHooked() && keyName === "W") {
+					accel = Player.gameplaySettings.movement.attachedUpAcceleration;
+				}
+				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, accel));
 			}
 		}
 
-		let newVelocity = this.vector.add(this.body.velocity, this.vector.mult(intendedMove, Player.gameplaySettings.movement.acceleration));
+		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
 
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?

@@ -7,6 +7,7 @@ export {GrappleNone, GrappleUnhooked, GrappleFiring, GrappleHooked, GrappleRetra
 
 class GrappleHookManager extends State {
 
+	#lastAdded = null;
 	constructor(_parent = null) {
 		super(_parent);
 		this.matter = this.parent.scene.matter;
@@ -17,13 +18,20 @@ class GrappleHookManager extends State {
 		let circle = this.matter.add.circle(x, y, Grapple.gameplaySettings.rope.segmentSize, {
 			isSensor: false,
 		});
+		circle.next = null;
+		circle.prev = null;
+
 		this.matter.composite.add(this.parent.comp, circle);
 
 		if (this.parent.comp.bodies.length > 1) {
+			circle.prev = this.#lastAdded;
+			circle.prev.next = circle;
+
 			let dist = this.vector.magnitude(this.vector.sub(circle, linkToConnect.position));
-			let constraint = this.matter.add.constraint(this.parent.comp.bodies[this.parent.comp.bodies.length - 2], circle, dist, Grapple.gameplaySettings.rope.stiffness);
+			let constraint = this.matter.add.constraint(circle.prev, circle, dist, Grapple.gameplaySettings.rope.stiffness);
 			this.matter.composite.add(this.parent.comp, constraint);
 		}
+		this.#lastAdded = circle;
 
 		this.parent.start = circle;
 
@@ -59,6 +67,7 @@ class GrappleHookManager extends State {
 		let compositeBody = this.parent.start;
 		
 		let oldPos = compositeBody.position;
+		let oldVel = compositeBody.velocity;
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
 		this.matter.composite.remove(this.matter.world.engine.world, compositeConstraint);
@@ -67,17 +76,25 @@ class GrappleHookManager extends State {
 		this.matter.composite.remove(this.parent.comp, compositeBody);
 		this.matter.composite.remove(this.parent.comp, compositeConstraint);
 
-		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
+		this.parent.start = this.parent.start.prev;
 
 		this.createStartConstraint();
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
-			/*for (var i = this.parent.comp.bodies.length - 1; i >= 0; i--) {
-				let store = this.parent.comp.bodies[i].position;
-				this.parent.comp.bodies[i].position = oldPos;
+			let curr = this.parent.start;
+			while (curr != null) {
+				let store = curr.position;
+				let storeVel = curr.velocity;
+
+				curr.position = oldPos;
+				curr.velocity = oldVel;
+				
 				oldPos = store;
-			}*/
+				oldVel = storeVel;
+
+				curr = curr.prev;
+			}
 		}
 	}
 }
@@ -137,7 +154,7 @@ class GrappleFiring extends GrappleHookManager {
 			this.#fireSensor.position = sensorPos;
 
 			if (this.parent.comp.bodies.length < Grapple.gameplaySettings.firing.maxLength && this.vector.magnitude(this.parent.end.velocity) > Grapple.gameplaySettings.firing.stopFiringAtVelocity) {
-				if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
+				if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.start, this.#fireSensor) === null) {
 					this.backFillLink(this.#fireSensor, this.fireGenerateLink);
 				}
 			} else {

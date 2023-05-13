@@ -17,8 +17,6 @@ export class Player {
 		movement: {
 			// How much acceleration you get from the ground (does not include W):
 			acceleration: 1,
-			// How much acceleration being attached to a rope gives (only for W):
-			attachedUpAcceleration: 0.5,
 			jumpAcceleration: 10,
 			maxXVelocity: 200,
 			// Better than friction:
@@ -108,7 +106,8 @@ export class Player {
 			}
 		}, this);
 
-		this.movementKeys = this.scene.input.keyboard.addKeys("W,S,A,D");
+		this.movementKeys = this.scene.input.keyboard.addKeys("A,D");
+		this.retractExtendKeys = this.scene.input.keyboard.addKeys("W, S");
 
 		// Map keys to direction:
 		for (let key in this.movementKeys) {
@@ -118,12 +117,6 @@ export class Player {
 				break;
 				case "D":
 					this.movementKeys[key].direction = this.vector.create(1, 0);
-					break;
-				case "S":
-					this.movementKeys[key].direction = this.vector.create(0, 1);
-					break;
-				case "W":
-					this.movementKeys[key].direction = this.vector.create(0, -1);
 					break;
 				default:
 					this.movementKeys[key].direction = this.vector.create(0, 0);
@@ -139,17 +132,19 @@ export class Player {
 		let intendedMove = this.vector.create(0, 0);
 		for (let keyName in this.movementKeys) {
 			let key = this.movementKeys[keyName];
-			// Exclude W unless the grapple is hooked.
-			if (key.isDown && !(!this.grapple.isHooked() && keyName === "W")) {
-				let accel = Player.gameplaySettings.movement.acceleration;
-				if (this.grapple.isHooked() && keyName === "W") {
-					accel = Player.gameplaySettings.movement.attachedUpAcceleration;
-				}
-				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, accel));
+			if (key.isDown) {
+				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, Player.gameplaySettings.movement.acceleration));
 			}
 		}
 
 		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
+
+		for (let keyName in this.retractExtendKeys) {
+			let key = this.retractExtendKeys[keyName];
+			if (key.isDown) {
+				this.grapple.retract(key.retractAmount * Grapple.gameplaySettings.retracting.retractSpeed);
+			}
+		}
 
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
@@ -168,15 +163,6 @@ export class Player {
 		newVelocity.x *= Player.gameplaySettings.movement.groundDamp;
 
 		this.scene.matter.body.setVelocity(this.body, newVelocity);
-		// #endregion
-
-
-		// #region Mouse Events
-		if (this.scene.input.mousePointer.buttons === 2) {
-			this.grapple.startRetracting();
-		} else {
-			this.grapple.stopRetracting();
-		}
 		// #endregion
 	}
 

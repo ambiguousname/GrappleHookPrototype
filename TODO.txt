@@ -14,4 +14,8 @@ Jumping
  - Disable Jumping
  - Disable Jumping except for on rope
 Firing Rope
-- Use W and S to extend and retract
+ - Firing rope twice within a second? Adds velocity
+- Change acceleration/slowdown
+ - Adding more friction to when the block is moving
+- Shorter rope(?)
+- Retract and extend with W/S.

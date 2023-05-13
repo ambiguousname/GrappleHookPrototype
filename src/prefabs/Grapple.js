@@ -82,28 +82,15 @@ export class Grapple {
 		return this.end !== undefined && this.end !== null && this.end.fixed !== undefined && this.end.fixed !== null;
 	}
 
-	startRetracting() {
-		this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting);
-	}
-
-	stopRetracting() {
-		if (this.isHooked() && this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleRetracting) {
-			this.grapplingFSM.transition(GrappleHookStates.GrappleHooked);
-		}
+	retract(speed) {
+		this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
 	}
 
 	// #endregion
-
-	// #region Grapple Hook NONE state
-
-	#target;
-	#fireSensor;
 
 	fire(x, y, addVelocity=true) {
 		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity);
 	}
-	
-	// #endregion
 
 	firingCollisionCheck(event, bodyA, bodyB) {
 		var currentEnd = null;

@@ -50,9 +50,15 @@ class GrappleHookManager extends State {
 		return this.parent.start;
 	}
 
+	createStartConstraint() {
+		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
+	}
+
 	retractOne() {
 		let compositeConstraint = this.parent.comp.constraints[this.parent.comp.constraints.length - 1];
 		let compositeBody = this.parent.start;
+		
+		let oldPos = compositeBody.position;
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
 		this.matter.composite.remove(this.matter.world.engine.world, compositeConstraint);
@@ -63,7 +69,7 @@ class GrappleHookManager extends State {
 
 		this.parent.start = this.parent.comp.bodies[this.parent.comp.bodies.length - 1];
 
-		this.createStartConstraint()
+		this.createStartConstraint();
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
@@ -90,7 +96,7 @@ class GrappleNone extends State {
 
 class GrappleUnhooked extends State {
 	transitionLogic(newState) {
-		if (newState === GrappleNone || newState === GrappleHooked) {
+		if (newState === GrappleNone || newState === GrappleHooked || newState === GrappleRetracting) {
 			return newState;
 		}
 		return null;
@@ -171,10 +177,6 @@ class GrappleFiring extends GrappleHookManager {
 		}
 		return circle;
 	}
-
-	createStartConstraint() {
-		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
-	}
 	// #endregion
 }
 
@@ -197,6 +199,7 @@ class GrappleHooked extends State {
 class GrappleRetracting extends GrappleHookManager {
 	#retractSpeed;
 	#retractTimer;
+
 	constructor(_parent = null, ...args) {
 		super(_parent);
 		this.matter = this.parent.scene.matter;
@@ -206,21 +209,29 @@ class GrappleRetracting extends GrappleHookManager {
 		this.#retractTimer = 0;
 	}
 
+	updateSpeed(speed) {
+		this.#retractSpeed = speed;
+	}
+
 	update() {
-		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > this.#retractSpeed) {
+		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > Math.abs(this.#retractSpeed)) {
 			this.#retractTimer = this.time.now;
-			this.retractOne();
+			if (this.#retractSpeed > 0) {
+				this.retractOne();
+			} else {
+				this.generativeAdd();
+			}
 		} else if (this.parent.comp.bodies.length === 1 && !this.parent.isHooked()) {
 			this.parent.cancel();
 		}
 	}
 
-	addOne() {
+	generativeAdd() {
 
 	}
 
 	transitionLogic(newState) {
-		if (newState === GrappleNone || (newState === GrappleHooked && this.parent.isHooked())) {
+		if (newState === GrappleNone || newState === GrappleUnhooked || (newState === GrappleHooked && this.parent.isHooked())) {
 			return newState;
 		}
 		return null;

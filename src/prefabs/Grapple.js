@@ -82,8 +82,22 @@ export class Grapple {
 		return this.end !== undefined && this.end !== null && this.end.fixed !== undefined && this.end.fixed !== null;
 	}
 
+	isRetracting() {
+		return this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleRetracting;
+	}
+
+	#prevRetractState = null;
 	retract(speed) {
-		this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
+		if (this.isRetracting()) {
+			this.grapplingFSM.activeState.updateSpeed(speed);
+		} else {
+			this.#prevRetractState = this.grapplingFSM.activeState.constructor;
+			this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
+		}
+	}
+
+	stopRetract() {
+		this.grapplingFSM.transition(this.#prevRetractState);
 	}
 
 	// #endregion

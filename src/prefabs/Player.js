@@ -124,6 +124,19 @@ export class Player {
 			}
 		}
 
+		for (let key in this.retractExtendKeys) { 
+			switch (key) {
+				case "W":
+					this.retractExtendKeys[key].retractAmount = 1;
+					break;
+				case "S":
+					this.retractExtendKeys[key].retractAmount = -1;
+					break;
+				default:
+					this.retractExtendKeys[key].retractAmount = 0;
+			}
+		}
+
 		this.jump = this.scene.input.keyboard.addKey("SPACE");
 	}
 
@@ -139,11 +152,17 @@ export class Player {
 
 		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
 
+		let retractingHeld = false;
 		for (let keyName in this.retractExtendKeys) {
 			let key = this.retractExtendKeys[keyName];
 			if (key.isDown) {
 				this.grapple.retract(key.retractAmount * Grapple.gameplaySettings.retracting.retractSpeed);
+				retractingHeld = true;
 			}
+		}
+
+		if (!retractingHeld && this.grapple.isRetracting()) {
+			this.grapple.stopRetract();
 		}
 
 		if (this.jump.isDown) {

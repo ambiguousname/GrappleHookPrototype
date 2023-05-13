@@ -62,6 +62,9 @@ export class Player {
 
 	updatePlayerGrounded(event, bodyA, bodyB) {
 		if (bodyA.id === this.body.id || bodyB.id === this.body.id) {
+			if (bodyA.isSensor || bodyB.isSensor) {
+				return;
+			}
 			for (let i = 0; i < event.pairs.length; i++) {
 				let pair = event.pairs[i];
 				if (!pair.isActive) {
@@ -101,7 +104,11 @@ export class Player {
 					this.grapple.cancel();
 				} else {
 					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
-					this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded);
+
+					this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded, () => {
+						this.isGrounded = false;
+					});
+					this.isGrounded = false;
 				}
 			}
 		}, this);

@@ -102,8 +102,8 @@ export class Grapple {
 
 	// #endregion
 
-	fire(x, y, addVelocity=true) {
-		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity);
+	fire(x, y, addVelocity=true, callback=null) {
+		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
 	}
 
 	firingCollisionCheck(event, bodyA, bodyB) {

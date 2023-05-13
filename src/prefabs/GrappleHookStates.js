@@ -128,6 +128,7 @@ class GrappleFiring extends GrappleHookManager {
 
 	#exiting = false;
 	#addVelocityToBody = true;
+	#firingEndCallback = null;
 
 	constructor(_parent = null, ...args) {
 		super(_parent);
@@ -147,6 +148,9 @@ class GrappleFiring extends GrappleHookManager {
 		this.#exiting = false;
 		if (2 in args) {
 			this.#addVelocityToBody = args[2];
+		}
+		if (3 in args) {
+			this.#firingEndCallback = args[3];
 		}
 	}
 
@@ -178,6 +182,9 @@ class GrappleFiring extends GrappleHookManager {
 				let body = this.parent.comp.bodies[b];
 				this.matter.body.setVelocity(body, this.parent.attachBody.velocity);
 			}
+		}
+		if (this.#firingEndCallback !== null) {
+			this.#firingEndCallback();
 		}
 
 		this.matter.composite.remove(this.matter.world.engine.world, this.#fireSensor);

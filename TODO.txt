@@ -13,9 +13,7 @@ Jumping
  - Hold to charge jump only on rope
  - Disable Jumping
  - Disable Jumping except for on rope
-Firing Rope
- - Firing rope twice within a second? Adds velocity
 - Change acceleration/slowdown
  - Adding more friction to when the block is moving
 - Shorter rope(?)
-- Retract and extend with W/S.
+- Extend with S.

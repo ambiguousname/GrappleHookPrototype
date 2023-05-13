@@ -17,3 +17,4 @@ Jumping
  - Adding more friction to when the block is moving
 - Shorter rope(?)
 - Extend with S.
+- Permanent coyote time until canceled?

@@ -16,11 +16,12 @@ export class Player {
 
 		movement: {
 			// How much acceleration you get from the ground (does not include W):
-			acceleration: 1,
+			acceleration: 3,
 			jumpAcceleration: 10,
+			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
 			// Better than friction:
-			groundDamp: 0.95,
+			groundDamp: 0.8,
 		},
 
 		gravity: {

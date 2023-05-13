@@ -93,7 +93,7 @@ class GrappleHookManager extends State {
 				oldPos = store;
 				oldVel = storeVel;
 
-				curr = curr.prev;
+				curr = curr.next;
 			}
 		}
 	}

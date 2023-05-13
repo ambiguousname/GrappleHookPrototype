@@ -77,22 +77,23 @@ class GrappleHookManager extends State {
 		this.matter.composite.remove(this.parent.comp, compositeConstraint);
 
 		this.parent.start = this.parent.start.next;
+		this.parent.start.prev = null;
 
 		this.createStartConstraint();
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
-			debugger
 			let curr = this.parent.start;
 			while (curr != null) {
-				let store = curr.position;
-				let storeVel = curr.velocity;
+				let store = this.vector.clone(curr.position);
+				let storeVel = this.vector.clone(curr.velocity);
 
-				curr.position = oldPos;
-				curr.velocity = oldVel;
+				this.matter.body.setPosition(curr, oldPos);
+				this.matter.body.setVelocity(curr, oldVel);
 				
 				oldPos = store;
 				oldVel = storeVel;
+				
 
 				curr = curr.next;
 			}

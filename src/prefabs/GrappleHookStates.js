@@ -24,11 +24,11 @@ class GrappleHookManager extends State {
 		this.matter.composite.add(this.parent.comp, circle);
 
 		if (this.parent.comp.bodies.length > 1) {
-			circle.prev = this.#lastAdded;
-			circle.prev.next = circle;
+			circle.next = this.#lastAdded;
+			circle.next.prev = circle;
 
 			let dist = this.vector.magnitude(this.vector.sub(circle, linkToConnect.position));
-			let constraint = this.matter.add.constraint(circle.prev, circle, dist, Grapple.gameplaySettings.rope.stiffness);
+			let constraint = this.matter.add.constraint(circle.next, circle, dist, Grapple.gameplaySettings.rope.stiffness);
 			this.matter.composite.add(this.parent.comp, constraint);
 		}
 		this.#lastAdded = circle;
@@ -76,12 +76,13 @@ class GrappleHookManager extends State {
 		this.matter.composite.remove(this.parent.comp, compositeBody);
 		this.matter.composite.remove(this.parent.comp, compositeConstraint);
 
-		this.parent.start = this.parent.start.prev;
+		this.parent.start = this.parent.start.next;
 
 		this.createStartConstraint();
 
 		// TODO: This is finnicky. Might just replace it with a quick retract.
 		if (!this.parent.isHooked()) {
+			debugger
 			let curr = this.parent.start;
 			while (curr != null) {
 				let store = curr.position;

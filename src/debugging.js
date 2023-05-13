@@ -33,10 +33,13 @@ let debugSettings = {
 
 		movement: {
 			acceleration: [1, 1000, 0.01],
-			retractSpeed: [1, 1000, 0.01],
 			jumpAcceleration: [1, 10000, 0.01],
 			maxXVelocity: [1, 1000, 1],
 			groundDamp: [0, 100, 0.01],
+		},
+
+		gravity: {
+			coyoteTime: [1, 5000, 1]
 		}
 	}
 }

@@ -5,7 +5,7 @@ export {GrappleNone, GrappleUnhooked, GrappleFiring, GrappleHooked, GrappleRetra
 
 // #region Helpers
 
-class GrappleHookManager {
+class GrappleHookManager extends State {
 
 	constructor(_parent = null) {
 		super(_parent);
@@ -31,10 +31,10 @@ class GrappleHookManager {
 	}
 
 	// TODO: Need to get this work with firing link
-	backFillLink(linkToConnect) {
+	backFillLink(linkToConnect, generateLink=this.generateLink) {
 		let previousLinkPos = this.parent.start.position;
 
-		let dist = this.vector.sub(this.#fireSensor.position, previousLinkPos);
+		let dist = this.vector.sub(linkToConnect.position, previousLinkPos);
 		let dir = this.vector.normalise(dist);
 
 		var endDist = this.vector.sub(previousLinkPos, linkToConnect.position);
@@ -42,7 +42,7 @@ class GrappleHookManager {
 		while (this.vector.magnitude(endDist) > Grapple.gameplaySettings.rope.segmentSize) {
 			let totalDist = this.vector.mult(dir, i * 2 * Grapple.gameplaySettings.rope.segmentSize);
 			let newPos = this.vector.add(previousLinkPos, totalDist);
-			this.generateLink(newPos.x, newPos.y, linkToConnect);
+			generateLink.call(this, newPos.x, newPos.y, linkToConnect);
 
 			endDist = this.vector.sub(newPos, linkToConnect.position);
 			i++;
@@ -132,7 +132,7 @@ class GrappleFiring extends GrappleHookManager {
 
 			if (this.parent.comp.bodies.length < Grapple.gameplaySettings.firing.maxLength && this.vector.magnitude(this.parent.end.velocity) > Grapple.gameplaySettings.firing.stopFiringAtVelocity) {
 				if (this.parent.comp.bodies.length > 0 && this.matter.collision.collides(this.parent.comp.bodies[this.parent.comp.bodies.length - 1], this.#fireSensor) === null) {
-					this.backFillLink(this.#fireSensor);
+					this.backFillLink(this.#fireSensor, this.fireGenerateLink);
 				}
 			} else {
 				this.parent.grapplingFSM.transition(GrappleUnhooked);
@@ -143,7 +143,7 @@ class GrappleFiring extends GrappleHookManager {
 	exitState() {
 		this.#exiting = true;
 		if (this.parent.comp.bodies.length > 0){
-			this.backFillLink(this.#fireSensor);
+			this.backFillLink(this.#fireSensor, this.fireGenerateLink);
 
 			this.createStartConstraint();
 		}
@@ -169,6 +169,7 @@ class GrappleFiring extends GrappleHookManager {
 		if (this.#addVelocityToBody || !this.#exiting){
 			this.matter.body.applyForce(circle, circle.position, fireForce);
 		}
+		return circle;
 	}
 
 	createStartConstraint() {

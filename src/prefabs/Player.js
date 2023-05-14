@@ -1,3 +1,4 @@
+import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "./Grapple.js";
 
 export class Player {
@@ -14,13 +15,23 @@ export class Player {
 		},
 
 		movement: {
-			acceleration: 1,
+			// How much acceleration you get from the ground (does not include W):
+			acceleration: 3,
 			jumpAcceleration: 10,
+			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
 			// Better than friction:
-			groundDamp: 0.95,
+			groundDamp: 0.8,
+		},
+
+		gravity: {
+			// How long do we count as "grounded" for after we've left a platform?
+			coyoteTime: 1000,
 		}
 	}
+
+	#groundedBody = null;
+	isGrounded = false;
 
 	constructor(scene, x, y) {
 		this.scene = scene;
@@ -38,8 +49,6 @@ export class Player {
 			},
 		});
 
-		this.groundedBody = null;
-
 		// Freeze rotation (looks less weird, and makes friction more useful):
 		this.scene.matter.body.setInertia(this.body, Infinity);
 
@@ -48,11 +57,15 @@ export class Player {
 		this.constructInput();
 
 		this.scene.matter.world.on("collisionactive", this.updatePlayerGrounded, this);
+		this.scene.matter.world.on("collisionstart", this.updatePlayerGrounded, this);
 		this.scene.matter.world.on("collisionend", this.endPlayerGrounded, this);
 	}
 
 	updatePlayerGrounded(event, bodyA, bodyB) {
 		if (bodyA.id === this.body.id || bodyB.id === this.body.id) {
+			if (bodyA.isSensor || bodyB.isSensor) {
+				return;
+			}
 			for (let i = 0; i < event.pairs.length; i++) {
 				let pair = event.pairs[i];
 				if (!pair.isActive) {
@@ -64,10 +77,11 @@ export class Player {
 						otherBody = bodyA;
 					}*/
 					if (this.vector.dot(pair.collision.normal, this.vector.create(0, -1)) > 0.9) {
+						this.isGrounded = true;
 						if (bodyA.id === this.body.id) {
-							this.groundedBody = bodyB.id;
+							this.#groundedBody = bodyB.id;
 						} else {
-							this.groundedBody = bodyA.id;
+							this.#groundedBody = bodyA.id;
 						}
 					}
 				}
@@ -75,25 +89,33 @@ export class Player {
 		}
 	}
 
+	#coyoteTimer = -1;
+
 	endPlayerGrounded(event, bodyA, bodyB) {
-		if ((bodyA.id === this.body.id || bodyB.id === this.body.id) && (this.groundedBody !== null)) {
-			this.groundedBody = null;
+		if ((bodyA.id === this.body.id || bodyB.id === this.body.id) && (this.#groundedBody !== null)) {
+			this.#groundedBody = null;
+			this.#coyoteTimer = this.scene.time.now;
 		}
 	}
 
 	constructInput() {
 		this.scene.input.on("pointerdown", (pointer) => {
 			if (pointer.primaryDown) {
-				if (this.grapple.hasFired()) {
+				if (this.grapple.isGrappleHookOut()) {
 					this.grapple.cancel();
 				} else {
-					this.grapple.fire(this.scene.input.mousePointer.x + this.scene.cameras.main.scrollX, this.scene.input.mousePointer.y + this.scene.cameras.main.scrollY);
+					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
+
+					this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded, () => {
+						this.isGrounded = false;
+					});
+					this.isGrounded = false;
 				}
 			}
 		}, this);
 
-		this.movementKeys = this.scene.input.keyboard.addKeys("W,S,A,D");
-
+		this.movementKeys = this.scene.input.keyboard.addKeys("A,D");
+		this.retractExtendKeys = this.scene.input.keyboard.addKeys("W, S");
 
 		// Map keys to direction:
 		for (let key in this.movementKeys) {
@@ -104,12 +126,22 @@ export class Player {
 				case "D":
 					this.movementKeys[key].direction = this.vector.create(1, 0);
 					break;
-				case "S":
-					this.movementKeys[key].direction = this.vector.create(0, 1);
-					break;
-				case "W":
 				default:
 					this.movementKeys[key].direction = this.vector.create(0, 0);
+					break;
+			}
+		}
+
+		for (let key in this.retractExtendKeys) { 
+			switch (key) {
+				case "W":
+					this.retractExtendKeys[key].retractAmount = 1;
+					break;
+				case "S":
+					this.retractExtendKeys[key].retractAmount = -1;
+					break;
+				default:
+					this.retractExtendKeys[key].retractAmount = 0;
 			}
 		}
 
@@ -122,16 +154,31 @@ export class Player {
 		for (let keyName in this.movementKeys) {
 			let key = this.movementKeys[keyName];
 			if (key.isDown) {
-				intendedMove = this.vector.add(intendedMove, key.direction);
+				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, Player.gameplaySettings.movement.acceleration));
 			}
 		}
 
-		let newVelocity = this.vector.add(this.body.velocity, this.vector.mult(intendedMove, Player.gameplaySettings.movement.acceleration));
+		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
+
+		let retractingHeld = false;
+		for (let keyName in this.retractExtendKeys) {
+			let key = this.retractExtendKeys[keyName];
+			if (key.isDown) {
+				this.grapple.retract(key.retractAmount * Grapple.gameplaySettings.retracting.retractSpeed);
+				retractingHeld = true;
+			}
+		}
+
+		if (!retractingHeld && this.grapple.isRetracting()) {
+			this.grapple.stopRetract();
+		}
 
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
-			if (this.grapple.isHooked() || this.groundedBody !== null) {
+			if (this.grapple.isHooked() || this.isGrounded) {
 				this.grapple.cancel();
+				this.isGrounded = false;
+				this.#groundedBody = null;
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
 			}
 		}
@@ -144,21 +191,17 @@ export class Player {
 
 		this.scene.matter.body.setVelocity(this.body, newVelocity);
 		// #endregion
-
-
-		// #region Mouse Events
-		if (this.scene.input.mousePointer.buttons === 2) {
-			this.grapple.startRetracting();
-		} else {
-			this.grapple.stopRetracting();
-		}
-		// #endregion
 	}
 
 	update() {
 		this.grapple.update();
 
 		this.movementUpdate();
+
+		if (this.isGrounded && this.#groundedBody === null && this.scene.time.now - this.#coyoteTimer >= Player.gameplaySettings.gravity.coyoteTime) {
+			this.isGrounded = false;
+			this.#coyoteTimer = -1;
+		}
 
 		if (window.debugging) {
 			this.updateProperties();

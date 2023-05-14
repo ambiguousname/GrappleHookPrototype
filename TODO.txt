@@ -5,3 +5,16 @@
 - Jump on ground hit (rather than waiting for body to re-appear)
 - Check https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for movement ideas
 - Cannot jump if colliding with a corner exactly (although it's only if you're moving left into the corner and you're hitting jump.)
+- Retraction sometimes doesn't work while firing
+
+Potential Fixes for Movement (add to Debug):
+- Jumping while grappled gives insane height
+Jumping
+ - Hold to charge jump only on rope
+ - Disable Jumping
+ - Disable Jumping except for on rope
+- Change acceleration/slowdown
+ - Adding more friction to when the block is moving
+- Shorter rope(?)
+- Extend with S.
+- Permanent coyote time until canceled?

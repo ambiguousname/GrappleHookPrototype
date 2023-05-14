@@ -36,6 +36,10 @@ let debugSettings = {
 			jumpAcceleration: [1, 10000, 0.01],
 			maxXVelocity: [1, 1000, 1],
 			groundDamp: [0, 100, 0.01],
+		},
+
+		gravity: {
+			coyoteTime: [1, 5000, 1]
 		}
 	}
 }
@@ -98,8 +102,27 @@ function debugGameplaySettings(gameplaySettings, debugSettingName) {
 	document.getElementById("settings").appendChild(bigDiv);
 }
 
+var frame = performance.now();
+var fps = 0;
+
+function fpsCounter(time) {
+	fps = time - frame;
+	requestAnimationFrame(fpsCounter);
+	frame = time;
+}
+
 export function debug() {
 	debugGameplaySettings(Grapple.gameplaySettings, "grapple");
 	debugGameplaySettings(Player.gameplaySettings, "player");
+
+	requestAnimationFrame(fpsCounter);
+
+	let fpsDisp = document.createElement("p");
+	document.body.prepend(fpsDisp);
+	setInterval(() => {
+		fpsDisp.innerText = (1000/fps).toFixed(3);
+	}, 100, this);
+	fps = window.performance.now();
+
 	window.debugging = true;
 }

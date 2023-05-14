@@ -16,3 +16,4 @@ Jumping
 - Shorter rope(?)
 - Permanent coyote time until canceled?
 - Sometimes the grapple doesn't collide. Why?
+- Make Grapple Hook links sensors?

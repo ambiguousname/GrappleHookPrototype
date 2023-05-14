@@ -13,8 +13,6 @@ Jumping
  - Hold to charge jump only on rope
  - Disable Jumping
  - Disable Jumping except for on rope
-- Change acceleration/slowdown
- - Adding more friction to when the block is moving
 - Shorter rope(?)
-- Extend with S.
 - Permanent coyote time until canceled?
+- Sometimes the grapple doesn't collide. Why?

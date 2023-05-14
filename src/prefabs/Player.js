@@ -101,7 +101,7 @@ export class Player {
 	constructInput() {
 		this.scene.input.on("pointerdown", (pointer) => {
 			if (pointer.primaryDown) {
-				if (this.grapple.hasFired()) {
+				if (this.grapple.isGrappleHookOut()) {
 					this.grapple.cancel();
 				} else {
 					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);

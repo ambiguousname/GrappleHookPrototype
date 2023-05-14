@@ -74,8 +74,12 @@ export class Grapple {
 		this.grapplingFSM.transition(GrappleHookStates.GrappleNone);
 	}
 
-	hasFired() {
-		return this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleFiring || this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleUnhooked || this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleHooked;
+	isGrappleHookOut() {
+		return !(this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleNone);
+	}
+
+	retractHasFired() {
+		return !(this.#prevRetractState instanceof GrappleHookStates.GrappleFiring);
 	}
 
 	isHooked() {
@@ -92,12 +96,17 @@ export class Grapple {
 			this.grapplingFSM.activeState.updateSpeed(speed);
 		} else {
 			this.#prevRetractState = this.grapplingFSM.activeState.constructor;
+			if (this.#prevRetractState instanceof GrappleHookStates.GrappleFiring) {
+				this.#prevRetractState = GrappleHookStates.GrappleUnhooked;
+			}
 			this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
 		}
 	}
 
 	stopRetract() {
-		this.grapplingFSM.transition(this.#prevRetractState);
+		if (this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleRetracting) {
+			this.grapplingFSM.transition(this.#prevRetractState);
+		}
 	}
 
 	// #endregion

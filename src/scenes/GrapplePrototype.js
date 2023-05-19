@@ -9,9 +9,20 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.tilemapTiledJSON('map', './assets/map.json');
 		this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		this.load.image('coin', './assets/coinGold.png');
+		this.load.audio('bg1_music', './assets/Level1Bg.wav');
 	}
 	
 	create() {
+		// play background music
+		let music = this.sound.add('bg1_music');
+		let musicConfig = {
+            mute: 0,
+            volume: 0.1,
+            loop: true, 
+            delay: 0
+        }
+        music.play(musicConfig);
+
 		this.player = new Player(this, 100, 3000);
 
 		this.drawMap();

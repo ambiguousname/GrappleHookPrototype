@@ -8,6 +8,7 @@
 - Retraction sometimes doesn't work while firing
 
 Potential Fixes for Movement (add to Debug):
+- Left click to fire rope again instead of cancelling
 - Jumping while grappled gives insane height
 Jumping
  - Hold to charge jump only on rope

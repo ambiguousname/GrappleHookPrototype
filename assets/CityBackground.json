@@ -492,7 +492,7 @@
          "data":"eJzt1tsNACAIQ9F+sP8uPgaUFdQQDN6zQBv4qRSrmdQtOOTC8G7z4X6nuPvf+D8AAAAqy9i7O5kZe5eNjeoW+MEOQw==",
          "encoding":"base64",
          "height":30,
-         "id":7,
+         "id":9,
          "name":"Feather",
          "opacity":1,
          "type":"tilelayer",
@@ -501,7 +501,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":8,
+ "nextlayerid":10,
  "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -525,7 +525,7 @@
         {
          "columns":2,
          "firstgid":1201,
-         "image":"..\/..\/Downloads\/Feather_Asset_.png",
+         "image":"Feather_Asset_.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,

@@ -9,6 +9,7 @@
 
 Potential Fixes for Movement (add to Debug):
 - Left click to fire rope again instead of cancelling
+- Move towards hook end while firing
 - Jumping while grappled gives insane height
 Jumping
  - Hold to charge jump only on rope

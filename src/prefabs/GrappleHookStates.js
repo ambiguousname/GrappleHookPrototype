@@ -181,6 +181,9 @@ class GrappleFiring extends GrappleHookManager {
 	}
 
 	update() {
+		let sfx = this.parent.scene.sound;
+		sfx.play("extend");
+
 		if (this.parent.comp.bodies.length > 0){
 			let sensorPos = this.vector.add(this.vector.mult(this.#target, Grapple.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
 			this.#fireSensor.position = sensorPos;

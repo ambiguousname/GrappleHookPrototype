@@ -11,18 +11,21 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.image('coin', './assets/coinGold.png');
 		this.load.audio('bg1_music', './assets/Level1Bg.wav');
 		this.load.audio('retract', './assets/RetractHook.wav');
+		this.load.audio('extend' , './assets/HookExtend.wav');
 	}
 	
 	create() {
+		// Retract sfx
+		this.sound.add('retract');
+		this.sound.add('extend');
 		// play background music
 		let music = this.sound.add('bg1_music');
-		this.sound.add("retract");
 		let musicConfig = {
             mute: 0,
             volume: 0.1,
             loop: true, 
             delay: 0
-        }
+        };
         music.play(musicConfig);
 
 		this.player = new Player(this, 100, 3000);

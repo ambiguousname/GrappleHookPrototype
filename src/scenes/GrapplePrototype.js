@@ -8,10 +8,10 @@ export class GrapplePrototype extends Phaser.Scene {
 	preload() {
 		this.load.tilemapTiledJSON('map', './assets/CityBackground.json');
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
-		this.load.image('Cityasset_', './assets/Cityasset_.png');
+		this.load.image('background', './assets/Cityasset_.png');
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
 
-		this.load.image('player', './assets/Game_Cover_.png');
+		this.load.image('player', './assets/Angel_Asset_.png');
 
 		this.load.audio('bg1_music', './assets/Level1Bg.wav');
 		this.load.audio('retract', './assets/RetractHook.wav');
@@ -32,9 +32,9 @@ export class GrapplePrototype extends Phaser.Scene {
         };
         music.play(musicConfig);
 
-		this.player = new Player(this, 0, 0);
-
 		this.drawMap();
+
+		this.player = new Player(this, 0, this.map.heightInPixels - 50);
 
         this.matter.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 		this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -50,8 +50,7 @@ export class GrapplePrototype extends Phaser.Scene {
 	drawMap() {
 		this.map = this.make.tilemap({key: 'map'});
 		
-		this.background = this.map.addTilesetImage('Cityasset_');
-		// this.backgroundLayer = this.map.getImageIndex("CityBg", this.background, 0, 0);
+		this.add.image(0, 0, "background").setOrigin(0);
 
 		// this.groundTiles = this.map.addTilesetImage("tiles");
 		// this.groundLayer = this.map.createLayer("World", this.groundTiles, 0, 0);
@@ -59,11 +58,10 @@ export class GrapplePrototype extends Phaser.Scene {
 		// this.groundLayer.setCollisionByExclusion([-1]);
 		// this.matter.world.convertTilemapLayer(this.groundLayer);
 
-		// this.drawObjectLayerCollisions(this.map.getObjectLayer("Buildings"));
+		this.drawObjectLayerCollisions(this.map.getObjectLayer("Buildings"));
 
 		this.featherTiles = this.map.addTilesetImage("Feather_Asset_");
 		this.featherLayer = this.map.createLayer("Feather", this.featherTiles, 0, 0);
-		console.log(this.featherLayer);
 
 		// Basic collision check, to fix:
 		this.featherLayer.onCollision = (event) => {
@@ -92,12 +90,20 @@ export class GrapplePrototype extends Phaser.Scene {
 			let layer = layers[l];
 			layer.objects.forEach((object) => {
 				let vertices = [];
+
+				let center = {x: 0, y: 0};
 				if ("polygon" in object) {
-					vertices = vertices.concat(object.polygon);
+					// Complex polygons NOT recommended because the center is found incorrectly with this method:
+					center = this.matter.vertices.centre(object.polygon);
+					vertices = object.polygon;
 				} else if ("rectangle" in object) {
-					vertices.push(new Phaser.Math.Vector2(object.x, object.y), new Phaser.Math.Vector2(object.x + object.width, object.y), new Phaser.Math.Vector2(object.x + width, object.y + object.height), new Phaser.Math.Vector2(object.x, object.y + object.height));
+					vertices.push(new Phaser.Math.Vector2(0, 0), new Phaser.Math.Vector2(object.width, 0), new Phaser.Math.Vector2(object.width, object.height), new Phaser.Math.Vector2(0, object.height));
+					center = {x: object.width/2, y: object.height/2};
 				}
-				this.matter.bodies.fromVertices(object.x, object.y, vertices);
+
+				this.matter.add.fromVertices(object.x + center.x, object.y + center.y, vertices, {
+					isStatic: true,
+				});
 			}, this);
 		}
 	}

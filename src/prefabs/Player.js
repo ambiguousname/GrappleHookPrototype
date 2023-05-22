@@ -37,7 +37,7 @@ export class Player {
 		this.scene = scene;
 		this.vector = this.scene.matter.vector;
 
-		this.body = this.scene.matter.add.rectangle(x, y, 40, 40, {
+		this.sprite = this.scene.matter.add.image(x, y, "player", null, {
 			density: Player.gameplaySettings.body.density,
 			friction: Player.gameplaySettings.body.groundFriction,
 			frictionStatic: Player.gameplaySettings.body.staticFriction,
@@ -48,6 +48,8 @@ export class Player {
 				radius: Player.gameplaySettings.body.chamferRadius,
 			},
 		});
+
+		this.body = this.sprite.body;
 
 		// Freeze rotation (looks less weird, and makes friction more useful):
 		this.scene.matter.body.setInertia(this.body, Infinity);

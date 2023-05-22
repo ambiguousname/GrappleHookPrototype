@@ -32,7 +32,7 @@ export class GrapplePrototype extends Phaser.Scene {
         };
         music.play(musicConfig);
 
-		this.drawMap(2);
+		this.drawMap(4);
 
 		this.player = new Player(this, 0, this.map.heightInPixels - 50);
 

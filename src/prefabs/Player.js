@@ -17,7 +17,7 @@ export class Player {
 		movement: {
 			// How much acceleration you get from the ground (does not include W):
 			acceleration: 3,
-			jumpAcceleration: 10,
+			jumpAcceleration: 12,
 			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
 			// Better than friction:
@@ -182,11 +182,11 @@ export class Player {
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
 			if (this.grapple.isHooked() || this.isGrounded) {
-				this.grapple.cancel();
 				this.isGrounded = false;
 				this.#groundedBody = null;
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
 			}
+			this.grapple.cancel();
 		}
 
 		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {

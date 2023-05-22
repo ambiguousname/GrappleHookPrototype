@@ -267,13 +267,12 @@ class GrappleRetracting extends GrappleHookManager {
 
 	update() {
 		let sfx = this.parent.scene.sound;
-		sfx.add('retract');
 
 		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > Math.abs(this.#retractSpeed)) {
 			this.#retractTimer = this.time.now;
 			if (this.#retractSpeed > 0) {
 				this.retractOne();
-				sfx.play();
+				sfx.play("retract");
 			} else if (this.parent.isHooked()) {
 				this.generativeAdd();
 			}

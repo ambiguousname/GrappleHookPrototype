@@ -16,6 +16,7 @@ export class GrapplePrototype extends Phaser.Scene {
 	create() {
 		// play background music
 		let music = this.sound.add('bg1_music');
+		this.sound.add("retract");
 		let musicConfig = {
             mute: 0,
             volume: 0.1,

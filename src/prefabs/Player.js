@@ -78,7 +78,11 @@ export class Player {
 					if (otherBody.id === this.body.id) {
 						otherBody = bodyA;
 					}*/
-					if (this.vector.dot(pair.collision.normal, this.vector.create(0, -1)) > 0.9) {
+					let up = this.vector.create(0, -1);
+					if (bodyB.id === this.body.id) {
+						up = this.vector.create(0, 1);
+					}
+					if (this.vector.dot(pair.collision.normal, up) > 0.9) {
 						this.isGrounded = true;
 						if (bodyA.id === this.body.id) {
 							this.#groundedBody = bodyB.id;

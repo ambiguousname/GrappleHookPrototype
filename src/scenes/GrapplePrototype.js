@@ -10,6 +10,7 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		this.load.image('coin', './assets/coinGold.png');
 		this.load.audio('bg1_music', './assets/Level1Bg.wav');
+		this.load.audio('retract', './assets/RetractHook.wav');
 	}
 	
 	create() {

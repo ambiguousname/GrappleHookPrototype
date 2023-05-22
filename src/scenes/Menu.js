@@ -5,7 +5,7 @@ export class Menu extends Phaser.Scene {
 
     preload() {
         // load title screen
-        this.load.image('TitleScreen', './assets/Temp Title Screen.png');
+        this.load.image('TitleScreen', './assets/Game_Cover_.png');
         // load audio
         this.load.audio('bg_music', './assets/IntroSampPiano.wav');
     }

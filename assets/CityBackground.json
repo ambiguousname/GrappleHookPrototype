@@ -4,10 +4,10 @@
  "layers":[
         {
          "id":4,
-         "image":"..\/..\/Downloads\/Cityasset_.png",
+         "image":"Cityasset_.png",
          "name":"CityBg",
-         "offsetx":0.0705173894005497,
-         "offsety":0.164350377970585,
+         "offsetx":0.0705174,
+         "offsety":0.16435,
          "opacity":1,
          "type":"imagelayer",
          "visible":true,
@@ -29,107 +29,107 @@
                          "y":0
                         }, 
                         {
-                         "x":-0.204673650096705,
-                         "y":237.569783546819
+                         "x":-0.204674,
+                         "y":237.57
                         }, 
                         {
-                         "x":18.8566246020962,
-                         "y":238.53228989792
+                         "x":18.8566,
+                         "y":238.532
                         }, 
                         {
-                         "x":18.9830594507053,
-                         "y":285.725442192849
+                         "x":18.9831,
+                         "y":285.725
                         }, 
                         {
-                         "x":30.9391438330701,
-                         "y":285.725442192849
+                         "x":30.9391,
+                         "y":285.725
                         }, 
                         {
-                         "x":31.0541061829005,
-                         "y":295.669685453181
+                         "x":31.0541,
+                         "y":295.67
                         }, 
                         {
-                         "x":37.8368848228959,
-                         "y":295.784647803012
+                         "x":37.8369,
+                         "y":295.785
                         }, 
                         {
-                         "x":37.9446760812065,
-                         "y":335.751744414701
+                         "x":37.9447,
+                         "y":335.752
                         }, 
                         {
-                         "x":40.9472686181955,
-                         "y":335.729337007709
+                         "x":40.9473,
+                         "y":335.729
                         }, 
                         {
-                         "x":40.9498709798482,
-                         "y":295.805332374167
+                         "x":40.9499,
+                         "y":295.805
                         }, 
                         {
-                         "x":47.9312684644673,
-                         "y":295.784554405463
+                         "x":47.9313,
+                         "y":295.785
                         }, 
                         {
-                         "x":47.9728244018757,
-                         "y":285.769573490027
+                         "x":47.9728,
+                         "y":285.77
                         }, 
                         {
-                         "x":59.9409343755085,
-                         "y":285.769573490027
+                         "x":59.9409,
+                         "y":285.77
                         }, 
                         {
-                         "x":59.9065767591544,
-                         "y":238.720593020615
+                         "x":59.9066,
+                         "y":238.721
                         }, 
                         {
-                         "x":78.9349545250977,
-                         "y":238.751111669799
+                         "x":78.935,
+                         "y":238.751
                         }, 
                         {
-                         "x":78.9231271485701,
-                         "y":96.8229218251736
+                         "x":78.9231,
+                         "y":96.8229
                         }, 
                         {
-                         "x":259.981622970297,
-                         "y":96.7676536640558
+                         "x":259.982,
+                         "y":96.7677
                         }, 
                         {
-                         "x":259.926354809179,
-                         "y":221.673697790156
+                         "x":259.926,
+                         "y":221.674
                         }, 
                         {
-                         "x":264.900489309776,
-                         "y":221.728965951273
+                         "x":264.9,
+                         "y":221.729
                         }, 
                         {
-                         "x":265.011025632012,
-                         "y":229.577044829993
+                         "x":265.011,
+                         "y":229.577
                         }, 
                         {
-                         "x":352.832133648106,
-                         "y":229.742849313346
+                         "x":352.832,
+                         "y":229.743
                         }, 
                         {
-                         "x":352.942669970341,
-                         "y":221.894770434627
+                         "x":352.943,
+                         "y":221.895
                         }, 
                         {
-                         "x":360.956553332414,
-                         "y":221.784234112391
+                         "x":360.957,
+                         "y":221.784
                         }, 
                         {
-                         "x":360.901285171296,
-                         "y":-1.22279599770303
+                         "x":360.901,
+                         "y":-1.2228
                         }, 
                         {
-                         "x":-0.0550750886850899,
-                         "y":-1.27806415882077
+                         "x":-0.0550751,
+                         "y":-1.27806
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":20.4490265411324,
-                 "y":1.27806415882077
+                 "x":20.449,
+                 "y":1.27806
                 }, 
                 {
                  "height":0,
@@ -141,23 +141,23 @@
                          "y":0
                         }, 
                         {
-                         "x":27.372810175186,
-                         "y":0.0749940004799896
+                         "x":27.3728,
+                         "y":0.074994
                         }, 
                         {
-                         "x":27.297816174706,
-                         "y":3.89968802495804
+                         "x":27.2978,
+                         "y":3.89969
                         }, 
                         {
-                         "x":-0.0749940004799616,
-                         "y":4.04967602591796
+                         "x":-0.074994,
+                         "y":4.04968
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":0,
-                 "y":367.995560355172
+                 "y":367.996
                 }, 
                 {
                  "height":0,
@@ -169,151 +169,151 @@
                          "y":0
                         }, 
                         {
-                         "x":0.0762359154045384,
-                         "y":-51.7986115856826
+                         "x":0.0762359,
+                         "y":-51.7986
                         }, 
                         {
-                         "x":-7.83362668530509,
-                         "y":-51.7869607168427
+                         "x":-7.83363,
+                         "y":-51.787
                         }, 
                         {
-                         "x":-7.88922094626733,
-                         "y":-58.8452473376432
+                         "x":-7.88922,
+                         "y":-58.8452
                         }, 
                         {
-                         "x":-5.89910689603585,
-                         "y":-58.8452473376432
+                         "x":-5.89911,
+                         "y":-58.8452
                         }, 
                         {
-                         "x":-5.91674827061152,
-                         "y":-120.818440708057
+                         "x":-5.91675,
+                         "y":-120.818
                         }, 
                         {
-                         "x":-7.88935101033755,
-                         "y":-120.818440708057
+                         "x":-7.88935,
+                         "y":-120.818
                         }, 
                         {
-                         "x":-7.84551539389921,
-                         "y":-127.788303721756
+                         "x":-7.84552,
+                         "y":-127.788
                         }, 
                         {
-                         "x":0.0887311814432508,
-                         "y":-127.832139338194
+                         "x":0.0887312,
+                         "y":-127.832
                         }, 
                         {
-                         "x":0.132566797881623,
-                         "y":-299.799262625865
+                         "x":0.132567,
+                         "y":-299.799
                         }, 
                         {
-                         "x":96.0887311814433,
-                         "y":-299.799262625865
+                         "x":96.0887,
+                         "y":-299.799
                         }, 
                         {
-                         "x":96.1325667978816,
-                         "y":-222.866393433577
+                         "x":96.1326,
+                         "y":-222.866
                         }, 
                         {
-                         "x":101.101057441886,
-                         "y":-222.848121908914
+                         "x":101.101,
+                         "y":-222.848
                         }, 
                         {
-                         "x":101.129827071854,
-                         "y":-219.886933858742
+                         "x":101.13,
+                         "y":-219.887
                         }, 
                         {
-                         "x":104.154484606101,
-                         "y":-219.843098242304
+                         "x":104.154,
+                         "y":-219.843
                         }, 
                         {
-                         "x":104.115216870828,
-                         "y":-206.866393433577
+                         "x":104.115,
+                         "y":-206.866
                         }, 
                         {
-                         "x":101.08142357425,
-                         "y":-206.896525406518
+                         "x":101.081,
+                         "y":-206.897
                         }, 
                         {
-                         "x":101.085991455416,
-                         "y":-204.875519169188
+                         "x":101.086,
+                         "y":-204.876
                         }, 
                         {
-                         "x":104.066813373224,
-                         "y":-204.851317420386
+                         "x":104.067,
+                         "y":-204.851
                         }, 
                         {
-                         "x":104.154484606101,
-                         "y":-192.840358516276
+                         "x":104.154,
+                         "y":-192.84
                         }, 
                         {
-                         "x":101.125259190688,
-                         "y":-192.83579063511
+                         "x":101.125,
+                         "y":-192.836
                         }, 
                         {
-                         "x":101.129827071854,
-                         "y":-189.88373834727
+                         "x":101.13,
+                         "y":-189.884
                         }, 
                         {
-                         "x":104.066813373224,
-                         "y":-189.81570098203
+                         "x":104.067,
+                         "y":-189.816
                         }, 
                         {
-                         "x":104.19150646851,
-                         "y":-176.864314575533
+                         "x":104.192,
+                         "y":-176.864
                         }, 
                         {
-                         "x":101.137440716013,
-                         "y":-176.842342879472
+                         "x":101.137,
+                         "y":-176.842
                         }, 
                         {
-                         "x":101.159412412074,
-                         "y":-174.86489023397
+                         "x":101.159,
+                         "y":-174.865
                         }, 
                         {
-                         "x":104.125591380327,
-                         "y":-174.842918537908
+                         "x":104.126,
+                         "y":-174.843
                         }, 
                         {
-                         "x":104.103619684266,
-                         "y":-161.879617861839
+                         "x":104.104,
+                         "y":-161.88
                         }, 
                         {
-                         "x":101.115469019951,
-                         "y":-161.857646165778
+                         "x":101.115,
+                         "y":-161.858
                         }, 
                         {
-                         "x":101.137440716013,
-                         "y":-158.891467197525
+                         "x":101.137,
+                         "y":-158.891
                         }, 
                         {
-                         "x":96.0839506219518,
-                         "y":-158.847523805403
+                         "x":96.084,
+                         "y":-158.848
                         }, 
                         {
-                         "x":96.1278940140741,
-                         "y":-67.0278059659236
+                         "x":96.1279,
+                         "y":-67.0278
                         }, 
                         {
-                         "x":161.14214265897,
-                         "y":-66.8740040934956
+                         "x":161.142,
+                         "y":-66.874
                         }, 
                         {
-                         "x":161.120170962909,
-                         "y":-59.887004746055
+                         "x":161.12,
+                         "y":-59.887
                         }, 
                         {
-                         "x":223.102325551368,
-                         "y":-59.8650330499939
+                         "x":223.102,
+                         "y":-59.865
                         }, 
                         {
-                         "x":223.124297247429,
-                         "y":0.0737538047798125
+                         "x":223.124,
+                         "y":0.0737538
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":143.253734571981,
-                 "y":479.875974954632
+                 "x":143.254,
+                 "y":479.876
                 }, 
                 {
                  "height":0,
@@ -326,102 +326,102 @@
                         }, 
                         {
                          "x":0,
-                         "y":-81.672236113383
+                         "y":-81.6722
                         }, 
                         {
-                         "x":27.9251279414858,
-                         "y":-81.7890776528872
+                         "x":27.9251,
+                         "y":-81.7891
                         }, 
                         {
-                         "x":27.9312395873135,
-                         "y":-425.77875367315
+                         "x":27.9312,
+                         "y":-425.779
                         }, 
                         {
-                         "x":31.883334003624,
-                         "y":-425.856245720529
+                         "x":31.8833,
+                         "y":-425.856
                         }, 
                         {
-                         "x":31.9220800273133,
-                         "y":-431.784387344995
+                         "x":31.9221,
+                         "y":-431.784
                         }, 
                         {
-                         "x":73.8797226199882,
-                         "y":-431.82941119394
+                         "x":73.8797,
+                         "y":-431.829
                         }, 
                         {
-                         "x":73.8915420130162,
-                         "y":-440.841373482449
+                         "x":73.8915,
+                         "y":-440.841
                         }, 
                         {
-                         "x":87.8585660638424,
-                         "y":-440.841373482449
+                         "x":87.8586,
+                         "y":-440.841
                         }, 
                         {
-                         "x":87.8885060939621,
-                         "y":-453.805406524266
+                         "x":87.8885,
+                         "y":-453.805
                         }, 
                         {
-                         "x":93.8765121178961,
-                         "y":-453.835346554386
+                         "x":93.8765,
+                         "y":-453.835
                         }, 
                         {
-                         "x":93.891482132956,
-                         "y":-461.814364581278
+                         "x":93.8915,
+                         "y":-461.814
                         }, 
                         {
-                         "x":99.8645181418302,
-                         "y":-461.814364581278
+                         "x":99.8645,
+                         "y":-461.814
                         }, 
                         {
-                         "x":99.8944581719499,
-                         "y":-453.880256599565
+                         "x":99.8945,
+                         "y":-453.88
                         }, 
                         {
-                         "x":105.837554150704,
-                         "y":-453.850316569446
+                         "x":105.838,
+                         "y":-453.85
                         }, 
                         {
-                         "x":105.897434210944,
-                         "y":-440.856343497509
+                         "x":105.897,
+                         "y":-440.856
                         }, 
                         {
-                         "x":119.86445826177,
-                         "y":-440.841373482449
+                         "x":119.864,
+                         "y":-440.841
                         }, 
                         {
-                         "x":119.87942827683,
-                         "y":-431.874334461608
+                         "x":119.879,
+                         "y":-431.874
                         }, 
                         {
-                         "x":157.873326498691,
-                         "y":-431.829424416428
+                         "x":157.873,
+                         "y":-431.829
                         }, 
                         {
-                         "x":157.888296513751,
-                         "y":-425.841418392494
+                         "x":157.888,
+                         "y":-425.841
                         }, 
                         {
-                         "x":161.885290534727,
-                         "y":-425.826448377434
+                         "x":161.885,
+                         "y":-425.826
                         }, 
                         {
-                         "x":161.885290534727,
-                         "y":-99.8543704495241
+                         "x":161.885,
+                         "y":-99.8544
                         }, 
                         {
-                         "x":226.870125909472,
-                         "y":-99.8394004344643
+                         "x":226.87,
+                         "y":-99.8394
                         }, 
                         {
-                         "x":226.855155894412,
-                         "y":0.100420104995237
+                         "x":226.855,
+                         "y":0.10042
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":413.502208305097,
-                 "y":479.868202743439
+                 "x":413.502,
+                 "y":479.868
                 }, 
                 {
                  "height":0,
@@ -433,23 +433,23 @@
                          "y":0
                         }, 
                         {
-                         "x":30.9403062080619,
+                         "x":30.9403,
                          "y":0
                         }, 
                         {
-                         "x":30.9100172773453,
-                         "y":4.00107982350459
+                         "x":30.91,
+                         "y":4.00108
                         }, 
                         {
-                         "x":-0.0244933922645032,
-                         "y":4.03051323042144
+                         "x":-0.0244934,
+                         "y":4.03051
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":610.015652557956,
-                 "y":58.6106252644459
+                 "x":610.016,
+                 "y":58.6106
                 }, 
                 {
                  "height":0,
@@ -461,26 +461,26 @@
                          "y":0
                         }, 
                         {
-                         "x":-8.7427556805379,
+                         "x":-8.74276,
                          "y":0
                         }, 
                         {
-                         "x":-8.85602623008579,
-                         "y":70.8515386869375
+                         "x":-8.85603,
+                         "y":70.8515
                         }, 
                         {
-                         "x":-0.0764641058254512,
-                         "y":70.9302791544197
+                         "x":-0.0764641,
+                         "y":70.9303
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":20.4032306428773,
-                 "y":27.1629088157849
+                 "x":20.4032,
+                 "y":27.1629
                 }],
-         "offsetx":-0.484168731548664,
-         "offsety":0.0568047463021486,
+         "offsetx":-0.484169,
+         "offsety":0.0568047,
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -488,8 +488,8 @@
          "y":0
         }, 
         {
-         "compression":"zlib",
-         "data":"eJzt1tsNACAIQ9F+sP8uPgaUFdQQDN6zQBv4qRSrmdQtOOTC8G7z4X6nuPvf+D8AAAAqy9i7O5kZe5eNjeoW+MEOQw==",
+         "compression":"",
+         "data":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsQQAALIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALMEAAC0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALEEAACyBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACzBAAAtAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsQQAALIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALMEAAC0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALEEAACyBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsQQAALIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACzBAAAtAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALMEAAC0BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
          "encoding":"base64",
          "height":30,
          "id":9,
@@ -501,7 +501,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
+ "nextlayerid":11,
  "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -511,7 +511,7 @@
         {
          "columns":40,
          "firstgid":1,
-         "image":"..\/..\/Downloads\/Cityasset_.png",
+         "image":"Cityasset_.png",
          "imageheight":480,
          "imagewidth":640,
          "margin":0,

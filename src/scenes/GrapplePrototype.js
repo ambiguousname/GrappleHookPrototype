@@ -32,12 +32,10 @@ export class GrapplePrototype extends Phaser.Scene {
         };
         music.play(musicConfig);
 
-		this.drawMap();
+		this.drawMap(2);
 
 		this.player = new Player(this, 0, this.map.heightInPixels - 50);
 
-        this.matter.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-		this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 		// this.cameras.main.startFollow(this.player.body);
 		
 		// this.matter.add.rectangle(300, 50, 500, 50, {isStatic: true});
@@ -47,10 +45,20 @@ export class GrapplePrototype extends Phaser.Scene {
 		// this.fps.setParent()
 	}
 
-	drawMap() {
+	drawMap(scale=1) {
+
 		this.map = this.make.tilemap({key: 'map'});
+		this.map.forEachTile((tile) => {
+			tile.x *= scale;
+			tile.y *= scale;
+			tile.setSize(tile.width * scale, tile.height * scale);
+		});
+
+        this.matter.world.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
+		this.cameras.main.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
 		
-		this.add.image(0, 0, "background").setOrigin(0);
+		let bg = this.add.image(0, 0, "background").setOrigin(0);
+		bg.setScale(scale);
 
 		// this.groundTiles = this.map.addTilesetImage("tiles");
 		// this.groundLayer = this.map.createLayer("World", this.groundTiles, 0, 0);
@@ -58,7 +66,7 @@ export class GrapplePrototype extends Phaser.Scene {
 		// this.groundLayer.setCollisionByExclusion([-1]);
 		// this.matter.world.convertTilemapLayer(this.groundLayer);
 
-		this.drawObjectLayerCollisions(this.map.getObjectLayer("Buildings"));
+		this.drawObjectLayerCollisions({layers: this.map.getObjectLayer("Buildings"), scale: scale});
 
 		this.featherTiles = this.map.addTilesetImage("Feather_Asset_");
 		this.featherLayer = this.map.createLayer("Feather", this.featherTiles, 0, 0);
@@ -69,10 +77,10 @@ export class GrapplePrototype extends Phaser.Scene {
 			let bodyB = event.bodyB;
 			if (bodyA.id === this.player.body.id || bodyB.id === this.player.body.id) {
 				let tile = bodyA;
-				if ("gameObject" in bodyB) {
+				if (this.player.body.id === bodyA.id) {
 					tile = bodyB;
 				}
-				this.coinLayer.removeTileAt(tile.gameObject.tile.x, tile.gameObject.tile.y);
+				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 			}
 		};
@@ -85,7 +93,7 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.cameras.main.setZoom(0.5);
 	}
 
-	drawObjectLayerCollisions(...layers) {
+	drawObjectLayerCollisions({scale, ...layers} = {scale: 1, layers: []}) {
 		for (let l in layers) {
 			let layer = layers[l];
 			layer.objects.forEach((object) => {
@@ -96,12 +104,15 @@ export class GrapplePrototype extends Phaser.Scene {
 					// Complex polygons NOT recommended because the center is found incorrectly with this method:
 					center = this.matter.vertices.centre(object.polygon);
 					vertices = object.polygon;
+					for (let v in vertices) {
+						vertices[v] = {x: vertices[v].x * scale, y: vertices[v].y * scale};
+					}
 				} else if ("rectangle" in object) {
-					vertices.push(new Phaser.Math.Vector2(0, 0), new Phaser.Math.Vector2(object.width, 0), new Phaser.Math.Vector2(object.width, object.height), new Phaser.Math.Vector2(0, object.height));
+					vertices.push(new Phaser.Math.Vector2(0, 0), new Phaser.Math.Vector2(object.width * scale, 0), new Phaser.Math.Vector2(object.width * scale, object.height * scale), new Phaser.Math.Vector2(0, object.height * scale));
 					center = {x: object.width/2, y: object.height/2};
 				}
 
-				this.matter.add.fromVertices(object.x + center.x, object.y + center.y, vertices, {
+				this.matter.add.fromVertices((object.x + center.x) * scale, (object.y + center.y) * scale, vertices, {
 					isStatic: true,
 				});
 			}, this);

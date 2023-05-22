@@ -70,6 +70,9 @@ class GrappleHookManager extends State {
 	}
 
 	retractOne() {
+		if (this.parent.comp.bodies.length <= 1) {
+			return;
+		}
 		let compositeConstraint = this.parent.comp.constraints[this.parent.comp.constraints.length - 1];
 		let compositeBody = this.parent.start;
 		
@@ -271,7 +274,7 @@ class GrappleRetracting extends GrappleHookManager {
 	update() {
 		let sfx = this.parent.scene.sound;
 
-		if (this.parent.comp.bodies.length > 1 && this.time.now - this.#retractTimer > Math.abs(this.#retractSpeed)) {
+		if (this.parent.comp.bodies.length >= 1 && this.time.now - this.#retractTimer > Math.abs(this.#retractSpeed)) {
 			this.#retractTimer = this.time.now;
 			if (this.#retractSpeed > 0) {
 				this.retractOne();

@@ -18,9 +18,14 @@ export class Player {
 		movement: {
 			// How much acceleration you get from the ground (does not include W):
 			acceleration: 3,
-			jumpAcceleration: 12,
+			// How much do we jump by default?
+			baseJumpAccel: 12,
+			// How much do we scale the jump acceleration, based on our movement?
+			jumpAccelMovementScale: 0.1,
 			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
+			// This does determine how fast you can jump (in the positive direction only)
+			maxYVelocity: 200,
 			// Better than friction:
 			groundDamp: 0.8,
 		},
@@ -177,13 +182,24 @@ export class Player {
 			if (!this.retractExtendKeys["S"].isDown && (this.grapple.isHooked() || this.isGrounded)) {
 				this.isGrounded = false;
 				this.#groundedBody = null;
-				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	
+
+				let velocityMag = this.body.velocity.y;
+
+				let scale = velocityMag *  Player.gameplaySettings.movement.jumpAccelMovementScale;
+				if (scale <= 1) {
+					scale = 1;
+				}
+				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.baseJumpAccel * scale));
 			}
 			this.grapple.cancel();
 		}
 
 		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
+		}
+
+		if (newVelocity.y > Player.gameplaySettings.movement.maxYVelocity) {
+			newVelocity.y = Player.gameplaySettings.movement.maxYVelocity;
 		}
 
 		newVelocity.x *= Player.gameplaySettings.movement.groundDamp;

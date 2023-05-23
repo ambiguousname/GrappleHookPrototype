@@ -174,7 +174,7 @@ export class Player {
 
 		if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
-			if (this.grapple.isHooked() || this.isGrounded) {
+			if (!this.retractExtendKeys["S"].isDown && (this.grapple.isHooked() || this.isGrounded)) {
 				this.isGrounded = false;
 				this.#groundedBody = null;
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.jumpAcceleration));	

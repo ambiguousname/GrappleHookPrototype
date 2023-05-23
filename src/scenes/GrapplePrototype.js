@@ -70,6 +70,7 @@ export class GrapplePrototype extends Phaser.Scene {
 
 		this.featherTiles = this.map.addTilesetImage("Feather_Asset_");
 		this.featherLayer = this.map.createLayer("Feather", this.featherTiles, 0, 0);
+		this.featherLayer.skipCull = true;
 
 		// Basic collision check, to fix:
 		this.featherLayer.onCollision = (event) => {

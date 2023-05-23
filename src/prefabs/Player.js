@@ -183,7 +183,7 @@ export class Player {
 				this.isGrounded = false;
 				this.#groundedBody = null;
 
-				let velocityMag = this.body.velocity.y;
+				let velocityMag = Math.abs(this.body.velocity.y);
 
 				let scale = velocityMag *  Player.gameplaySettings.movement.jumpAccelMovementScale;
 				if (scale <= 1) {

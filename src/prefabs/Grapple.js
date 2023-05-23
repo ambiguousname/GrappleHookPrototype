@@ -1,4 +1,5 @@
 import {FSM} from "../util/FSM.js";
+import { getAllCollisions } from "../util/collision.js";
 import * as GrappleHookStates from "./GrappleHookStates.js";
 
 export class Grapple {
@@ -41,7 +42,7 @@ export class Grapple {
 		RETRACTING - Grappling hooks is retracting.
 		*/
 		this.grapplingFSM = new FSM(GrappleHookStates.GrappleNone, this);
-		this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", this.firingCollisionCheck, this);
+		this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", getAllCollisions.bind(this, this.firingCollisionCheck), this);
 	}
 
 	update() {
@@ -115,7 +116,7 @@ export class Grapple {
 		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
 	}
 
-	firingCollisionCheck(event, bodyA, bodyB) {
+	firingCollisionCheck(bodyA, bodyB) {
 		var currentEnd = null;
 		var other = null;
 		if (bodyA.isChainEnd) {

@@ -1,5 +1,6 @@
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "./Grapple.js";
+import { getAllCollisions } from "../util/collision.js";
 
 export class Player {
 	static gameplaySettings = {
@@ -54,41 +55,34 @@ export class Player {
 		// Freeze rotation (looks less weird, and makes friction more useful):
 		this.scene.matter.body.setInertia(this.body, Infinity);
 
-		this.grapple = new Grapple(this.scene, this.body, new Phaser.Math.Vector2(10, 5));
+		this.grapple = new Grapple(this.scene, this.body);
 
 		this.constructInput();
 
 		this.scene.matter.world.on("collisionactive", this.updatePlayerGrounded, this);
 		this.scene.matter.world.on("collisionstart", this.updatePlayerGrounded, this);
-		this.scene.matter.world.on("collisionend", this.endPlayerGrounded, this);
+		this.scene.matter.world.on("collisionend", getAllCollisions.bind(this, this.endPlayerGrounded), this);
 	}
 
-	updatePlayerGrounded(event, bodyA, bodyB) {
-		if (bodyA.id === this.body.id || bodyB.id === this.body.id) {
-			if (bodyA.isSensor || bodyB.isSensor) {
-				return;
+	updatePlayerGrounded(event) {
+		for (let i = 0; i < event.pairs.length; i++) {
+			let pair = event.pairs[i];
+			if (!pair.isActive) {
+				continue;
 			}
-			for (let i = 0; i < event.pairs.length; i++) {
-				let pair = event.pairs[i];
-				if (!pair.isActive) {
-					continue;
+			let bodyA = pair.bodyA;
+			let bodyB = pair.bodyB;
+			if (bodyA.id === this.body.id || bodyB.id === this.body.id) {
+				let up = this.vector.create(0, -1);
+				if (bodyB.id === this.body.id) {
+					up = this.vector.create(0, 1);
 				}
-				if (bodyA.id === pair.bodyA.id && bodyB.id === pair.bodyB.id) {
-					/*let otherBody = bodyB;
-					if (otherBody.id === this.body.id) {
-						otherBody = bodyA;
-					}*/
-					let up = this.vector.create(0, -1);
-					if (bodyB.id === this.body.id) {
-						up = this.vector.create(0, 1);
-					}
-					if (this.vector.dot(pair.collision.normal, up) > 0.9) {
-						this.isGrounded = true;
-						if (bodyA.id === this.body.id) {
-							this.#groundedBody = bodyB.id;
-						} else {
-							this.#groundedBody = bodyA.id;
-						}
+				if (this.vector.dot(pair.collision.normal, up) > 0.9) {
+					this.isGrounded = true;
+					if (bodyA.id === this.body.id) {
+						this.#groundedBody = bodyB.id;
+					} else {
+						this.#groundedBody = bodyA.id;
 					}
 				}
 			}
@@ -97,7 +91,7 @@ export class Player {
 
 	#coyoteTimer = -1;
 
-	endPlayerGrounded(event, bodyA, bodyB) {
+	endPlayerGrounded(bodyA, bodyB) {
 		if ((bodyA.id === this.body.id || bodyB.id === this.body.id) && (this.#groundedBody !== null)) {
 			this.#groundedBody = null;
 			this.#coyoteTimer = this.scene.time.now;
@@ -109,14 +103,13 @@ export class Player {
 			if (pointer.primaryDown) {
 				if (this.grapple.isGrappleHookOut()) {
 					this.grapple.cancel();
-				} else {
-					let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
-
-					this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded, () => {
-						this.isGrounded = false;
-					});
-					this.isGrounded = false;
 				}
+				let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
+
+				this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded, () => {
+					this.isGrounded = false;
+				});
+				this.isGrounded = false;
 			}
 		}, this);
 

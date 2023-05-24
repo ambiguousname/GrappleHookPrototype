@@ -1,4 +1,5 @@
 import { Player } from "../prefabs/Player.js";
+import { Grapple } from "../prefabs/Grapple.js";
 import { lerp } from "../util/lerp.js";
 
 export class GrapplePrototype extends Phaser.Scene {
@@ -16,6 +17,13 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.audio('bg1_music', './assets/Level1Bg.wav');
 		this.load.audio('retract', './assets/RetractHook.wav');
 		this.load.audio('extend' , './assets/HookExtend.wav');
+
+		
+        var graphics = this.make.graphics();
+        graphics.fillStyle(0xffffff);
+        graphics.fillRect(0, 0, 100, Grapple.gameplaySettings.rope.segmentSize);
+        graphics.generateTexture("grapple", 100, Grapple.gameplaySettings.rope.segmentSize);
+        graphics.destroy();
 	}
 	
 	create() {

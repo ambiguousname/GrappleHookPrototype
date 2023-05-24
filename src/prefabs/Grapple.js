@@ -44,10 +44,29 @@ export class Grapple {
 		this.grapplingFSM = new FSM(GrappleHookStates.GrappleNone, this);
 		this.fireCollisionCheck = getAllCollisions.bind(this, this.firingCollisionCheck);
 		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
+
+		this.rope = this.scene.add.rope(0, 0, "grapple");
+		this.rope.visible = false;
 	}
 
 	update() {
 		this.grapplingFSM.update();
+		
+		if (this.start !== undefined && this.start !== null) {
+			this.drawRope();
+		}
+	}
+
+	drawRope() {
+		let arr = [this.attachBody.position];
+		let curr = this.start;
+		while (curr !== null) {
+			arr.push(curr.position);
+
+			curr = curr.next;
+		}
+
+		this.rope.setPoints(arr);
 	}
 
 	// #endregion
@@ -56,6 +75,8 @@ export class Grapple {
 	cancel() {
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
+
+		this.rope.visible = false;
 
 		if (this.startConstraint !== null && this.startConstraint !== undefined) {
 			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.startConstraint);
@@ -118,6 +139,7 @@ export class Grapple {
 	// #endregion
 
 	fire(x, y, addVelocity=true, callback=null) {
+		this.rope.visible = true;
 		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
 	}
 

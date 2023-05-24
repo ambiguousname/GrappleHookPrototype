@@ -25,7 +25,7 @@ export class Player {
 			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
 			// This does determine how fast you can jump (in the positive direction only)
-			maxYVelocity: 100,
+			maxYVelocity: 30,
 			// Better than friction:
 			groundDamp: 0.8,
 		},

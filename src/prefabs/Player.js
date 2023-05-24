@@ -198,7 +198,7 @@ export class Player {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
 		}
 
-		if (newVelocity.y > Player.gameplaySettings.movement.maxYVelocity) {
+		if (newVelocity.y < -Player.gameplaySettings.movement.maxYVelocity) {
 			newVelocity.y = Player.gameplaySettings.movement.maxYVelocity;
 		}
 

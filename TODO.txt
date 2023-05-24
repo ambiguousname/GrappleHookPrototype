@@ -1,6 +1,6 @@
 - In air: reduced movement control? (NOT reduced friction)
 - Modify so sensor can't fire while it's blocked
-- Left clicking and pressing w repeatedly gains height
+- Left clicking and pressing w repeatedly gains height (Fixed by just not enabling retracting during firing)
 
 Potential Fixes for Movement (add to Debug):
 - Left click to fire rope again instead of cancelling

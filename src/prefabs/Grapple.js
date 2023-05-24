@@ -100,6 +100,7 @@ export class Grapple {
 			if (this.#prevRetractState instanceof GrappleHookStates.GrappleFiring) {
 				this.#prevRetractState = GrappleHookStates.GrappleUnhooked;
 			}
+
 			this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
 		}
 	}

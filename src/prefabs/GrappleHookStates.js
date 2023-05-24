@@ -62,7 +62,9 @@ class GrappleHookManager extends State {
 	}
 
 	removeStartConstraint() {
-		this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
+		if (this.parent.startConstraint !== undefined) {
+			this.matter.composite.remove(this.matter.world.engine.world, this.parent.startConstraint);
+		}
 	}
 
 	createStartConstraint() {
@@ -103,7 +105,6 @@ class GrappleHookManager extends State {
 				
 				oldPos = store;
 				oldVel = storeVel;
-				
 
 				curr = curr.next;
 			}
@@ -181,6 +182,13 @@ class GrappleFiring extends GrappleHookManager {
 		if (3 in args) {
 			this.#firingEndCallback = args[3];
 		}
+	}
+
+	transitionLogic(newState) {
+		if (newState === GrappleRetracting) {
+			return null;
+		}
+		return newState;
 	}
 
 	update() {

@@ -42,7 +42,8 @@ export class Grapple {
 		RETRACTING - Grappling hooks is retracting.
 		*/
 		this.grapplingFSM = new FSM(GrappleHookStates.GrappleNone, this);
-		this.fireCollisionCheck = this.scene.matter.world.on("collisionstart", getAllCollisions.bind(this, this.firingCollisionCheck), this);
+		this.fireCollisionCheck = getAllCollisions.bind(this, this.firingCollisionCheck);
+		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
 	}
 
 	update() {
@@ -53,7 +54,6 @@ export class Grapple {
 
 	// #region Public Methods
 	cancel() {
-		this.scene.matter.world.off(this.fireCollisionCheck);
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
 

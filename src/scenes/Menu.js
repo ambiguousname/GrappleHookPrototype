@@ -25,12 +25,16 @@ export class Menu extends Phaser.Scene {
         music.play(musicConfig);
         
         this.space = this.input.keyboard.addKey("SPACE");
+        this.keyA = this.input.keyboard.addKey("A");
     }
 
     update() {
         if(this.space.isDown) {
             this.sound.stopByKey('bg_music');
             this.scene.start("PlayScene");
+        }
+        if(this.keyA.isDown) {
+            this.scene.start("CreditScene");
         }
     }
     

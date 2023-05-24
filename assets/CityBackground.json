@@ -3,6 +3,41 @@
  "infinite":false,
  "layers":[
         {
+         "draworder":"topdown",
+         "id":12,
+         "name":"Spawn",
+         "objects":[
+                {
+                 "height":0,
+                 "id":25,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":14.4703839475207,
+                 "y":360.794906424851
+                }, 
+                {
+                 "height":0,
+                 "id":26,
+                 "name":"angelSpawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":13.5056916843527,
+                 "y":361.759598688019
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "id":4,
          "image":"Cityasset_.png",
          "name":"CityBg",
@@ -222,8 +257,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":24,
+ "nextlayerid":13,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",

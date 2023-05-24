@@ -25,7 +25,7 @@ export class Player {
 			// Doesn't actually determine max velocity right now. Set by groundDamp and acceleration.
 			maxXVelocity: 200,
 			// This does determine how fast you can jump (in the positive direction only)
-			maxYVelocity: 200,
+			maxYVelocity: 100,
 			// Better than friction:
 			groundDamp: 0.8,
 		},
@@ -161,6 +161,10 @@ export class Player {
 				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, Player.gameplaySettings.movement.acceleration));
 			}
 		}
+		
+		if (this.retractExtendKeys["S"].isDown && this.grapple.isMaxLength()) {
+			intendedMove = this.vector.add(intendedMove, this.vector.create(0, Player.gameplaySettings.movement.acceleration));
+		}
 
 		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
 
@@ -198,7 +202,7 @@ export class Player {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
 		}
 
-		if (newVelocity.y > Player.gameplaySettings.movement.maxYVelocity) {
+		if (newVelocity.y < -Player.gameplaySettings.movement.maxYVelocity) {
 			newVelocity.y = Player.gameplaySettings.movement.maxYVelocity;
 		}
 

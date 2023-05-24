@@ -91,6 +91,10 @@ export class Grapple {
 		return this.grapplingFSM.activeState instanceof GrappleHookStates.GrappleRetracting;
 	}
 
+	isMaxLength() {
+		return this.comp.bodies.length >= Grapple.gameplaySettings.firing.maxLength;
+	}
+
 	#prevRetractState = null;
 	retract(speed) {
 		if (this.isRetracting()) {
@@ -100,6 +104,7 @@ export class Grapple {
 			if (this.#prevRetractState instanceof GrappleHookStates.GrappleFiring) {
 				this.#prevRetractState = GrappleHookStates.GrappleUnhooked;
 			}
+
 			this.grapplingFSM.transition(GrappleHookStates.GrappleRetracting, speed);
 		}
 	}

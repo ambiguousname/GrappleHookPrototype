@@ -34,11 +34,7 @@ export class GrapplePrototype extends Phaser.Scene {
 
 		this.drawMap(4);
 
-		const angelSpawn = this.map.findObject('Spawn', obj => obj.name === 'angelSpawn');
-  		this.player = new Player(this, angelSpawn.x * 4, angelSpawn.y * 4);
-
-
-		//this.player = new Player(this, 0, this.map.heightInPixels - 50);
+		this.player = new Player(this, 0, this.map.heightInPixels - 50);
 
 		// this.cameras.main.startFollow(this.player.body);
 		
@@ -46,7 +42,6 @@ export class GrapplePrototype extends Phaser.Scene {
 
 		this.cameraFollow = new Phaser.Math.Vector2(0, 0);
 		this.cameraFollowBounds = new Phaser.Math.Vector2(game.config.width * 1/2, game.config.height * 1/2);
-		// this.fps.setParent()
 	}
 
 	drawMap(scale=1) {

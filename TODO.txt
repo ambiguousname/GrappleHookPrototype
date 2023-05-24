@@ -1,11 +1,6 @@
 - In air: reduced movement control? (NOT reduced friction)
 - Modify so sensor can't fire while it's blocked
-- Add player velocity to grapple firing
-- Player chamfer radius still doesn't stop sudden stops. One stopgap: amalgamate tilemap collision layers into one shape?
-- Jump on ground hit (rather than waiting for body to re-appear)
-- Check https://labs.phaser.io/edit.html?src=src/tilemap/collision/matter%20platformer%20modify%20map.js for movement ideas
-- Cannot jump if colliding with a corner exactly (although it's only if you're moving left into the corner and you're hitting jump.)
-- Retraction sometimes doesn't work while firing
+- Left clicking and pressing w repeatedly gains height (Fixed by just not enabling retracting during firing)
 
 Potential Fixes for Movement (add to Debug):
 - Left click to fire rope again instead of cancelling
@@ -17,5 +12,3 @@ Jumping
  - Disable Jumping except for on rope
 - Shorter rope(?)
 - Permanent coyote time until canceled?
-- Sometimes the grapple doesn't collide. Why?
-- Make Grapple Hook links sensors?

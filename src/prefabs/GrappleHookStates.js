@@ -164,6 +164,10 @@ class GrappleFiring extends GrappleHookManager {
 	constructor(_parent = null, ...args) {
 		super(_parent);
 
+		
+		let sfx = this.parent.scene.sound;
+		sfx.play("extend");
+
 		this.#target = this.vector.create(args[0], args[1]);
 		this.#target = this.vector.sub(this.#target, this.parent.attachBody.position);
 		this.#target = this.vector.normalise(this.#target);
@@ -218,8 +222,6 @@ class GrappleFiring extends GrappleHookManager {
 	}
 
 	update() {
-		let sfx = this.parent.scene.sound;
-		sfx.play("extend");
 
 		if (this.parent.comp.bodies.length > 0){
 			let sensorPos = this.vector.add(this.vector.mult(this.#target, Grapple.gameplaySettings.firing.attachedOffset), this.parent.attachBody.position);
@@ -302,6 +304,11 @@ class GrappleRetracting extends GrappleHookManager {
 
 		this.#retractSpeed = args[0];
 		this.#retractTimer = 0;
+
+		if (this.#retractSpeed > 0) {
+			let sfx = this.parent.scene.sound;
+			sfx.play("retract");
+		}
 	}
 	
 	updateSpeed(speed) {
@@ -309,13 +316,11 @@ class GrappleRetracting extends GrappleHookManager {
 	}
 
 	update() {
-		let sfx = this.parent.scene.sound;
 
 		if (this.parent.comp.bodies.length >= 1 && this.time.now - this.#retractTimer > Math.abs(this.#retractSpeed)) {
 			this.#retractTimer = this.time.now;
 			if (this.#retractSpeed > 0) {
 				this.retractOne();
-				sfx.play("retract");
 			} else if (this.parent.isHooked()) {
 				this.generativeAdd();
 			}

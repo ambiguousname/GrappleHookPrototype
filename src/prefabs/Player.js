@@ -161,6 +161,10 @@ export class Player {
 				intendedMove = this.vector.add(intendedMove, this.vector.mult(key.direction, Player.gameplaySettings.movement.acceleration));
 			}
 		}
+		
+		if (this.retractExtendKeys["S"].isDown && this.grapple.isMaxLength()) {
+			intendedMove = this.vector.add(intendedMove, this.vector.create(0, Player.gameplaySettings.movement.acceleration));
+		}
 
 		let newVelocity = this.vector.add(this.body.velocity, intendedMove);
 

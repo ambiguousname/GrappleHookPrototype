@@ -32,11 +32,13 @@ export class GrapplePrototype extends Phaser.Scene {
         };
         music.play(musicConfig);
 
-		this.drawMap(4);
+		let scale = 4;
+
+		this.drawMap(scale);
 		
 		// Player spawn location
 		const angelSpawn = this.map.findObject('Spawn', obj => obj.name === 'angelSpawn');
-  		this.player = new Player(this, angelSpawn.x * 4, angelSpawn.y * 4);
+  		this.player = new Player(this, angelSpawn.x * scale, angelSpawn.y * scale);
 
 
 		//this.player = new Player(this, 0, this.map.heightInPixels - 50);

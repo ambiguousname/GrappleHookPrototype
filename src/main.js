@@ -11,7 +11,7 @@ window.game = new Phaser.Game({
 		default: 'matter',
 		enableSleeping: true,
         matter: {
-            debug: true,
+            // debug: true,
             debugBodyColor: 0xffffff
         }
 	},

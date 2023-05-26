@@ -181,7 +181,7 @@ export class Player {
 			this.grapple.stopRetract();
 		}
 
-		if (this.jump.isDown) {
+		/*if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
 			if (!this.retractExtendKeys["S"].isDown && (this.grapple.isHooked() || this.isGrounded)) {
 				this.isGrounded = false;
@@ -196,7 +196,7 @@ export class Player {
 				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.baseJumpAccel * scale));
 			}
 			this.grapple.cancel();
-		}
+		}*/
 
 		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;

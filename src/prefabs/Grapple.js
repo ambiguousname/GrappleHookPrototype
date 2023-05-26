@@ -45,8 +45,12 @@ export class Grapple {
 		this.fireCollisionCheck = getAllCollisions.bind(this, this.firingCollisionCheck);
 		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
 
-		this.rope = this.scene.add.rope(0, 0, "grapple");
-		this.rope.visible = false;
+		// Set to vertical alignment for rope:
+		this.rope = this.scene.add.rope(0, 0, "rope", null, Grapple.gameplaySettings.firing.maxLength, false);
+		this.grappleEnd = this.scene.add.image(0, 0, "hook");
+		this.grappleEnd.setOrigin(0.5, 1);
+
+		this.#hideGrapple();
 	}
 
 	update() {
@@ -55,6 +59,17 @@ export class Grapple {
 		if (this.start !== undefined && this.start !== null) {
 			this.drawRope();
 		}
+	}
+
+	#hideGrapple() {
+		this.rope.visible = false;
+		this.grappleEnd.visible = false;
+	}
+
+	#showGrapple() {
+		this.rope.visible = true;
+		this.grappleEnd.visible = true;
+		this.grappleEnd.setTexture("hook");
 	}
 
 	drawRope() {
@@ -66,6 +81,13 @@ export class Grapple {
 			curr = curr.next;
 		}
 
+		if (this.grappleEnd.texture.key === "hook") {
+			this.grappleEnd.setPosition(this.end.position.x, this.end.position.y);
+			this.grappleEnd.setRotation(Phaser.Math.Angle.Between(this.end.position.x, this.end.position.y, this.end.prev.position.x, this.end.prev.position.y) - Math.PI/2);
+		} else if (this.grappleEnd.texture.key === "hook_hooked" && this.grappleEnd.visible) {
+			arr.push({x: this.grappleEnd.x, y: this.grappleEnd.y});
+		}
+		
 		this.rope.setPoints(arr);
 	}
 
@@ -76,7 +98,7 @@ export class Grapple {
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
 
-		this.rope.visible = false;
+		this.#hideGrapple();
 
 		if (this.startConstraint !== null && this.startConstraint !== undefined) {
 			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.startConstraint);
@@ -139,7 +161,7 @@ export class Grapple {
 	// #endregion
 
 	fire(x, y, addVelocity=true, callback=null) {
-		this.rope.visible = true;
+		this.#showGrapple();
 		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
 	}
 
@@ -157,6 +179,8 @@ export class Grapple {
 		if (currentEnd !== null) {
 			let bodyInArr = this.comp.bodies.filter(body => body.id === other.id).length > 0;
 			if (!(bodyInArr) && other.id !== this.attachBody.id && !other.isSensor) {
+				this.grappleEnd.setTexture("hook_hooked");
+				this.grappleEnd.setPosition(this.end.position.x, this.end.position.y);
 				this.grapplingFSM.transition(GrappleHookStates.GrappleHooked);
 			}
 		}

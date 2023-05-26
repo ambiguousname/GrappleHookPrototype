@@ -1,5 +1,9 @@
 - In air: reduced movement control? (NOT reduced friction)
 - Left clicking and pressing w repeatedly gains height (Fixed by just not enabling retracting during firing)
+- Right click to detach(?)
+- Timer for attaching(?)
+- Cut Jumping
+- Fix clicking to the right while also attached
 
 Potential Fixes for Movement (add to Debug):
 - Move towards hook end while firing

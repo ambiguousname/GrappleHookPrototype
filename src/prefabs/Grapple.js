@@ -83,7 +83,12 @@ export class Grapple {
 
 		if (this.grappleEnd.texture.key === "hook") {
 			this.grappleEnd.setPosition(this.end.position.x, this.end.position.y);
-			this.grappleEnd.setRotation(Phaser.Math.Angle.Between(this.end.position.x, this.end.position.y, this.end.prev.position.x, this.end.prev.position.y) - Math.PI/2);
+
+			let prev = null; //this.end.prev;
+			if (prev === null) {
+				prev = this.attachBody;
+			}
+			this.grappleEnd.setRotation(Phaser.Math.Angle.Between(this.end.position.x, this.end.position.y, prev.position.x, prev.position.y) - Math.PI/2);
 		} else if (this.grappleEnd.texture.key === "hook_hooked" && this.grappleEnd.visible) {
 			arr.push({x: this.grappleEnd.x, y: this.grappleEnd.y});
 		}

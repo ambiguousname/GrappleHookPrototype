@@ -15,6 +15,7 @@ window.game = new Phaser.Game({
             debugBodyColor: 0xffffff
         }
 	},
+	antialias: false,
 });
 
 debug();

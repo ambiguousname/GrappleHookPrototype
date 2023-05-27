@@ -119,6 +119,20 @@ export class Grapple {
 		
 		this.rope.setPoints(arr);
 		this.rope.setColors(colors);
+
+		/*if (this.debugDrawPoint === undefined) {
+			this.debugDrawPoint = this.scene.add.graphics();
+		}
+
+		if (this.debugDrawPoint !== undefined){
+			this.debugDrawPoint.clear();
+			
+			for (let p in arr) {
+				let point = arr[p];
+				this.debugDrawPoint.fillStyle(0xff0000);
+				this.debugDrawPoint.fillRect(point.x, point.y, p/10, 1);
+			}
+		}*/
 	}
 
 	// #endregion

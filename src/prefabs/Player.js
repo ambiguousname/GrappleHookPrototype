@@ -181,6 +181,10 @@ export class Player {
 			this.grapple.stopRetract();
 		}
 
+		if (this.jump.isDown) {
+			this.grapple.cancel();
+		}
+
 		/*if (this.jump.isDown) {
 			// Are we on the ground or attached to a web?
 			if (!this.retractExtendKeys["S"].isDown && (this.grapple.isHooked() || this.isGrounded)) {

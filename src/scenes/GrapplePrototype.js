@@ -1,6 +1,7 @@
 import { Player } from "../prefabs/Player.js";
 import { lerp } from "../util/lerp.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
+import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 
 export class GrapplePrototype extends Phaser.Scene {
 	constructor() {
@@ -66,8 +67,13 @@ export class GrapplePrototype extends Phaser.Scene {
 		
 		// this.matter.add.rectangle(300, 50, 500, 50, {isStatic: true});
 
-		this.cameraFollow = new Phaser.Math.Vector2(0, 0);
+		this.cameraFollow = new Phaser.Math.Vector2(this.player.body.position.x - this.cameras.main.centerX, (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4);
 		this.cameraFollowBounds = new Phaser.Math.Vector2(game.config.width * 1/2, game.config.height * 1/2);
+		this.cameras.main.setScroll(Math.max(this.cameraFollow.x, this.cameras.main.centerX), Math.max(this.cameraFollow.y, this.cameras.main.centerY));
+
+		let worldSpace = screenToWorldSpace(this.cameras.main, window.cursorFire);
+
+		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
 	}
 
 	drawMap(scale=1) {

@@ -1,3 +1,4 @@
+import { Button } from "../util/button.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
 
 export class Menu extends Phaser.Scene {
@@ -9,12 +10,27 @@ export class Menu extends Phaser.Scene {
         
         // load title screen
         this.load.image('TitleScreen', './assets/Game_Cover_.png');
+
+        let g = this.add.graphics();
+        g.fillStyle(0x18202f);
+        g.fillRect(0, 0, 100, 50);
+        g.generateTexture("button", 100, 50);
+        g.destroy();
     }
 
     create() {
         // title config
         let title = this.add.sprite(0,0,'TitleScreen');
         title.setOrigin(0,0);
+
+        let b = new Button(this, game.config.width/2, game.config.height/2 + 20, "button", "Play", () => {
+            window.cursorFire = this.input.mousePointer;
+            this.scene.start("PlayScene");
+        });
+
+        let credits = new Button(this, game.config.width/2, game.config.height/2 + 100, "button", "Credits", () => {
+            this.scene.start("CreditsScene");
+        });
 
         // load audio
         loadFilesAtRuntime(this, {
@@ -36,13 +52,6 @@ export class Menu extends Phaser.Scene {
     }
 
     update() {
-        if(this.space.isDown) {
-            this.sound.stopByKey('bg_music');
-            this.scene.start("PlayScene");
-        }
-        if(this.keyA.isDown) {
-            this.scene.start("CreditScene");
-        }
     }
     
 }

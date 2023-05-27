@@ -1,4 +1,4 @@
-import { setPreload } from "../util/loading.js";
+import { loadFilesAtRuntime } from "../util/loading.js";
 
 export class Menu extends Phaser.Scene {
     constructor() {
@@ -15,10 +15,11 @@ export class Menu extends Phaser.Scene {
         // title config
         let title = this.add.sprite(0,0,'TitleScreen');
         title.setOrigin(0,0);
-        // load audio
 
-        this.load.audio('bg_music', './assets/IntroSampPiano.wav');
-        this.load.once("complete", () => {
+        // load audio
+        loadFilesAtRuntime(this, {
+            "bg_music": {type: "audio", url: "./assets/IntroSampPiano.wav"}
+        }, () => {
             let music = this.sound.add('bg_music');
             let musicConfig = {
                 mute: 0,
@@ -28,7 +29,6 @@ export class Menu extends Phaser.Scene {
             }
             music.play(musicConfig);
         });
-        this.load.start();
 
         
         this.space = this.input.keyboard.addKey("SPACE");

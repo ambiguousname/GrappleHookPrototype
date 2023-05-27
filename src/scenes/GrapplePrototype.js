@@ -1,14 +1,13 @@
 import { Player } from "../prefabs/Player.js";
-import { Grapple } from "../prefabs/Grapple.js";
 import { lerp } from "../util/lerp.js";
-import { setPreload } from "../util/loading.js";
+import { loadFilesAtRuntime } from "../util/loading.js";
 
 export class GrapplePrototype extends Phaser.Scene {
 	constructor() {
         super("PlayScene");
     }
 	preload() {
-		setPreload(this);
+		// setPreload(this);
 		
 		this.load.tilemapTiledJSON('map', './assets/CityBackground.json');
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
@@ -21,7 +20,6 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.image('hook', './assets/hook/Grappling_Hook_1.png');
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
 
-		this.load.audio('bg1_music', './assets/Level1Bg.wav');
 		this.load.audio('retract', './assets/RetractHook.wav');
 		this.load.audio('extend' , './assets/HookExtend.wav');
 
@@ -38,15 +36,20 @@ export class GrapplePrototype extends Phaser.Scene {
 		// Retract sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
-		// play background music
-		let music = this.sound.add('bg1_music');
-		let musicConfig = {
-            mute: 0,
-            volume: 0.1,
-            loop: true, 
-            delay: 0
-        };
-        music.play(musicConfig);
+
+		loadFilesAtRuntime(this, {
+			"bg1_music": {type: "audio", url: "./assets/Level1Bg.wav"}
+		}, () => {
+			// play background music
+			let music = this.sound.add('bg1_music');
+			let musicConfig = {
+				mute: 0,
+				volume: 0.1,
+				loop: true, 
+				delay: 0
+			};
+			music.play(musicConfig);
+		});
 
 		let scale = 4;
 

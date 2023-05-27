@@ -1,5 +1,6 @@
 import {FSM} from "../util/FSM.js";
 import { getAllCollisions } from "../util/collision.js";
+import { lerp } from "../util/lerp.js";
 import * as GrappleHookStates from "./GrappleHookStates.js";
 
 export class Grapple {
@@ -11,6 +12,7 @@ export class Grapple {
 			stiffness: 0.5,
 			startConstraintStiffness: 0.5,
 			segmentSize: 10,
+			interpolationAmount: 20,
 		},
 
 		firing: {
@@ -45,8 +47,13 @@ export class Grapple {
 		this.fireCollisionCheck = getAllCollisions.bind(this, this.firingCollisionCheck);
 		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
 
+		
+		this.ropeShader = this.scene.add.shader("rope", 0, 0, 10, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1));
+		this.ropeShader.setRenderToTexture("ropeShaderTexture");
+
 		// Set to vertical alignment for rope:
-		this.rope = this.scene.add.rope(0, 0, "rope", null, Grapple.gameplaySettings.firing.maxLength, false);
+		this.rope = this.scene.add.rope(0, 0, "ropeShaderTexture", null, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1), false);
+
 		this.grappleEnd = this.scene.add.image(0, 0, "hook");
 		this.grappleEnd.setOrigin(0.5, 1);
 
@@ -74,10 +81,26 @@ export class Grapple {
 
 	drawRope() {
 		let arr = [this.attachBody.position];
+
+		let colors = [0xaaaaaa];
+		let a = 1;
+
 		let curr = this.start;
+		let prevPosition = this.attachBody.position;
 		while (curr !== null) {
+			// Interpolate for greater shader resolution:
+			for (let i = 0; i < Grapple.gameplaySettings.rope.interpolationAmount; i++) {
+				arr.push(lerp(curr.position, prevPosition, i/Grapple.gameplaySettings.rope.interpolationAmount));
+				colors.push(a * 0xffffff + (1 - a) * 0xaaaaaa);
+				a = (a + 1) % 2;
+			}
+
 			arr.push(curr.position);
 
+			colors.push(a * 0xffffff + (1 - a) * 0xaaaaaa);
+			a = (a + 1) % 2;
+
+			prevPosition = curr.position;
 			curr = curr.next;
 		}
 
@@ -91,9 +114,11 @@ export class Grapple {
 			this.grappleEnd.setRotation(Phaser.Math.Angle.Between(this.end.position.x, this.end.position.y, prev.position.x, prev.position.y) - Math.PI/2);
 		} else if (this.grappleEnd.texture.key === "hook_hooked" && this.grappleEnd.visible) {
 			arr.push({x: this.grappleEnd.x, y: this.grappleEnd.y});
+			colors.push(a * 0xffffff + (1 - a) * 0xaaaaaa);
 		}
 		
 		this.rope.setPoints(arr);
+		this.rope.setColors(colors);
 	}
 
 	// #endregion

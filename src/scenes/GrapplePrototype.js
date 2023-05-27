@@ -14,7 +14,7 @@ export class GrapplePrototype extends Phaser.Scene {
 
 		this.load.image('player', './assets/Angel_Asset_.png');
 
-		this.load.image('rope', './assets/hook/Rope_.png');
+		// this.load.image('rope', './assets/hook/Rope_.png');
 		this.load.image('hook', './assets/hook/Grappling_Hook_1.png');
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
 
@@ -22,11 +22,12 @@ export class GrapplePrototype extends Phaser.Scene {
 		this.load.audio('retract', './assets/RetractHook.wav');
 		this.load.audio('extend' , './assets/HookExtend.wav');
 
+		this.load.glsl("rope", "./src/util/ropeShader.glsl");
 		
         /*var graphics = this.make.graphics();
         graphics.fillStyle(0xffffff);
         graphics.fillRect(0, 0, 100, Grapple.gameplaySettings.rope.segmentSize);
-        graphics.generateTexture("grapple", 100, Grapple.gameplaySettings.rope.segmentSize);
+        graphics.generateTexture("rope", 100, Grapple.gameplaySettings.rope.segmentSize);
         graphics.destroy();*/
 	}
 	

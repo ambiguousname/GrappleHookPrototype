@@ -89,7 +89,7 @@ export class Grapple {
 		let prevPosition = this.attachBody.position;
 		while (curr !== null) {
 			// Interpolate for greater shader resolution:
-			for (let i = 0; i < Grapple.gameplaySettings.rope.interpolationAmount; i++) {
+			for (let i = 1; i < Grapple.gameplaySettings.rope.interpolationAmount; i++) {
 				arr.push(lerp(curr.position, prevPosition, i/Grapple.gameplaySettings.rope.interpolationAmount));
 				colors.push(a * 0xffffff + (1 - a) * 0xaaaaaa);
 				a = (a + 1) % 2;

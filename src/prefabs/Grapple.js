@@ -48,7 +48,7 @@ export class Grapple {
 		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
 
 		
-		this.ropeShader = this.scene.add.shader("rope", 0, 0, 10, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1));
+		this.ropeShader = this.scene.add.shader("rope", 0, 0, Grapple.gameplaySettings.rope.segmentSize, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1));
 		this.ropeShader.setRenderToTexture("ropeShaderTexture");
 
 		// Set to vertical alignment for rope:

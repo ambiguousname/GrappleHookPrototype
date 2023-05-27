@@ -14,3 +14,6 @@ Jumping
  - Disable Jumping except for on rope
 - Shorter rope(?)
 - Permanent coyote time until canceled?
+
+- Further polygon drawn around grapple hook to prevent "slipping over" with what should be a solid hook
+- There should be a release button, just to let go of momentum

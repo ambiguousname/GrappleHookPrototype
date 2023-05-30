@@ -23,12 +23,12 @@ export class Menu extends Phaser.Scene {
         let title = this.add.sprite(0,0,'TitleScreen');
         title.setOrigin(0,0);
 
-        let b = new Button(this, game.config.width/2, game.config.height/2 + 20, "button", "Play", () => {
+        let b = new Button(this, game.config.width/2, game.config.height/2 + 75, "button", "Play", () => {
             window.cursorFire = this.input.mousePointer;
             this.scene.start("PlayScene");
         });
 
-        let credits = new Button(this, game.config.width/2, game.config.height/2 + 100, "button", "Credits", () => {
+        let credits = new Button(this, game.config.width/2, game.config.height/2 + 150, "button", "Credits", () => {
             this.scene.start("CreditScene");
         });
 

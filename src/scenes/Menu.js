@@ -29,7 +29,7 @@ export class Menu extends Phaser.Scene {
         });
 
         let credits = new Button(this, game.config.width/2, game.config.height/2 + 100, "button", "Credits", () => {
-            this.scene.start("CreditsScene");
+            this.scene.start("CreditScene");
         });
 
         // load audio

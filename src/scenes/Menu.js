@@ -26,6 +26,7 @@ export class Menu extends Phaser.Scene {
         let b = new Button(this, game.config.width/2, game.config.height/2 + 75, "button", "Play", () => {
             window.cursorFire = this.input.mousePointer;
             this.scene.start("PlayScene");
+            this.sound.stopByKey('bg_music');
         });
 
         let credits = new Button(this, game.config.width/2, game.config.height/2 + 150, "button", "Credits", () => {
@@ -47,8 +48,8 @@ export class Menu extends Phaser.Scene {
         });
 
         
-        this.space = this.input.keyboard.addKey("SPACE");
-        this.keyA = this.input.keyboard.addKey("A");
+        // this.space = this.input.keyboard.addKey("SPACE");
+        // this.keyA = this.input.keyboard.addKey("A");
     }
 
     update() {

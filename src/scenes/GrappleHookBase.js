@@ -34,6 +34,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		// Restart Current Scene
 		this.input.keyboard.on('keydown-R', () => {
 			this.scene.restart();
+			this.sound.stopByKey('bg1_music');
 		});	
 		// Retract sfx
 		this.sound.add('retract');
@@ -142,7 +143,7 @@ export class GrappleHookBase extends Phaser.Scene {
 					gravityY: 200,
 					stopAfter: 10
 				});
-
+				
 				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 				numFeathers--;

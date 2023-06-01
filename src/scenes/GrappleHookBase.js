@@ -35,7 +35,6 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.input.keyboard.on('keydown-R', () => {
 			this.scene.restart();
 		});	
-
 		// Retract sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
@@ -135,12 +134,15 @@ export class GrappleHookBase extends Phaser.Scene {
 					tile = bodyB;
 				}
 				// particle emmiter for feather
-				this.add.particles(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale, 'sparkle', {
+				const tileX = tile.position.x;
+				const tileY = tile.position.y;
+				this.add.particles(tileX, tileY, 'sparkle', {
 					speed: 100,
 					lifespan: 500,
 					gravityY: 200,
 					stopAfter: 10
 				});
+
 				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 				numFeathers--;

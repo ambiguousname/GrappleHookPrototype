@@ -16,12 +16,13 @@ export class GrappleHookBase extends Phaser.Scene {
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		this.load.image('background', './assets/Cityasset_.png');
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
-
+		this.load.image('sparkle', './assets/sparkle.png');
 		this.load.image('player', './assets/Angel_Asset_.png');
 
 		// this.load.image('rope', './assets/hook/Rope_.png');
 		this.load.image('hook', './assets/hook/Grappling_Hook_1.png');
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
+		
 
 		this.load.audio('retract', './assets/RetractHook.wav');
 		this.load.audio('extend' , './assets/HookExtend.wav');
@@ -30,6 +31,11 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
+		// Restart Current Scene
+		this.input.keyboard.on('keydown-R', () => {
+			this.scene.restart();
+		});	
+
 		// Retract sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
@@ -128,6 +134,13 @@ export class GrappleHookBase extends Phaser.Scene {
 				if (this.player.body.id === bodyA.id) {
 					tile = bodyB;
 				}
+				// particle emmiter for feather
+				this.add.particles(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale, 'sparkle', {
+					speed: 100,
+					lifespan: 500,
+					gravityY: 200,
+					stopAfter: 10
+				});
 				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 				numFeathers--;

@@ -19,17 +19,14 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.collisionLayer = collisionLayer;
     }
 	preload() {
-		// setPreload(this);
 		// Load in maps for scenes
 		this.load.tilemapTiledJSON('map' + this.sceneName, this.#tilemapJSON);
-		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		// Load in assets
 		this.load.image('background' + this.sceneName, this.#backgroundImage);
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
 		this.load.image('sparkle', './assets/sparkle.png');
 		this.load.image('player', './assets/Angel_Asset_.png');
 
-		// this.load.image('rope', './assets/hook/Rope_.png');
 		this.load.image('hook', './assets/hook/Grappling_Hook_1.png');
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
 		
@@ -41,11 +38,6 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
-		// Restart Current Scene
-		this.input.keyboard.on('keydown-R', () => {
-			this.scene.restart();
-			this.sound.stopByKey('bg1_music');
-		});	
 		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
@@ -64,6 +56,11 @@ export class GrappleHookBase extends Phaser.Scene {
 			};
 			music.play(musicConfig);
 		});
+		// Restart Current Scene
+		this.input.keyboard.on('keydown-R', () => {
+			this.scene.restart();
+			this.sound.stopByKey(audioName);
+		});	
 
 		// Set up map
 		this.drawMap(this.mapScale);
@@ -103,7 +100,7 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 
 	drawMap(scale=1) {
-
+		// Scale current scene map
 		this.map = this.make.tilemap({key: 'map' + this.sceneName});
 		this.map.forEachTile((tile) => {
 			tile.x *= scale;
@@ -123,8 +120,9 @@ export class GrappleHookBase extends Phaser.Scene {
 		// this.groundLayer.setCollisionByExclusion([-1]);
 		// this.matter.world.convertTilemapLayer(this.groundLayer);
 
+		// Set collision layer
 		this.drawObjectLayerCollisions({layers: this.map.getObjectLayer(this.collisionLayer), scale: scale});
-
+		// Set feather layer
 		this.featherTiles = this.map.addTilesetImage("Feather_Asset_");
 		this.featherLayer = this.map.createLayer("Feather", this.featherTiles, 0, 0);
 		this.featherLayer.skipCull = true;
@@ -155,7 +153,7 @@ export class GrappleHookBase extends Phaser.Scene {
 					gravityY: 200,
 					stopAfter: 10
 				});
-				
+				// Remove feather once collided with. Also checks if no more feathers are left in the scene
 				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 				numFeathers--;

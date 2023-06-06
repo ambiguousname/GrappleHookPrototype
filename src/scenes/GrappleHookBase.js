@@ -13,8 +13,10 @@ export class GrappleHookBase extends Phaser.Scene {
 		// setPreload(this);
 		
 		this.load.tilemapTiledJSON('map', './assets/CityBackground.json');
+		this.load.tilemapTiledJSON('undergroundMap' , './assets/UndergroundBackground.json');
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		this.load.image('background', './assets/Cityasset_.png');
+		this.load.image('underground', './assets/Underground_background_Asset.png');
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
 		this.load.image('sparkle', './assets/sparkle.png');
 		this.load.image('player', './assets/Angel_Asset_.png');

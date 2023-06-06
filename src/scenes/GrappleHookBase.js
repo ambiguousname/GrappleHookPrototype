@@ -11,12 +11,11 @@ export class GrappleHookBase extends Phaser.Scene {
     }
 	preload() {
 		// setPreload(this);
-		
+		// Load in maps for scenes
 		this.load.tilemapTiledJSON('map', './assets/CityBackground.json');
-		this.load.tilemapTiledJSON('undergroundMap' , './assets/UndergroundBackground.json');
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
+		// Load in assets
 		this.load.image('background', './assets/Cityasset_.png');
-		this.load.image('underground', './assets/Underground_background_Asset.png');
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
 		this.load.image('sparkle', './assets/sparkle.png');
 		this.load.image('player', './assets/Angel_Asset_.png');
@@ -25,7 +24,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.load.image('hook', './assets/hook/Grappling_Hook_1.png');
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
 		
-
+		// Load in sfx
 		this.load.audio('retract', './assets/RetractHook.wav');
 		this.load.audio('extend' , './assets/HookExtend.wav');
 
@@ -38,10 +37,10 @@ export class GrappleHookBase extends Phaser.Scene {
 			this.scene.restart();
 			this.sound.stopByKey('bg1_music');
 		});	
-		// Retract sfx
+		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
-
+		// Load background music for scene 1
 		loadFilesAtRuntime(this, {
 			"bg1_music": {type: "audio", url: "./assets/Level1Bg.wav"}
 		}, () => {
@@ -57,7 +56,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		});
 
 		let scale = 4;
-
+		// Set up map
 		this.drawMap(scale);
 		
 		// Player spawn location
@@ -70,7 +69,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		// this.cameras.main.startFollow(this.player.body);
 		
 		// this.matter.add.rectangle(300, 50, 500, 50, {isStatic: true});
-
+		// Set camera view
 		this.cameraFollow = new Phaser.Math.Vector2(this.player.body.position.x - this.cameras.main.centerX, (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4);
 		this.cameraFollowBounds = new Phaser.Math.Vector2(game.config.width * 1/2, game.config.height * 1/2);
 		this.cameras.main.setScroll(Math.max(this.cameraFollow.x, this.cameras.main.centerX), Math.max(this.cameraFollow.y, this.cameras.main.centerY));
@@ -211,6 +210,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		
 		this.cameraFollow.x = this.player.body.position.x - this.cameras.main.centerX;
 		this.cameraFollow.y = (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4;
+
 		
 		// If this gets revisited, you need to fix because the camera origin is 0.5 by default:
 		/*if (Math.abs(this.player.body.position.x - (this.cameras.main.centerX + this.cameras.main.scrollX)) > this.cameraFollowBounds.x/2) {

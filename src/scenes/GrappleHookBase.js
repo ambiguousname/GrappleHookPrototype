@@ -5,17 +5,26 @@ import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
-	constructor(sceneName, nextScene) {
+	#tilemapJSON = undefined;
+	#backgroundImage = undefined;
+	#backgroundMusic = undefined;
+	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, mapScale=4, collisionLayer="Buildings") {
         super(sceneName);
+		this.sceneName = sceneName;
 		this.#nextScene = nextScene;
+		this.#tilemapJSON = tilemapJSON;
+		this.#backgroundImage = backgroundImage;
+		this.#backgroundMusic = backgroundMusic;
+		this.mapScale = mapScale;
+		this.collisionLayer = collisionLayer;
     }
 	preload() {
 		// setPreload(this);
 		// Load in maps for scenes
-		this.load.tilemapTiledJSON('map', './assets/CityBackground.json');
+		this.load.tilemapTiledJSON('map' + this.sceneName, this.#tilemapJSON);
 		// this.load.spritesheet('tiles', './assets/tiles.png', {frameWidth: 70, frameHeight: 70});
 		// Load in assets
-		this.load.image('background', './assets/Cityasset_.png');
+		this.load.image('background' + this.sceneName, this.#backgroundImage);
 		this.load.image('Feather_Asset_', './assets/Feather_Asset_.png');
 		this.load.image('sparkle', './assets/sparkle.png');
 		this.load.image('player', './assets/Angel_Asset_.png');
@@ -40,12 +49,13 @@ export class GrappleHookBase extends Phaser.Scene {
 		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
+		let audioName = `${this.sceneName}_music`;
+		let files = {};
+		files[audioName] = {type: "audio", url: this.#backgroundMusic};
 		// Load background music for scene 1
-		loadFilesAtRuntime(this, {
-			"bg1_music": {type: "audio", url: "./assets/Level1Bg.wav"}
-		}, () => {
+		loadFilesAtRuntime(this, files, () => {
 			// play background music
-			let music = this.sound.add('bg1_music');
+			let music = this.sound.add(audioName);
 			let musicConfig = {
 				mute: 0,
 				volume: 0.1,
@@ -55,13 +65,12 @@ export class GrappleHookBase extends Phaser.Scene {
 			music.play(musicConfig);
 		});
 
-		let scale = 4;
 		// Set up map
-		this.drawMap(scale);
+		this.drawMap(this.mapScale);
 		
 		// Player spawn location
 		const angelSpawn = this.map.findObject('Spawn', obj => obj.name === 'angelSpawn');
-  		this.player = new Player(this, angelSpawn.x * scale, angelSpawn.y * scale);
+  		this.player = new Player(this, angelSpawn.x * this.mapScale, angelSpawn.y * this.mapScale);
 
 
 		//this.player = new Player(this, 0, this.map.heightInPixels - 50);
@@ -95,7 +104,7 @@ export class GrappleHookBase extends Phaser.Scene {
 
 	drawMap(scale=1) {
 
-		this.map = this.make.tilemap({key: 'map'});
+		this.map = this.make.tilemap({key: 'map' + this.sceneName});
 		this.map.forEachTile((tile) => {
 			tile.x *= scale;
 			tile.y *= scale;
@@ -105,7 +114,7 @@ export class GrappleHookBase extends Phaser.Scene {
         this.matter.world.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
 		this.cameras.main.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
 		
-		let bg = this.add.image(0, 0, "background").setOrigin(0);
+		let bg = this.add.image(0, 0, "background" + this.sceneName).setOrigin(0);
 		bg.setScale(scale);
 
 		// this.groundTiles = this.map.addTilesetImage("tiles");
@@ -114,7 +123,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		// this.groundLayer.setCollisionByExclusion([-1]);
 		// this.matter.world.convertTilemapLayer(this.groundLayer);
 
-		this.drawObjectLayerCollisions({layers: this.map.getObjectLayer("Buildings"), scale: scale});
+		this.drawObjectLayerCollisions({layers: this.map.getObjectLayer(this.collisionLayer), scale: scale});
 
 		this.featherTiles = this.map.addTilesetImage("Feather_Asset_");
 		this.featherLayer = this.map.createLayer("Feather", this.featherTiles, 0, 0);
@@ -123,7 +132,9 @@ export class GrappleHookBase extends Phaser.Scene {
 		let numFeathers = 0;
 		this.featherLayer.forEachTile((tile) => {
 			tile.setSize(70, 70);
-			numFeathers++;
+			if (tile.index !== -1 ){
+				numFeathers++;
+			}
 		});
 
 		// Basic collision check, to fix:

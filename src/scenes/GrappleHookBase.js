@@ -47,21 +47,34 @@ export class GrappleHookBase extends Phaser.Scene {
 		// Load background music for scene 1
 		loadFilesAtRuntime(this, files, () => {
 			// play background music
-			let music = this.sound.add(audioName);
+			this.#backgroundMusic = this.sound.add(audioName);
+			//let music = this.sound.add(audioName);
 			let musicConfig = {
 				mute: 0,
 				volume: 0.1,
 				loop: true, 
 				delay: 0
 			};
-			music.play(musicConfig);
+			this.#backgroundMusic.play(musicConfig);
 		});
 		// Restart Current Scene
 		this.input.keyboard.on('keydown-R', () => {
 			this.scene.restart();
 			this.sound.stopByKey(audioName);
 		});	
+		// Pause Game
+		this.isPaused = false;
+        this.pauseScreen = undefined;
 
+        this.input.keyboard.on('keydown', (event) => {
+            if (event.key === 'p' || event.key === 'P') {
+                if (this.isPaused) {
+                    this.resumeGame();
+                } else {
+                    this.pauseGame();
+                }
+            }
+        });
 		// Set up map
 		this.drawMap(this.mapScale);
 		
@@ -85,7 +98,42 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
 	}
 
+	pauseGame() {
+        // Pause the game
+        this.isPaused = true;
+        this.scene.pause();
+
+        // Create and show the pause screen
+        this.pauseScreen = this.add.graphics();
+        this.pauseScreen.fillStyle(0x000000, 0.7);
+        this.pauseScreen.fillRect(0, 0, this.cameras.main.width, this.cameras.main.height);
+
+        // Add pause text
+        const pauseText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Paused', {
+            fontSize: '48px',
+            color: '#ffffff',
+        });
+        pauseText.setOrigin(0.5);
+    }
+
+    resumeGame() {
+        // Remove the pause screen and resume the game
+        if (this.pauseScreen) {
+            this.pauseScreen.destroy();
+            this.pauseScreen = undefined;
+        }
+        this.isPaused = false;
+        this.scene.resume();
+    }
+
+	stopBackgroundMusic() {
+		if (this.#backgroundMusic) {
+			this.#backgroundMusic.stop();
+		}
+	}
+
 	transitionTo(sceneName) {
+		this.stopBackgroundMusic(); 
 		let startTime = this.time.now;
 		function transitionToAnim() {
 			let timeElapsed = this.time.now - startTime;

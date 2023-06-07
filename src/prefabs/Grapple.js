@@ -138,7 +138,8 @@ export class Grapple {
 	// #endregion
 
 	// #region Public Methods
-	cancel() {
+
+	cancelNoFSMTransition() {
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
 
@@ -158,6 +159,9 @@ export class Grapple {
 
 		this.end = null;
 		this.start = null;
+	}
+	cancel() {
+		this.cancelNoFSMTransition();
 
 		this.grapplingFSM.transition(GrappleHookStates.GrappleNone);
 	}

@@ -197,12 +197,12 @@ class GrappleFiring extends GrappleHookManager {
 					return;
 				}
 
-				let pos = {x: this.#fireSensor.x, y: this.#fireSensor.y};
+				let pos = {x: this.#fireSensor.position.x, y: this.#fireSensor.position.y};
 
-				this.parent.cancel();
-				/*// Create end and bind to hook:
+				this.parent.cancelNoFSMTransition();
+				// Create end and bind to hook:
 				this.parent.end = this.generateLink(pos.x, pos.y, pos);
-				this.parent.grapplingFSM.transition(GrappleHooked);*/
+				this.parent.grapplingFSM.transition(GrappleHooked);
 			}
 		});
 		this.matter.world.on("collisionstart", this.fireSensorCollisionCheck);

@@ -17,8 +17,12 @@ export function setPreload(scene) {
 export function loadFilesAtRuntime(scene, filesObj, callback) {
 	for (let key in filesObj) {
 		let fileToLoad = filesObj[key];
-		
-		scene.load[fileToLoad.type](key, fileToLoad.url);
+		if (typeof fileToLoad.url === 'string') {
+			scene.load[fileToLoad.type](key, fileToLoad.url);
+		  } else {
+			console.error(`Invalid URL for ${key}: ${fileToLoad.url}`);
+		  }
+		//scene.load[fileToLoad.type](key, fileToLoad.url);
 	}
 	scene.load.once("complete", callback);
 	scene.load.start();

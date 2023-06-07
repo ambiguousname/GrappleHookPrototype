@@ -2,11 +2,13 @@ import { Player } from "../prefabs/Player.js";
 import { lerp } from "../util/lerp.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
+//import { Button } from "../util/button.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
 	#tilemapJSON = undefined;
 	#backgroundImage = undefined;
+	#backgroundMusicURL = undefined;
 	#backgroundMusic = undefined;
 	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, mapScale=4, collisionLayer="Buildings") {
         super(sceneName);
@@ -14,7 +16,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.#nextScene = nextScene;
 		this.#tilemapJSON = tilemapJSON;
 		this.#backgroundImage = backgroundImage;
-		this.#backgroundMusic = backgroundMusic;
+		this.#backgroundMusicURL = backgroundMusic;
 		this.mapScale = mapScale;
 		this.collisionLayer = collisionLayer;
     }
@@ -35,6 +37,12 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.load.audio('extend' , './assets/HookExtend.wav');
 
 		this.load.glsl("rope", "./src/util/ropeShader.glsl");
+
+		// let g = this.add.graphics();
+        // g.fillStyle(0x18202f);
+        // g.fillRect(0, 0, 100, 50);
+        // g.generateTexture("button", 100, 50);
+        // g.destroy();
 	}
 	
 	create() {
@@ -43,7 +51,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.sound.add('extend');
 		let audioName = `${this.sceneName}_music`;
 		let files = {};
-		files[audioName] = {type: "audio", url: this.#backgroundMusic};
+		files[audioName] = {type: "audio", url: this.#backgroundMusicURL};
 		// Load background music for scene 1
 		loadFilesAtRuntime(this, files, () => {
 			// play background music
@@ -59,22 +67,10 @@ export class GrappleHookBase extends Phaser.Scene {
 		});
 		// Restart Current Scene
 		this.input.keyboard.on('keydown-R', () => {
-			this.scene.restart();
-			this.sound.stopByKey(audioName);
+			this.restartScene();
 		});	
-		// Pause Game
-		this.isPaused = false;
-        this.pauseScreen = undefined;
 
-        this.input.keyboard.on('keydown', (event) => {
-            if (event.key === 'p' || event.key === 'P') {
-                if (this.isPaused) {
-                    this.resumeGame();
-                } else {
-                    this.pauseGame();
-                }
-            }
-        });
+		//this.input.keyboard.on('keydown-P', this.pauseGame, this);
 		// Set up map
 		this.drawMap(this.mapScale);
 		
@@ -98,32 +94,47 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
 	}
 
-	pauseGame() {
-        // Pause the game
-        this.isPaused = true;
-        this.scene.pause();
+	// pauseGame() {
+	// 	// Pause the game
+	// 	this.scene.pause();
+	// 	this.isPaused = true;
+	// 	console.log(this.isPaused);
+	
+	// 	// Create and show the pause screen
+	// 	this.pauseScreen = this.add.graphics();
+	// 	this.pauseScreen.fillStyle(0x000000, 0.7);
+	// 	this.pauseScreen.fillRect(0, 0, this.cameras.main.width, this.cameras.main.height);
+	
+	// 	// Add buttons to the pause screen
+	// 	const resumeButton = new Button(this, this.cameras.main.width / 2, this.cameras.main.height / 2, 'button', 'Resume', this.resumeGame.bind(this));
+	// 	const mainMenuButton = new Button(this, this.cameras.main.width / 2, (this.cameras.main.height / 2) + 50, 'button', 'Main Menu', this.goToMainMenu.bind(this));
+	
+	// 	// Add the buttons to the pause screen container
+	// 	const pauseScreenContainer = this.add.container(0, 0, [this.pauseScreen, resumeButton, mainMenuButton]);
+	// 	pauseScreenContainer.setDepth(1);
+	// }
 
-        // Create and show the pause screen
-        this.pauseScreen = this.add.graphics();
-        this.pauseScreen.fillStyle(0x000000, 0.7);
-        this.pauseScreen.fillRect(0, 0, this.cameras.main.width, this.cameras.main.height);
-
-        // Add pause text
-        const pauseText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Paused', {
-            fontSize: '48px',
-            color: '#ffffff',
-        });
-        pauseText.setOrigin(0.5);
-    }
-
-    resumeGame() {
-        // Remove the pause screen and resume the game
-        if (this.pauseScreen) {
-            this.pauseScreen.destroy();
-            this.pauseScreen = undefined;
-        }
-        this.isPaused = false;
-        this.scene.resume();
+	// resumeGame() {
+	// 	// Remove the pause screen and resume the game
+	// 	if (this.pauseScreen) {
+	// 		this.pauseScreen.destroy();
+	// 		this.pauseScreen = undefined;
+	// 	}
+	// 	this.isPaused = false;
+	// 	this.scene.resume();
+	// }
+	
+	// goToMainMenu() {
+	// 	// Stop the background music and transition to the main menu scene
+	// 	this.stopBackgroundMusic();
+	// 	this.scene.start('menuScene');
+	// }
+	restartScene() {
+        // Stop the background music
+        this.stopBackgroundMusic();
+        
+        // Restart the scene
+        this.scene.restart();
     }
 
 	stopBackgroundMusic() {

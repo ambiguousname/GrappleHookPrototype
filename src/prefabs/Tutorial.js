@@ -70,7 +70,7 @@ export class TutorialManager  {
 			});
 		}
 		if (!this.tutorialsShown.has("Space_Key_Dark") && this.tutorialsShown.size >= this.keysToShow.size - 1 && this.imagesToUpdate.size === 0) {
-			this.addImage(scene, (img)=> {if (grapple.end === null && img.alpha === 1) {return {x: -20, y: -20}} else { return player.body.position}}, "Space_Key_Dark", {
+			this.addImage(scene, (img)=> {if (grapple.end === null && (img === null || img.alpha === 1)) {return {x: -20, y: -20}} else { return player.body.position}}, "Space_Key_Dark", {
 				allowPress: () => {return grapple.isGrappleHookOut()}
 			});
 		}

@@ -22,4 +22,4 @@ window.game = new Phaser.Game({
 	// antialias: false,
 });
 
-debug();
+// debug();

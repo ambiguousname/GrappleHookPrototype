@@ -1,1 +1,2 @@
-- Grapple hook fire delay
+- Grapple hook fire delay (OR: If the grapple hook is adjacent to the player firing in roughly the same direction will keep it locked in the same position)
+- Firing and then holding retract before a hook leads to the retracting logic still working

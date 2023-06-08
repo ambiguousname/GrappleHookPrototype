@@ -3,6 +3,7 @@ import { lerp } from "../util/lerp.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "../prefabs/Grapple.js";
+import { TutorialManager } from "../prefabs/Tutorial.js";
 //import { Button } from "../util/button.js";
 
 export class GrappleHookBase extends Phaser.Scene {
@@ -22,6 +23,8 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.collisionLayer = collisionLayer;
     }
 	preload() {
+		TutorialManager.preload(this);
+
 		// Load in maps for scenes
 		this.load.tilemapTiledJSON('map' + this.sceneName, this.#tilemapJSON);
 		// Load in assets
@@ -288,6 +291,8 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 
 	update(time, delta) {
+		TutorialManager.update(this);
+
 		this.cameras.main.scrollX = lerp(this.cameras.main.scrollX, this.cameraFollow.x, delta * 0.01);
 		this.cameras.main.scrollY = lerp(this.cameras.main.scrollY, this.cameraFollow.y, delta * 0.01);
 		this.player.update();

@@ -177,6 +177,15 @@ export class Player {
 			}
 		}
 
+		// Update flipX based on movement direction
+		if (intendedMove.x < 0) {
+			// Flip the sprite when moving left
+			this.sprite.flipX = true;
+		} else if (intendedMove.x > 0) {
+			// Do not flip the sprite when moving right
+			this.sprite.flipX = false;
+		}
+
 		if (!retractingHeld && this.grapple.isRetracting()) {
 			this.grapple.stopRetract();
 		}

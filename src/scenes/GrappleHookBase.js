@@ -113,8 +113,6 @@ export class GrappleHookBase extends Phaser.Scene {
 		const distanceY = cursorY - playerY;
 	
 		const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-		// Temp debug log
-		console.log(distance);
 	
 		return distance;
 	}	

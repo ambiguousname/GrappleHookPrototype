@@ -232,6 +232,7 @@ export class Player {
 
 		if (this.grapple.comp.bodies.length === 1) {
 			this.isGrounded = true;
+			this.#coyoteTimer = this.scene.time.now;
 		} else if (this.isGrounded && this.#groundedBody === null && this.scene.time.now - this.#coyoteTimer >= Player.gameplaySettings.gravity.coyoteTime) {
 			this.isGrounded = false;
 			this.#coyoteTimer = -1;

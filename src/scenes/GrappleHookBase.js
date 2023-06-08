@@ -46,9 +46,12 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
+		// Add customer cursor to play can imply usage
+		this.input.setDefaultCursor('url(assets/greenPointer.png), pointer');
 		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
+		// Add in background music for level
 		let audioName = `${this.sceneName}_music`;
 		let files = {};
 		files[audioName] = {type: "audio", url: this.#backgroundMusicURL};
@@ -78,12 +81,6 @@ export class GrappleHookBase extends Phaser.Scene {
 		const angelSpawn = this.map.findObject('Spawn', obj => obj.name === 'angelSpawn');
   		this.player = new Player(this, angelSpawn.x * this.mapScale, angelSpawn.y * this.mapScale);
 
-
-		//this.player = new Player(this, 0, this.map.heightInPixels - 50);
-
-		// this.cameras.main.startFollow(this.player.body);
-		
-		// this.matter.add.rectangle(300, 50, 500, 50, {isStatic: true});
 		// Set camera view
 		this.cameraFollow = new Phaser.Math.Vector2(this.player.body.position.x - this.cameras.main.centerX, (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4);
 		this.cameraFollowBounds = new Phaser.Math.Vector2(game.config.width * 1/2, game.config.height * 1/2);
@@ -129,6 +126,8 @@ export class GrappleHookBase extends Phaser.Scene {
 	// 	this.stopBackgroundMusic();
 	// 	this.scene.start('menuScene');
 	// }
+
+	// Fucntion to allow quick level reset
 	restartScene() {
         // Stop the background music
         this.stopBackgroundMusic();
@@ -136,13 +135,13 @@ export class GrappleHookBase extends Phaser.Scene {
         // Restart the scene
         this.scene.restart();
     }
-
+	// Function to stop background music from playing
 	stopBackgroundMusic() {
 		if (this.#backgroundMusic) {
 			this.#backgroundMusic.stop();
 		}
 	}
-
+	// Transitioning from level to level
 	transitionTo(sceneName) {
 		this.stopBackgroundMusic(); 
 		let startTime = this.time.now;
@@ -172,12 +171,6 @@ export class GrappleHookBase extends Phaser.Scene {
 		
 		let bg = this.add.image(0, 0, "background" + this.sceneName).setOrigin(0);
 		bg.setScale(scale);
-
-		// this.groundTiles = this.map.addTilesetImage("tiles");
-		// this.groundLayer = this.map.createLayer("World", this.groundTiles, 0, 0);
-		
-		// this.groundLayer.setCollisionByExclusion([-1]);
-		// this.matter.world.convertTilemapLayer(this.groundLayer);
 
 		// Set collision layer
 		this.drawObjectLayerCollisions({layers: this.map.getObjectLayer(this.collisionLayer), scale: scale});
@@ -216,14 +209,12 @@ export class GrappleHookBase extends Phaser.Scene {
 				this.featherLayer.removeTileAt(tile.gameObject.tile.x / scale, tile.gameObject.tile.y / scale);
 				this.matter.composite.remove(this.matter.world.engine.world, tile);
 				numFeathers--;
+				// If all feathers are collected go to the next scene
 				if (numFeathers <= 0) {
 					this.transitionTo(this.#nextScene);
 				}
 			}
 		};
-
-		/* For individual tiles:
-		this.groundLayer.setCollisionByProperty({collides: true});*/
 		
 		this.drawMapSensors(this.featherLayer);
 

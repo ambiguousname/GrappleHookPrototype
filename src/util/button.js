@@ -1,3 +1,6 @@
+/*
+Configuration for button usage in the game
+*/
 export class Button extends Phaser.GameObjects.Image {
 	constructor(scene, x, y, texture, text, callback) {
 		super(scene, x, y, texture);

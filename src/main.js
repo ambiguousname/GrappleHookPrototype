@@ -1,3 +1,7 @@
+/*
+Programming Team: Tyler Knowlton and Stephanie Ramirez
+Art: Tiana Chamsi
+*/
 import * as Scenes from "./scenes/Scenes.js";
 import {debug} from "./debugging.js";
 

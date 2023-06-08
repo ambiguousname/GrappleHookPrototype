@@ -1,5 +1,9 @@
+/* 
+Scene 2 (Level 2) is based on the underground film set
+Players will climb through the crumbling film set
+still through the angels perspective
+*/
 import { GrappleHookBase } from "./GrappleHookBase.js";
-import { loadFilesAtRuntime } from "../util/loading.js";
 
 export class Underground extends GrappleHookBase {
 	constructor() {

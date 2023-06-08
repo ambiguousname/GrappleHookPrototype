@@ -1,3 +1,7 @@
+/* 
+Main menu screen where players will have the 
+option to start the game or go to credits.
+*/
 import { Button } from "../util/button.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
 

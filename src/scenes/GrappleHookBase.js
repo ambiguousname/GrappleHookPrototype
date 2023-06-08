@@ -2,6 +2,7 @@ import { Player } from "../prefabs/Player.js";
 import { lerp } from "../util/lerp.js";
 import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
+import { Grapple } from "../prefabs/Grapple.js";
 //import { Button } from "../util/button.js";
 
 export class GrappleHookBase extends Phaser.Scene {
@@ -88,15 +89,15 @@ export class GrappleHookBase extends Phaser.Scene {
 
 		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
 
-		// Still debugging to get the rope max length
-		this.input.on('pointermove', (pointer) => {
+		// Switch pointer color if player can reach cursor position
+		this.input.on('pointermove', () => {
 			const playerX = this.player.body.position.x;
 			const playerY = this.player.body.position.y;
 			let cursor_pos = screenToWorldSpace(this.cameras.main, this.input.mousePointer);
 	
 			const distance = this.distance(playerX, playerY, cursor_pos);
 	
-			if (distance < 500) {
+			if (distance < Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1) ) {
 				this.input.setDefaultCursor('url(assets/greenPointer.png), pointer');
 			} else {
 				this.input.setDefaultCursor('url(assets/redPointer.png), pointer');
@@ -154,7 +155,7 @@ export class GrappleHookBase extends Phaser.Scene {
 	// 	this.scene.start('menuScene');
 	// }
 
-	// Fucntion to allow quick level reset
+	// Function to allow quick level reset
 	restartScene() {
         // Stop the background music
         this.stopBackgroundMusic();

@@ -46,8 +46,6 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
-		// Add customer cursor to play can imply usage
-		this.input.setDefaultCursor('url(assets/greenPointer.png), pointer');
 		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
@@ -89,7 +87,36 @@ export class GrappleHookBase extends Phaser.Scene {
 		let worldSpace = screenToWorldSpace(this.cameras.main, window.cursorFire);
 
 		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
+
+		// Still debugging to get the rope max length
+		this.input.on('pointermove', (pointer) => {
+			const playerX = this.player.body.position.x;
+			const playerY = this.player.body.position.y;
+			let cursor_pos = screenToWorldSpace(this.cameras.main, this.input.mousePointer);
+	
+			const distance = this.distance(playerX, playerY, cursor_pos);
+	
+			if (distance < 500) {
+				this.input.setDefaultCursor('url(assets/greenPointer.png), pointer');
+			} else {
+				this.input.setDefaultCursor('url(assets/redPointer.png), pointer');
+			}
+		});
 	}
+	// Get the distance of the player and cursor
+	distance(playerX, playerY, cursor_pos) {
+		const cursorX = cursor_pos.x + 30;
+		const cursorY = cursor_pos.y + 30;
+	
+		const distanceX = cursorX - playerX;
+		const distanceY = cursorY - playerY;
+	
+		const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+		// Temp debug log
+		console.log(distance);
+	
+		return distance;
+	}	
 
 	// pauseGame() {
 	// 	// Pause the game

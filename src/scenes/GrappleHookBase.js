@@ -88,9 +88,12 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.cameraFollowBounds = new Phaser.Math.Vector2(game.config.width * 1/2, game.config.height * 1/2);
 		this.cameras.main.setScroll(Math.max(this.cameraFollow.x, this.cameras.main.centerX), Math.max(this.cameraFollow.y, this.cameras.main.centerY));
 
-		let worldSpace = screenToWorldSpace(this.cameras.main, window.cursorFire);
+		if (window.cursorFire !== undefined && window.cursorFire !== null){
+			let worldSpace = screenToWorldSpace(this.cameras.main, window.cursorFire);
 
-		this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
+			this.player.grapple.fire(worldSpace.x, worldSpace.y, true);
+			window.cursorFire = null;
+		}
 
 		// Switch pointer color if player can reach cursor position
 		this.input.on('pointermove', () => {

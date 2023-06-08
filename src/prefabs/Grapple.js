@@ -143,8 +143,6 @@ export class Grapple {
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
 
-		this.#hideGrapple();
-
 		if (this.startConstraint !== null && this.startConstraint !== undefined) {
 			this.scene.matter.composite.remove(this.scene.matter.world.engine.world, this.startConstraint);
 		}
@@ -163,6 +161,7 @@ export class Grapple {
 	cancel() {
 		this.cancelNoFSMTransition();
 
+		this.#hideGrapple();
 		this.grapplingFSM.transition(GrappleHookStates.GrappleNone);
 	}
 

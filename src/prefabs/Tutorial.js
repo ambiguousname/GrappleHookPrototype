@@ -20,6 +20,11 @@ export class TutorialManager  {
 		}
 	}
 
+	static reset() {
+		this.tutorialsShown.clear();
+		this.imagesToUpdate.clear();
+	}
+
 	static addImage(scene, getSpritePos, key, kwargs = {}) {
 		let pos = getSpritePos();
 

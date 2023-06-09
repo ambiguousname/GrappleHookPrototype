@@ -45,11 +45,12 @@ export class Pause extends Phaser.Scene {
         this.scene.stop(sceneName);
         const GrappleHookBaseScene = this.scene.get(sceneName);
         if (GrappleHookBaseScene) {
-          GrappleHookBaseScene.input.enabled = true;
-          GrappleHookBaseScene.sound.stopAll();
-          this.input.setDefaultCursor();
-          this.scene.start('menuScene');
-          this.scene.bringToTop('menuScene');
+            TutorialManager.reset();
+            GrappleHookBaseScene.input.enabled = true;
+            GrappleHookBaseScene.sound.stopAll();
+            this.input.setDefaultCursor();
+            this.scene.start('menuScene');
+            this.scene.bringToTop('menuScene');
         }
     }
 }

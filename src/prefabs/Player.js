@@ -153,6 +153,29 @@ export class Player {
 	}
 
 	movementUpdate() {
+		// Get the position of the cursor relative to the player sprite
+		const cursorPosition = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
+		const playerPosition = this.sprite.getCenter();
+		const cursorRelativeToPlayer = cursorPosition.x - playerPosition.x;
+	
+		// Get the player sprite's origin position
+		const spriteOriginX = this.sprite.displayOriginX;
+	
+		// Scaling factor 
+		const flipScale = 0.5;
+	
+		// Calculate the scaled flipping range based on the cursor position
+		const scaledFlipThreshold = flipScale * Math.abs(cursorRelativeToPlayer);
+	
+		// Update flipX based on cursor position, sprite origin, and scaled flipping range
+		if (cursorRelativeToPlayer - spriteOriginX < -scaledFlipThreshold) {
+			// Flip the sprite when cursor is to the left of the scaled flipping range
+			this.sprite.flipX = true;
+		} else if (cursorRelativeToPlayer - spriteOriginX > scaledFlipThreshold) {
+			// Do not flip the sprite when cursor is to the right of the scaled flipping range
+			this.sprite.flipX = false;
+		}
+
 		// #region Keyboard Events
 		let intendedMove = this.vector.create(0, 0);
 		for (let keyName in this.movementKeys) {

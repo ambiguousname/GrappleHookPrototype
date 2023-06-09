@@ -4,7 +4,6 @@ import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "../prefabs/Grapple.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
-import { Pause } from "./Pause.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
@@ -108,6 +107,7 @@ export class GrappleHookBase extends Phaser.Scene {
 			}
 		});	
 	} 
+	// Helper function for pausing
 	pauseGame() {
 		this.scene.pause();
 		this.scene.launch('pauseScreen', { currentScene: this.scene.key });

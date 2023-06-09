@@ -42,7 +42,7 @@ export class Pause extends Phaser.Scene {
     }
     // Helper function to go back to menue
     goToMenu(sceneName) {
-        this.scene.stop();
+        this.scene.stop(sceneName);
         const GrappleHookBaseScene = this.scene.get(sceneName);
         if (GrappleHookBaseScene) {
           GrappleHookBaseScene.input.enabled = true;

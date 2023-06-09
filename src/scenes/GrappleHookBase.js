@@ -42,11 +42,6 @@ export class GrappleHookBase extends Phaser.Scene {
 
 		this.load.glsl("rope", "./src/util/ropeShader.glsl");
 
-		// let g = this.add.graphics();
-        // g.fillStyle(0x18202f);
-        // g.fillRect(0, 0, 100, 50);
-        // g.generateTexture("button", 100, 50);
-        // g.destroy();
 	}
 	
 	create() {
@@ -122,42 +117,6 @@ export class GrappleHookBase extends Phaser.Scene {
 	
 		return distance;
 	}	
-
-	// pauseGame() {
-	// 	// Pause the game
-	// 	this.scene.pause();
-	// 	this.isPaused = true;
-	// 	console.log(this.isPaused);
-	
-	// 	// Create and show the pause screen
-	// 	this.pauseScreen = this.add.graphics();
-	// 	this.pauseScreen.fillStyle(0x000000, 0.7);
-	// 	this.pauseScreen.fillRect(0, 0, this.cameras.main.width, this.cameras.main.height);
-	
-	// 	// Add buttons to the pause screen
-	// 	const resumeButton = new Button(this, this.cameras.main.width / 2, this.cameras.main.height / 2, 'button', 'Resume', this.resumeGame.bind(this));
-	// 	const mainMenuButton = new Button(this, this.cameras.main.width / 2, (this.cameras.main.height / 2) + 50, 'button', 'Main Menu', this.goToMainMenu.bind(this));
-	
-	// 	// Add the buttons to the pause screen container
-	// 	const pauseScreenContainer = this.add.container(0, 0, [this.pauseScreen, resumeButton, mainMenuButton]);
-	// 	pauseScreenContainer.setDepth(1);
-	// }
-
-	// resumeGame() {
-	// 	// Remove the pause screen and resume the game
-	// 	if (this.pauseScreen) {
-	// 		this.pauseScreen.destroy();
-	// 		this.pauseScreen = undefined;
-	// 	}
-	// 	this.isPaused = false;
-	// 	this.scene.resume();
-	// }
-	
-	// goToMainMenu() {
-	// 	// Stop the background music and transition to the main menu scene
-	// 	this.stopBackgroundMusic();
-	// 	this.scene.start('menuScene');
-	// }
 
 	// Function to allow quick level reset
 	restartScene() {

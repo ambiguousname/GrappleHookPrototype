@@ -4,7 +4,7 @@ import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "../prefabs/Grapple.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
-//import { Button } from "../util/button.js";
+import { Pause } from "./Pause.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
@@ -45,6 +45,11 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
+		// Pause screen
+		const pauseButton = this.input.keyboard.addKey('P');
+		pauseButton.on('down', () => {
+			this.pauseGame();
+		});
 		// Add in sfx
 		this.sound.add('retract');
 		this.sound.add('extend');
@@ -69,8 +74,6 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.input.keyboard.on('keydown-R', () => {
 			this.restartScene();
 		});	
-
-		//this.input.keyboard.on('keydown-P', this.pauseGame, this);
 		// Set up map
 		this.drawMap(this.mapScale);
 		
@@ -103,8 +106,12 @@ export class GrappleHookBase extends Phaser.Scene {
 			} else {
 				this.input.setDefaultCursor('url(assets/redPointer.png), pointer');
 			}
-		});
-	}
+		});	
+	} 
+	pauseGame() {
+		this.scene.pause();
+		this.scene.launch('pauseScreen', { currentScene: this.scene.key });
+	  }
 	// Get the distance of the player and cursor
 	distance(playerX, playerY, cursor_pos) {
 		const cursorX = cursor_pos.x + 30;

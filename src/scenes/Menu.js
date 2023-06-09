@@ -23,6 +23,8 @@ export class Menu extends Phaser.Scene {
     }
 
     create() {
+        // Set cursor to default arrow
+        this.input.setDefaultCursor('default');
         // title config
         let title = this.add.sprite(0,0,'TitleScreen');
         title.setOrigin(0,0);

@@ -124,6 +124,7 @@ export class GrappleHookBase extends Phaser.Scene {
 	} 
 	// Helper function for pausing
 	pauseGame() {
+		this.timer.prevTime = this.elapsedTime;
 		this.scene.pause();
 		this.scene.launch('pauseScreen', { currentScene: this.scene.key });
 	}

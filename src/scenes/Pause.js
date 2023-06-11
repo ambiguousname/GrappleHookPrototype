@@ -1,6 +1,7 @@
 import { Button } from "../util/button.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
 import { GrappleHookBase } from "./GrappleHookBase.js";
+import { Timer } from "./Timer.js";
 
 export class Pause extends Phaser.Scene {
     constructor() {
@@ -38,6 +39,7 @@ export class Pause extends Phaser.Scene {
         const GrappleHookBaseScene = this.scene.get(sceneName);
         if (GrappleHookBaseScene) {
             GrappleHookBaseScene.input.enabled = true;
+            GrappleHookBaseScene.timer.startTime = Date.now();
             GrappleHookBaseScene.scene.resume();
         }
   }

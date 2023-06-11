@@ -10,7 +10,7 @@ window.game = new Phaser.Game({
 	width: 640,
 	height: 480,
 	parent: "game",
-	scene: [Scenes.Menu, Scenes.GrapplePrototype, Scenes.Underground, Scenes.Circus, Scenes.Credit, Scenes.Pause],
+	scene: [Scenes.Menu, Scenes.GrapplePrototype, Scenes.Underground, Scenes.Circus, Scenes.Credit, Scenes.Pause, Scenes.End],
 	physics: {
 		default: 'matter',
 		enableSleeping: true,

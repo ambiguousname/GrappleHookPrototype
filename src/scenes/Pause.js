@@ -1,5 +1,6 @@
 import { Button } from "../util/button.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
+import { GrappleHookBase } from "./GrappleHookBase.js";
 
 export class Pause extends Phaser.Scene {
     constructor() {
@@ -39,7 +40,7 @@ export class Pause extends Phaser.Scene {
             GrappleHookBaseScene.input.enabled = true;
             GrappleHookBaseScene.scene.resume();
         }
-    }
+  }
     // Helper function to go back to menue
     goToMenu(sceneName) {
         this.scene.stop(sceneName);

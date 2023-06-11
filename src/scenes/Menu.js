@@ -31,7 +31,7 @@ export class Menu extends Phaser.Scene {
 
         let b = new Button(this, game.config.width/2, game.config.height/2 + 75, "button", "Play", () => {
             window.cursorFire = this.input.mousePointer;
-            this.scene.start("PlayScene");
+            this.scene.start("PlayScene", { elapsedTime: 0 });
             this.sound.stopByKey('bg_music');
         });
 

@@ -4,6 +4,7 @@ import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "../prefabs/Grapple.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
+import { Timer } from "./Timer.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
@@ -11,13 +12,14 @@ export class GrappleHookBase extends Phaser.Scene {
 	#backgroundImage = undefined;
 	#backgroundMusicURL = undefined;
 	#backgroundMusic = undefined;
-	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, mapScale=4, collisionLayer="Buildings") {
+	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, elapsedTime=0, mapScale=4, collisionLayer="Buildings") {
         super(sceneName);
 		this.sceneName = sceneName;
 		this.#nextScene = nextScene;
 		this.#tilemapJSON = tilemapJSON;
 		this.#backgroundImage = backgroundImage;
 		this.#backgroundMusicURL = backgroundMusic;
+		this.elapsedTime = elapsedTime;
 		this.mapScale = mapScale;
 		this.collisionLayer = collisionLayer;
     }
@@ -44,9 +46,11 @@ export class GrappleHookBase extends Phaser.Scene {
 	}
 	
 	create() {
+		//this.isPaused = false;
 		// Pause screen
 		const pauseButton = this.input.keyboard.addKey('P');
 		pauseButton.on('down', () => {
+			//this.isPaused = true;
 			this.pauseGame();
 		});
 		// Add in sfx
@@ -106,12 +110,24 @@ export class GrappleHookBase extends Phaser.Scene {
 				this.input.setDefaultCursor('url(assets/redPointer.png), pointer');
 			}
 		});	
+		
+		// Create a timer instance
+		this.timer = new Timer(this.elapsedTime);
+
+		// Start the timer
+		this.timer.start();
+		this.timerText = this.add.text(10, 10, 'Time: ' + this.elapsedTime, { fontFamily: 'serif', fontSize: 35, color: '#ffffff' });
+
+		// Adjust timer text position to top left corner of the screen
+    	this.cameras.main.on('cameraupdate', this.updateTimerTextPosition, this);
+
 	} 
 	// Helper function for pausing
 	pauseGame() {
 		this.scene.pause();
 		this.scene.launch('pauseScreen', { currentScene: this.scene.key });
-	  }
+	}
+	
 	// Get the distance of the player and cursor
 	distance(playerX, playerY, cursor_pos) {
 		const cursorX = cursor_pos.x + 30;
@@ -124,7 +140,6 @@ export class GrappleHookBase extends Phaser.Scene {
 	
 		return distance;
 	}	
-
 	// Function to allow quick level reset
 	restartScene() {
         // Stop the background music
@@ -147,12 +162,27 @@ export class GrappleHookBase extends Phaser.Scene {
 			let timeElapsed = this.time.now - startTime;
 			this.cameras.main.alpha = (1000 - timeElapsed)/1000;
 			if (this.cameras.main.alpha <= 0) {
-				this.scene.start(sceneName);
+				// Pass the elapsed time to the next scene
+				this.scene.start(sceneName, { elapsedTime: this.elapsedTime });
+				//this.scene.start(sceneName);
 			} else {
 				requestAnimationFrame(transitionToAnim.bind(this));
 			}
 		}
 		requestAnimationFrame(transitionToAnim.bind(this));
+	}
+
+	updateTimerTextPosition() {
+		const paddingX = 15;
+		const paddingY = 15;
+	
+		//const cameraTopLeft = this.cameras.main.getWorldPoint(paddingX, paddingY);
+		const cameraViewport = this.cameras.main.worldView;
+	
+		const textX = Phaser.Math.Clamp(cameraViewport.left + paddingX, cameraViewport.left + paddingX, cameraViewport.right - this.timerText.width - paddingX);
+		const textY = Phaser.Math.Clamp(cameraViewport.top + paddingY, cameraViewport.top + paddingY, cameraViewport.bottom - this.timerText.height - paddingY);
+
+		this.timerText.setPosition(textX, textY);
 	}
 
 	drawMap(scale=1) {
@@ -270,6 +300,18 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.cameraFollow.x = this.player.body.position.x - this.cameras.main.centerX;
 		this.cameraFollow.y = (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4;
 
+		// Update the timer
+		//if(this.isPaused == false) {
+			this.timer.update();
+			this.elapsedTime = this.timer.elapsedSeconds;
+
+			// Update the timer text with the elapsed time
+			this.timerText.setText('Time: ' + this.elapsedTime);
+		
+			//Update the timer text position
+			this.updateTimerTextPosition();
+		//}
+        
 		
 		// If this gets revisited, you need to fix because the camera origin is 0.5 by default:
 		/*if (Math.abs(this.player.body.position.x - (this.cameras.main.centerX + this.cameras.main.scrollX)) > this.cameraFollowBounds.x/2) {

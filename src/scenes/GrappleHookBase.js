@@ -4,7 +4,7 @@ import { loadFilesAtRuntime } from "../util/loading.js";
 import { screenToWorldSpace } from "../util/screenToWorldSpace.js";
 import { Grapple } from "../prefabs/Grapple.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
-import { Timer } from "./Timer.js";
+import { Timer } from "../prefabs/Timer.js";
 
 export class GrappleHookBase extends Phaser.Scene {
 	#nextScene = undefined;
@@ -51,11 +51,9 @@ export class GrappleHookBase extends Phaser.Scene {
     }
 	
 	create() {
-		//this.isPaused = false;
 		// Pause screen
 		const pauseButton = this.input.keyboard.addKey('P');
 		pauseButton.on('down', () => {
-			//this.isPaused = true;
 			this.pauseGame();
 		});
 		// Add in sfx
@@ -181,8 +179,7 @@ export class GrappleHookBase extends Phaser.Scene {
 	updateTimerTextPosition() {
 		const paddingX = 15;
 		const paddingY = 15;
-	
-		//const cameraTopLeft = this.cameras.main.getWorldPoint(paddingX, paddingY);
+
 		const cameraViewport = this.cameras.main.worldView;
 	
 		const textX = Phaser.Math.Clamp(cameraViewport.left + paddingX, cameraViewport.left + paddingX, cameraViewport.right - this.timerText.width - paddingX);
@@ -307,17 +304,14 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.cameraFollow.y = (this.player.body.position.y - this.cameras.main.centerY) - this.cameras.main.height/4;
 
 		// Update the timer
-		//if(this.isPaused == false) {
-			this.timer.update();
-			this.elapsedTime = this.timer.elapsedSeconds;
+		this.timer.update();
+		this.elapsedTime = this.timer.elapsedSeconds;
 
-			// Update the timer text with the elapsed time
-			this.timerText.setText('Time: ' + this.elapsedTime);
-		
-			//Update the timer text position
-			this.updateTimerTextPosition();
-		//}
-        
+		// Update the timer text with the elapsed time
+		this.timerText.setText('Time: ' + this.elapsedTime);
+	
+		//Update the timer text position
+		this.updateTimerTextPosition();
 		
 		// If this gets revisited, you need to fix because the camera origin is 0.5 by default:
 		/*if (Math.abs(this.player.body.position.x - (this.cameras.main.centerX + this.cameras.main.scrollX)) > this.cameraFollowBounds.x/2) {

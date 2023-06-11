@@ -19,7 +19,7 @@ export class Grapple {
 			startingVelocity: 0.03,
 			stopFiringAtVelocity: 1,
 			maxLength: 20,
-			attachedOffset: 45,
+			attachedOffset: 55,
 		},
 		
 		retracting: {

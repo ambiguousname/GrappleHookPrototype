@@ -1,7 +1,5 @@
 import { Button } from "../util/button.js";
 import { TutorialManager } from "../prefabs/Tutorial.js";
-import { GrappleHookBase } from "./GrappleHookBase.js";
-import { Timer } from "./Timer.js";
 
 export class Pause extends Phaser.Scene {
     constructor() {
@@ -39,7 +37,9 @@ export class Pause extends Phaser.Scene {
         const GrappleHookBaseScene = this.scene.get(sceneName);
         if (GrappleHookBaseScene) {
             GrappleHookBaseScene.input.enabled = true;
+            // Resume the timer
             GrappleHookBaseScene.timer.startTime = Date.now();
+            // Resume current scene
             GrappleHookBaseScene.scene.resume();
         }
   }
@@ -48,11 +48,18 @@ export class Pause extends Phaser.Scene {
         this.scene.stop(sceneName);
         const GrappleHookBaseScene = this.scene.get(sceneName);
         if (GrappleHookBaseScene) {
+            // Reset tutorial
             TutorialManager.reset();
             GrappleHookBaseScene.input.enabled = true;
+            // Stop all sounds
             GrappleHookBaseScene.sound.stopAll();
+            // Reset Cursor to arrow
             this.input.setDefaultCursor();
+            // Reset timer
+            GrappleHookBaseScene.elapsedTime = 0;
+            // Go to menu scene
             this.scene.start('menuScene');
+            // Put on top layer
             this.scene.bringToTop('menuScene');
         }
     }

@@ -44,6 +44,11 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.load.glsl("rope", "./src/util/ropeShader.glsl");
 
 	}
+
+	init (data) {
+        console.log('init', data);
+        this.elapsedTime = data.elapsedTime;
+    }
 	
 	create() {
 		//this.isPaused = false;

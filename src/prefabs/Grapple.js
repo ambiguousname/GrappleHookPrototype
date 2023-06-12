@@ -3,6 +3,7 @@ import { getAllCollisions } from "../util/collision.js";
 import { lerp } from "../util/lerp.js";
 import * as GrappleHookStates from "./GrappleHookStates.js";
 
+// Control the grappling hook functionality
 export class Grapple {
 	// TODO: Add a Phaser.Rope and make it conform to the points in the composite.
 	

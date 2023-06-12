@@ -3,6 +3,7 @@ import {Grapple} from "./Grapple.js";
 
 export {GrappleNone, GrappleUnhooked, GrappleFiring, GrappleHooked, GrappleRetracting};
 
+// An extension of Grapple.js, basically. Information for how the Grapple should react in different situations.
 // #region Helpers
 
 class GrappleHookManager extends State {

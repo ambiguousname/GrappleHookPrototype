@@ -313,13 +313,5 @@ export class GrappleHookBase extends Phaser.Scene {
 	
 		//Update the timer text position
 		this.updateTimerTextPosition();
-		
-		// If this gets revisited, you need to fix because the camera origin is 0.5 by default:
-		/*if (Math.abs(this.player.body.position.x - (this.cameras.main.centerX + this.cameras.main.scrollX)) > this.cameraFollowBounds.x/2) {
-		}
-
-		if (Math.abs(this.player.body.position.y - (this.cameras.main.centerY + this.cameras.main.scrollY)) > this.cameraFollowBounds.y/2) {
-			// this.cameraFollow.y = (this.player.body.position.y - (this.cameras.main.scrollY + this.cameras.main.centerY)) + this.cameraFollowBounds.y/2;
-		}*/
 	}
 }

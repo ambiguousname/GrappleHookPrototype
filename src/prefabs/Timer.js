@@ -1,3 +1,6 @@
+/*
+Track players time to complete game
+*/
 export class Timer {
     constructor(prevTime=0) {
       this.startTime = 0;

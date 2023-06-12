@@ -48,7 +48,7 @@ export class End extends Phaser.Scene {
             music.play(musicConfig);
         });
 
-        // Sisplay final time in minutes and seconds
+        // Display final time in minutes and seconds
         const minutes = Math.floor(this.elapsedTime / 60);
         const seconds = this.elapsedTime % 60;
 
@@ -64,9 +64,9 @@ export class End extends Phaser.Scene {
             fixedWidth: 200
         };
 
-        this.add.text(game.config.width / 2, game.config.height / 2 + 100, `${minutes} minutes ${seconds} seconds`, TimeConfig).setOrigin(0.5);
-
-        // Button to take you to menu
+        this.add.text(game.config.width / 2, game.config.height / 2 + 100, `${minutes} min ${seconds} sec`, TimeConfig).setOrigin(0.5);
+    
+         // Button to take you to menu
         let menu = new Button(this, game.config.width/3 + 30, game.config.height/2 + 212, "button", "Menu", () => {
             this.scene.start("menuScene");
             this.sound.stopByKey('bg_music');

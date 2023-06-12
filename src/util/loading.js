@@ -22,7 +22,6 @@ export function loadFilesAtRuntime(scene, filesObj, callback) {
 		  } else {
 			console.error(`Invalid URL for ${key}: ${fileToLoad.url}`);
 		  }
-		//scene.load[fileToLoad.type](key, fileToLoad.url);
 	}
 	scene.load.once("complete", callback);
 	scene.load.start();

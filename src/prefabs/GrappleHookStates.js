@@ -1,5 +1,4 @@
 import {State} from "../util/FSM.js";
-import { getAllCollisions } from "../util/collision.js";
 import {Grapple} from "./Grapple.js";
 
 export {GrappleNone, GrappleUnhooked, GrappleFiring, GrappleHooked, GrappleRetracting};
@@ -176,42 +175,6 @@ class GrappleFiring extends GrappleHookManager {
 		this.#fireSensor = this.matter.add.circle(sensorPos.x, sensorPos.y, Grapple.gameplaySettings.rope.segmentSize * 1.5, {
 			isSensor: true,
 		});
-
-		// Doesn't actually work right now for preventing firing through walls, since the offset got changed. Would probably be better to raycast back to the player.
-		/*this.fireSensorCollisionCheck = getAllCollisions.bind(this, (bodyA, bodyB) => {
-			if (this.#fireSensor === null) {
-				return;
-			}
-			if (bodyA.id === this.#fireSensor.id || bodyB.id === this.#fireSensor.id) {
-				if (bodyA.isSensor && bodyB.isSensor) {
-					return;
-				}
-				
-				let bodyInArr = this.parent.comp.bodies.filter(body => (body.id === bodyA.id) || (body.id === bodyB.id)).length > 0;
-				if (bodyInArr) {
-					return;
-				}
-
-				// If we've been firing for too long, don't do anything.
-				// TODO, better fix: just check for a sensor collision automatically at fire creation??
-				if (this.parent.comp.bodies.length > 3) {
-					return;
-				}
-
-				let pos = new Phaser.Math.Vector2(this.#fireSensor.position.x, this.#fireSensor.position.y);
-				console.log(pos, this.parent.attachBody.position);
-
-				if (pos.dot(this.parent.attachBody.position) >= 0.9) {
-					return;
-				}
-
-				this.parent.cancelNoFSMTransition();
-				// Create end and bind to hook:
-				this.parent.end = this.generateLink(pos.x, pos.y, pos);
-				this.parent.grapplingFSM.transition(GrappleHooked);
-			}
-		});*/
-		// this.matter.world.on("collisionstart", this.fireSensorCollisionCheck);
 		
 		this.parent.end = this.fireGenerateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
 		this.parent.end.isChainEnd = true;
@@ -251,8 +214,6 @@ class GrappleFiring extends GrappleHookManager {
 	exitState() {
 		this.#exiting = true;
 
-		// this.matter.world.off("collisionstart", this.fireSensorCollisionCheck);
-		// this.fireSensorCollisionCheck = null;
 		if (this.parent.comp.bodies.length > 0){
 			this.backFillLink(this.#fireSensor, this.fireGenerateLink);
 

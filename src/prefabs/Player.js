@@ -218,23 +218,6 @@ export class Player {
 			this.grapple.cancel();
 		}
 
-		/*if (this.jump.isDown) {
-			// Are we on the ground or attached to a web?
-			if (!this.retractExtendKeys["S"].isDown && (this.grapple.isHooked() || this.isGrounded)) {
-				this.isGrounded = false;
-				this.#groundedBody = null;
-
-				let velocityMag = Math.abs(this.body.velocity.y);
-
-				let scale = velocityMag *  Player.gameplaySettings.movement.jumpAccelMovementScale;
-				if (scale <= 1) {
-					scale = 1;
-				}
-				newVelocity = this.vector.add(newVelocity, this.vector.create(0, -Player.gameplaySettings.movement.baseJumpAccel * scale));
-			}
-			this.grapple.cancel();
-		}*/
-
 		if (Math.abs(newVelocity.x) > Player.gameplaySettings.movement.maxXVelocity) {
 			newVelocity.x = Math.sign(newVelocity.x) * Player.gameplaySettings.movement.maxXVelocity;
 		}

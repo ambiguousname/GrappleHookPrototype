@@ -27,7 +27,7 @@ export class Credit extends Phaser.Scene {
 
         let play = new Button(this, game.config.width/2 + 25, game.config.height/2 + 212, "button", "Play", () => {
             window.cursorFire = this.input.mousePointer;
-            this.scene.start("PlayScene");
+            this.scene.start("CityScene");
             this.sound.stopByKey('bg_music');
         });
         

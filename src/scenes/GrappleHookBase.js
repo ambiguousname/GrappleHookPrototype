@@ -109,9 +109,9 @@ export class GrappleHookBase extends Phaser.Scene {
 			const distance = this.distance(playerX, playerY, cursor_pos);
 	
 			if (distance < Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1) ) {
-				this.input.setDefaultCursor('url(assets/greenPointer.png), pointer');
+				this.input.setDefaultCursor('url(assets/greenPointer.png) 16 16, pointer');
 			} else {
-				this.input.setDefaultCursor('url(assets/redPointer.png), pointer');
+				this.input.setDefaultCursor('url(assets/redPointer.png) 16 16, pointer');
 			}
 		});	
 		

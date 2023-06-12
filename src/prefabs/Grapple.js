@@ -46,6 +46,7 @@ export class Grapple {
 		HOOKED - Grappling hook is hooked into something.
 		RETRACTING - Grappling hooks is retracting.
 		*/
+		// See GrappleHookStates.js for the full list
 		this.grapplingFSM = new FSM(GrappleHookStates.GrappleNone, this);
 		this.fireCollisionCheck = getAllCollisions.bind(this, this.firingCollisionCheck);
 		this.scene.matter.world.on("collisionstart", this.fireCollisionCheck);
@@ -54,6 +55,7 @@ export class Grapple {
 		this.ropeShader = this.scene.add.shader("rope", 0, 0, Grapple.gameplaySettings.rope.segmentSize, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1));
 		this.ropeShader.setRenderToTexture("ropeShaderTexture");
 
+		// Used in this.drawRope
 		// Set to vertical alignment for rope:
 		this.rope = this.scene.add.rope(0, 0, "ropeShaderTexture", null, Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1), false);
 
@@ -84,6 +86,7 @@ export class Grapple {
 		this.grappleEnd.setTexture("hook");
 	}
 
+	// The grapple hook is generated using Matter.JS, and actually rendering it to Phaser requires making use of Phaser's ropes:
 	drawRope() {
 		let arr = [this.attachBody.position];
 
@@ -109,6 +112,7 @@ export class Grapple {
 			curr = curr.next;
 		}
 
+		// Attach to the end grappling hook sprite
 		if (this.grappleEnd.texture.key === "hook") {
 			this.grappleEnd.setPosition(this.end.position.x, this.end.position.y);
 
@@ -131,6 +135,8 @@ export class Grapple {
 
 	// #region Public Methods
 
+	// Cancel the hook by removing all the bodies from it, but don't ACTUALLY switch the state of it.
+	// This was used to try and fix an earlier bug, but now it's just sort of a holdover.
 	cancelNoFSMTransition() {
 		this.fireCollisionCheck = null;
 		this.clearFix(this.end);
@@ -150,6 +156,7 @@ export class Grapple {
 		this.end = null;
 		this.start = null;
 	}
+
 	cancel() {
 		this.cancelNoFSMTransition();
 
@@ -207,6 +214,7 @@ export class Grapple {
 		}
 	}
 
+	// Are we going to hook into something? Is it anything but something from the grappling hook chain?
 	firingCollisionCheck(bodyA, bodyB) {
 		var currentEnd = null;
 		var other = null;

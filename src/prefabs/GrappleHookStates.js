@@ -14,6 +14,7 @@ class GrappleHookManager extends State {
 		this.vector = this.matter.vector;
 	}
 
+	// Generate a Matter.JS circle and attach it to the current Grappling Hook composite.
 	generateLink(x, y, linkToConnect) {
 		let circle = this.matter.add.circle(x, y, Grapple.gameplaySettings.rope.segmentSize, {
 			isSensor: false,
@@ -41,7 +42,7 @@ class GrappleHookManager extends State {
 		return circle;
 	}
 
-	// TODO: Need to get this work with firing link
+	// Call generateLink a bunch of times until we reach the player from an outward position.
 	backFillLink(linkToConnect, generateLink=this.generateLink) {
 		let previousLinkPos = this.parent.start.position;
 
@@ -67,10 +68,12 @@ class GrappleHookManager extends State {
 		}
 	}
 
+	// Constrain the player to the grappling hook.
 	createStartConstraint() {
 		this.parent.startConstraint = this.matter.add.constraint(this.parent.start, this.parent.attachBody, Grapple.gameplaySettings.firing.attachedOffset, Grapple.gameplaySettings.rope.startConstraintStiffness);
 	}
 
+	// Remove a circle from the grappling hook composite, and move everything else back accordingly (while remaining attached to the player)
 	retractOne() {
 		if (this.parent.comp.bodies.length <= 1) {
 			return;
@@ -111,6 +114,7 @@ class GrappleHookManager extends State {
 		}
 	}
 
+	// Add to the grappling hook while it's not hooked to anything.
 	generativeAdd() {
 		if (this.parent.comp.bodies.length < Grapple.gameplaySettings.firing.maxLength) {
 			let currPos = this.vector.clone(this.parent.attachBody.position);
@@ -211,6 +215,7 @@ class GrappleFiring extends GrappleHookManager {
 		}
 	}
 
+	// Destroy all the firing sensors and stuff that the grappling hook shoots from when firing is done
 	exitState() {
 		this.#exiting = true;
 
@@ -236,6 +241,7 @@ class GrappleFiring extends GrappleHookManager {
 
 	// #region Helpers
 
+	// Like generateLink, except add some velocity to the new circle.
 	fireGenerateLink(x, y) {
 		let circle = this.generateLink(x, y, this.#fireSensor);
 

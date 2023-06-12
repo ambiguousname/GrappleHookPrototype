@@ -9,7 +9,7 @@ import { GrappleHookBase } from "./GrappleHookBase.js";
 
 export class Circus extends GrappleHookBase {
 	constructor() {
-        super("CircusScene", "EndScene", "./assets/CircusBackground.json", "./assets/Circus_background_Asset_.png", "./assets/Level2Bg.wav", 0, 2.5, "Platforms", 0.6);
+        super("CircusScene", "EndScene", "./assets/backgrounds/CircusBackground.json", "./assets/backgrounds/Circus_background_Asset_.png", "./assets/audio/Leve3Bg.wav", 0, 2.5, "Platforms", 0.6);
     }
 
     init (data) {

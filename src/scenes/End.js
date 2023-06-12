@@ -36,7 +36,7 @@ export class End extends Phaser.Scene {
         screen.setOrigin(0,0);
         // load audio
         loadFilesAtRuntime(this, {
-            "bg_music": {type: "audio", url: "./assets/IntroSampPiano.wav"}
+            "bg_music": {type: "audio", url: "./assets/audio/IntroSampPiano.wav"}
         }, () => {
             let music = this.sound.add('bg_music');
             let musicConfig = {

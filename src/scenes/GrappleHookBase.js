@@ -39,8 +39,8 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.load.image('hook_hooked', './assets/hook/Grappling_Hook_2.png');
 		
 		// Load in sfx
-		this.load.audio('retract', './assets/RetractHook.wav');
-		this.load.audio('extend' , './assets/HookExtend.wav');
+		this.load.audio('retract', './assets/audio/RetractHook.wav');
+		this.load.audio('extend' , './assets/audio/HookExtend.wav');
 
 		this.load.glsl("rope", "./src/util/ropeShader.glsl");
 
@@ -109,9 +109,9 @@ export class GrappleHookBase extends Phaser.Scene {
 			const distance = this.distance(playerX, playerY, cursor_pos);
 	
 			if (distance < Grapple.gameplaySettings.firing.maxLength * (Grapple.gameplaySettings.rope.interpolationAmount + 1) ) {
-				this.input.setDefaultCursor('url(assets/greenPointer.png) 16 16, pointer');
+				this.input.setDefaultCursor('url(assets/cursor/greenPointer.png) 16 16, pointer');
 			} else {
-				this.input.setDefaultCursor('url(assets/redPointer.png) 16 16, pointer');
+				this.input.setDefaultCursor('url(assets/cursor/redPointer.png) 16 16, pointer');
 			}
 		});	
 		

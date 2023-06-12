@@ -32,8 +32,5 @@ export class Credit extends Phaser.Scene {
         });
         
     }
-
-    update() {
-    }
     
 }

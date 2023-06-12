@@ -41,7 +41,7 @@ export class Menu extends Phaser.Scene {
 
         // load audio
         loadFilesAtRuntime(this, {
-            "bg_music": {type: "audio", url: "./assets/IntroSampPiano.wav"}
+            "bg_music": {type: "audio", url: "./assets/audio/IntroSampPiano.wav"}
         }, () => {
             let music = this.sound.add('bg_music');
             let musicConfig = {
@@ -52,13 +52,6 @@ export class Menu extends Phaser.Scene {
             }
             music.play(musicConfig);
         });
-
-        
-        // this.space = this.input.keyboard.addKey("SPACE");
-        // this.keyA = this.input.keyboard.addKey("A");
-    }
-
-    update() {
     }
     
 }

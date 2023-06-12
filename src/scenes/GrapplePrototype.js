@@ -7,6 +7,6 @@ import { GrappleHookBase } from "./GrappleHookBase.js";
 
 export class GrapplePrototype extends GrappleHookBase {
 	constructor() {
-        super("PlayScene", "UndergroundScene", './assets/CityBackground.json', './assets/Cityasset_.png', "./assets/Level1Bg.wav");
+        super("PlayScene", "UndergroundScene", './assets/backgrounds/CityBackground.json', './assets/backgrounds/Cityasset_.png', "./assets/audio/Level1Bg.wav");
     }
 }

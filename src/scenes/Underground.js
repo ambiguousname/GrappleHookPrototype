@@ -7,7 +7,7 @@ import { GrappleHookBase } from "./GrappleHookBase.js";
 
 export class Underground extends GrappleHookBase {
 	constructor() {
-        super("UndergroundScene", "CircusScene", "./assets/UndergroundBackground.json", "./assets/Underground_background_Asset_.png", "./assets/Level2Bg.wav", 0, 2.5, "Platforms");
+        super("UndergroundScene", "CircusScene", "./assets/UndergroundBackground.json", "./assets/Underground_background_Asset_.png", "./assets/Level2Bg.wav", 0, 2.5, "Platforms", 0.6);
     }
 
     init (data) {

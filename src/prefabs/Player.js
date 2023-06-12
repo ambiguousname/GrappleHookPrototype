@@ -109,6 +109,7 @@ export class Player {
 				if (this.grapple.isGrappleHookOut()) {
 					this.grapple.cancel();
 				}
+				
 				let worldSpace = screenToWorldSpace(this.scene.cameras.main, this.scene.input.mousePointer);
 
 				this.grapple.fire(worldSpace.x, worldSpace.y, this.isGrounded, () => {

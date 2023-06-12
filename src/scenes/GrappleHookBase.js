@@ -12,7 +12,7 @@ export class GrappleHookBase extends Phaser.Scene {
 	#backgroundImage = undefined;
 	#backgroundMusicURL = undefined;
 	#backgroundMusic = undefined;
-	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, elapsedTime=0, mapScale=4, collisionLayer="Buildings") {
+	constructor(sceneName, nextScene, tilemapJSON, backgroundImage, backgroundMusic, elapsedTime=0, mapScale=4, collisionLayer="Buildings", zoomAmount=0.5) {
         super(sceneName);
 		this.sceneName = sceneName;
 		this.#nextScene = nextScene;
@@ -22,6 +22,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		this.elapsedTime = elapsedTime;
 		this.mapScale = mapScale;
 		this.collisionLayer = collisionLayer;
+		this.zoomAmount = zoomAmount
     }
 	preload() {
 		TutorialManager.preload(this);
@@ -249,7 +250,7 @@ export class GrappleHookBase extends Phaser.Scene {
 		
 		this.drawMapSensors(this.featherLayer);
 
-		this.cameras.main.setZoom(0.5);
+		this.cameras.main.setZoom(this.zoomAmount);
 	}
 
 	drawObjectLayerCollisions({scale, ...layers} = {scale: 1, layers: []}) {

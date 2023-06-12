@@ -20,12 +20,15 @@ export class Grapple {
 			stopFiringAtVelocity: 1,
 			maxLength: 20,
 			attachedOffset: 60,
+			fireDelay: 500,
 		},
 		
 		retracting: {
 			retractSpeed: 20,
 		}
 	}
+
+	#fireTimer;
 
 	// #region Overall behavior
 	
@@ -58,6 +61,8 @@ export class Grapple {
 		this.grappleEnd.setOrigin(0.5, 1);
 
 		this.#hideGrapple();
+
+		this.#fireTimer = 0;
 	}
 
 	update() {
@@ -208,8 +213,11 @@ export class Grapple {
 	// #endregion
 
 	fire(x, y, addVelocity=true, callback=null) {
-		this.#showGrapple();
-		this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
+		if (this.scene.time.now - this.#fireTimer > Grapple.gameplaySettings.firing.fireDelay) {
+			this.#fireTimer = this.scene.time.now;
+			this.#showGrapple();
+			this.grapplingFSM.transition(GrappleHookStates.GrappleFiring, x, y, addVelocity, callback);
+		}
 	}
 
 	firingCollisionCheck(bodyA, bodyB) {

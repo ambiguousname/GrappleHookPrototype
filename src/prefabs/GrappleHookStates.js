@@ -177,7 +177,8 @@ class GrappleFiring extends GrappleHookManager {
 			isSensor: true,
 		});
 
-		this.fireSensorCollisionCheck = getAllCollisions.bind(this, (bodyA, bodyB) => {
+		// Doesn't actually work right now for preventing firing through walls, since the offset got changed. Would probably be better to raycast back to the player.
+		/*this.fireSensorCollisionCheck = getAllCollisions.bind(this, (bodyA, bodyB) => {
 			if (this.#fireSensor === null) {
 				return;
 			}
@@ -197,15 +198,20 @@ class GrappleFiring extends GrappleHookManager {
 					return;
 				}
 
-				let pos = {x: this.#fireSensor.position.x, y: this.#fireSensor.position.y};
+				let pos = new Phaser.Math.Vector2(this.#fireSensor.position.x, this.#fireSensor.position.y);
+				console.log(pos, this.parent.attachBody.position);
+
+				if (pos.dot(this.parent.attachBody.position) >= 0.9) {
+					return;
+				}
 
 				this.parent.cancelNoFSMTransition();
 				// Create end and bind to hook:
 				this.parent.end = this.generateLink(pos.x, pos.y, pos);
 				this.parent.grapplingFSM.transition(GrappleHooked);
 			}
-		});
-		this.matter.world.on("collisionstart", this.fireSensorCollisionCheck);
+		});*/
+		// this.matter.world.on("collisionstart", this.fireSensorCollisionCheck);
 		
 		this.parent.end = this.fireGenerateLink(this.#fireSensor.position.x, this.#fireSensor.position.y);
 		this.parent.end.isChainEnd = true;
@@ -245,8 +251,8 @@ class GrappleFiring extends GrappleHookManager {
 	exitState() {
 		this.#exiting = true;
 
-		this.matter.world.off("collisionstart", this.fireSensorCollisionCheck);
-		this.fireSensorCollisionCheck = null;
+		// this.matter.world.off("collisionstart", this.fireSensorCollisionCheck);
+		// this.fireSensorCollisionCheck = null;
 		if (this.parent.comp.bodies.length > 0){
 			this.backFillLink(this.#fireSensor, this.fireGenerateLink);
 

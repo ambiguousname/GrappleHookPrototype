@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "phaser3": "^0.4.34"
+  }
+}

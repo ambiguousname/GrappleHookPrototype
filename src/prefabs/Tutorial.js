@@ -65,7 +65,7 @@ export class TutorialManager  {
 			this.addImage(scene, () => {return player.body.position}, "D_Key_Dark", {offset: new Phaser.Math.Vector2(80, 0)});
 		}
 		if (!this.tutorialsShown.has("W_Key_Dark")) {
-			this.addImage(scene, () => {if (grapple.end === null) {return {x: -20, y: -20}} else { return grapple.end.position}}, "W_Key_Dark", {
+			this.addImage(scene, () => {if (grapple.end === undefined || grapple.end === null) {return {x: -20, y: -20}} else { return grapple.end.position}}, "W_Key_Dark", {
 				allowPress: () => {return grapple.isGrappleHookOut()}
 			});
 		}

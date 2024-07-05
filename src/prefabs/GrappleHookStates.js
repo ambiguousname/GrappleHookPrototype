@@ -32,7 +32,7 @@ class GrappleHookManager extends State {
 			circle.next = this.#lastAdded;
 			circle.next.prev = circle;
 
-			let dist = this.vector.magnitude(this.vector.sub(circle, linkToConnect.position));
+			let dist = this.vector.magnitude(this.vector.sub(circle, this.#lastAdded.position));
 			let constraint = this.matter.add.constraint(circle.next, circle, dist, Grapple.gameplaySettings.rope.stiffness);
 			this.matter.composite.add(this.parent.comp, constraint);
 		}
